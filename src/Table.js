@@ -1,5 +1,6 @@
 import React, { useState,useEffect,forwardRef,useRef } from "react";
-import { useTable, useFilters, useSortBy,useRowSelect } from "react-table";
+import { useTable, useFilters, useSortBy,useRowSelect,useResizeColumns,
+  useFlexLayout } from "react-table";
 
 const IndeterminateCheckbox = forwardRef(
   ({ indeterminate, ...rest }, ref) => {
@@ -17,11 +18,28 @@ const IndeterminateCheckbox = forwardRef(
     )
   }
 )
-export default function Table({ columns, data }) {
+
+
+const headerProps = (props, { column }) => getStyles(props, column.align)
+
+const cellProps = (props, { cell }) => getStyles(props, cell.column.align)
+
+const getStyles = (props, align = 'left') => [
+  props,
+  {
+    style: {
+      justifyContent: align === 'right' ? 'flex-end' : 'flex-start',
+      alignItems: 'flex-start',
+      display: 'flex',
+    },
+  },
+]
+const Table = ({ columns,data }) => {
   const [filterInput, setFilterInput] = useState("");
   // Use the state and functions returned from useTable to build your UI
 
-  
+
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -38,6 +56,8 @@ export default function Table({ columns, data }) {
     },
     useFilters,
     useSortBy,
+    useResizeColumns,
+    useFlexLayout,
     useRowSelect,
     hooks => {
       hooks.visibleColumns.push(columns => [
@@ -100,8 +120,11 @@ export default function Table({ columns, data }) {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.slice(0,10).map((row, i) => {
+          {rows.map((row, i) => {
+
             prepareRow(row);
+
+
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
@@ -111,6 +134,7 @@ export default function Table({ columns, data }) {
                 })}
               </tr>
             );
+
           })}
         </tbody>
       </table>
@@ -130,6 +154,7 @@ export default function Table({ columns, data }) {
         </code>
       </pre>
     </>
-    
+
   );
 }
+export default Table;

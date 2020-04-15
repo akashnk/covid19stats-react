@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-// import {formatNumber} from '../utils/common-functions';
+
 
 const Today= (props) => {
     const [data, setData] = useState(props.data);
@@ -8,7 +8,7 @@ const Today= (props) => {
     const [recoveries, setRecoveries] = useState(0);
     const [deaths, setDeaths] = useState(0);
     const [deltas, setDeltas] = useState(0);
-  
+
 
     useEffect(() => {
         setData(props.data);
@@ -35,7 +35,6 @@ const Today= (props) => {
             }
           });
           setConfirmed(confirmed);
-          console.log(confirmed);
           setActive(active);
           setRecoveries(recoveries);
           setDeaths(deaths);
@@ -44,28 +43,61 @@ const Today= (props) => {
         parseData();
       }, [data]);
 
-    //   useEffect(() => {
-    //   setConfirmed(data.statewise.Total.confirmed);
-    // },[data]);
     return(
     <div className = "box">
         <div className = "red">
             <h5>Confirmed</h5>
+            <h4>
+              [
+              {deltas
+                ? deltas.confirmed > 0
+                  ? '+' + deltas.confirmed
+                  : '+0'
+                : ''}
+              ]
+            </h4>
             <h1>{confirmed}</h1>
        </div>
        <div className = "orange" >
            <h5 >Active</h5>
+           <h4>
+             [
+             {deltas
+               ? deltas.active > 0
+                 ? '+' + deltas.active
+                 : '+0'
+               : ''}
+             ]
+           </h4>
            <h1>{active}</h1>
         </div>
         <div className = "green" >
            <h5 >Recovered</h5>
+           <h4>
+             [
+             {deltas
+               ? deltas.recovered > 0
+                 ? '+' + deltas.recovered
+                 : '+0'
+               : ''}
+             ]
+           </h4>
            <h1>{recoveries}</h1>
         </div>
         <div className = "gray" >
            <h5 >Deaths</h5>
+           <h4>
+             [
+             {deltas
+               ? deltas.deaths > 0
+                 ? '+' + deltas.deaths
+                 : '+0'
+               : ''}
+             ]
+           </h4>
            <h1>{deaths}</h1>
         </div>
-       
+
     </div>
     )
 }

@@ -49,10 +49,11 @@
   .green {background-color: rgb(29, 202, 23);}
   .gray {background-color: gray;}
   .red {background-color:#db0b2e;}
-  
+
 table {
   border-spacing: 6;
   max-width: 800px;
+  height: 400px; 
   border: 1px solid #ededed;
 }
 table tr:last-child td {
