@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import axios from "axios";
 
 import Table from "./Table";
+import Today from "./Today";
 import "./App.css";
 
 
@@ -84,6 +85,7 @@ useEffect(() => {
   }
   return (
     <div className="App">
+      <Today data={data} />
       <Table columns={columns} data={data} />
     </div>
   );
