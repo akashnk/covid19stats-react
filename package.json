@@ -2,7 +2,6 @@
   "name": "covid19reacts",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "homepage": "covid19.akashnaik.org",
   "dependencies": {
     "@juggle/resize-observer": "^3.1.3",
