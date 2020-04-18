@@ -30,6 +30,7 @@ const getStyles = (props, align = 'left') => [
     style: {
       justifyContent: align === 'right' ? 'flex-end' : 'flex-start',
       alignItems: 'flex-start',
+      size: 20,
       display: 'flex',
     },
   },
@@ -89,7 +90,8 @@ const Table = ({ columns,data }) => {
     setFilter("state", value);
     setFilterInput(value);
   };
-
+  console.log(Object.keys(selectedRowIds));
+  console.log(selectedFlatRows.map(d => d.original));
   // Render the UI for your table
   return (
     <>
@@ -138,23 +140,26 @@ const Table = ({ columns,data }) => {
           })}
         </tbody>
       </table>
-      <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
-      <pre>
-        <code>
-          {JSON.stringify(
-            {
-              selectedRowIds: selectedRowIds,
-              'selectedFlatRows[].original': selectedFlatRows.map(
-                d => d.original
-              ),
-            },
-            null,
-            2
-          )}
-        </code>
-      </pre>
+
     </>
+      // <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
+      // <pre>
+      //   <code>
+      //     {JSON.stringify(
+      //       {
+      //         selectedRowIds: selectedRowIds,
+      //         'selectedFlatRows[].original': selectedFlatRows.map(
+      //           d => d.original
+      //         ),
+      //       },
+      //       null,
+      //       2
+      //     )}
+      //   </code>
+      // </pre>
+
 
   );
+
 }
 export default Table;

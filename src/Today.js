@@ -48,7 +48,7 @@ const Today= (props) => {
         <div className = "red">
             <h5>Confirmed</h5>
             <h4>
-              [
+            {confirmed} [
               {deltas
                 ? deltas.confirmed > 0
                   ? '+' + deltas.confirmed
@@ -56,12 +56,12 @@ const Today= (props) => {
                 : ''}
               ]
             </h4>
-            <h1>{confirmed}</h1>
+
        </div>
        <div className = "orange" >
            <h5 >Active</h5>
            <h4>
-             [
+            {active} [
              {deltas
                ? deltas.active > 0
                  ? '+' + deltas.active
@@ -69,12 +69,12 @@ const Today= (props) => {
                : ''}
              ]
            </h4>
-           <h1>{active}</h1>
+
         </div>
         <div className = "green" >
            <h5 >Recovered</h5>
            <h4>
-             [
+            {recoveries} [
              {deltas
                ? deltas.recovered > 0
                  ? '+' + deltas.recovered
@@ -82,20 +82,21 @@ const Today= (props) => {
                : ''}
              ]
            </h4>
-           <h1>{recoveries}</h1>
+
         </div>
         <div className = "gray" >
            <h5 >Deaths</h5>
            <h4>
-             [
+             {deaths} [ 
+
              {deltas
                ? deltas.deaths > 0
                  ? '+' + deltas.deaths
                  : '+0'
                : ''}
              ]
+
            </h4>
-           <h1>{deaths}</h1>
         </div>
 
     </div>

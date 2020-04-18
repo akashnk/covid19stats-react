@@ -37,23 +37,26 @@
   }
 } */
 .box div {
-  width:200px;
-  /* height: 20px; */
-  display:inline-block;
-  padding:0px;
-  text-align:center;
-  color:#000000;
-  font-family: arial, sans-serif;
+   display: inline-block; 
+/*     flex-direction: row; */
+    justify-content: space-between;
+    align-self: center;
+    width: 20vh;
+/*     padding:1px; */
+    text-align:center;
+    color:#000000;
+    font-family: arial, sans-serif;
+ 
   }
-  .orange {background-color: rgb(228, 113, 67);}
-  .green {background-color: rgb(29, 202, 23);}
-  .gray {background-color: gray;}
-  .red {background-color:#db0b2e;}
+    .orange {background-color: rgb(228, 113, 67);}
+    .green {background-color: rgb(29, 202, 23);}
+    .gray {background-color: gray;}
+    .red {background-color:#db0b2e;}
 
 table {
   border-spacing: 6;
-  max-width: 800px;
-  height: 400px; 
+  max-width: 600px;
+  height: 400px;
   border: 1px solid #ededed;
 }
 table tr:last-child td {
@@ -116,4 +119,31 @@ input {
   border-radius: 5px;
   border: 1px solid #ddd;
   box-shadow: none;
+}
+
+.line-path {
+  fill: maroon;
+}
+
+text {
+  font-family: sans-serif;
+}
+
+.tick text {
+  font-size: 2em;
+  fill: #635F5D;
+}
+
+.tick line {
+  stroke: #C0C0BB;
+}
+
+.axis-label {
+  font-size: 2em;
+  fill: #8E8883;
+}
+
+.title {
+  font-size: 3.7em;
+  fill: #635F5D;
 }
