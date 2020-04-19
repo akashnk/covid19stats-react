@@ -1,6 +1,7 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState,forwardRef, useEffect } from "react";
 import axios from "axios";
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 
 import Table from "./Table";
 import Today from "./Today";
@@ -24,9 +25,9 @@ function App() {
   const [stateTestData, setStateTestData] = useState({});
   const [timeseries,setTimeseries] = useState([]);
    const [graphOption, setGraphOption] = useState(1);
-   const [timeseriesMode, setTimeseriesMode] = useState(true);
+   const [timeseriesMode, setTimeseriesMode] = useState(true)
 const [logMode, setLogMode] = useState(false);
- const [activeStateCode, setActiveStateCode] = useState('TT');
+ const [activeStateCode, setActiveStateCode] = useState('AP');
  const [cases,setCase] =useState('totalconfirmed');
   // const [testsData, setTestsData] = useState({});
   const [conf,setConf] =useState({});
@@ -105,7 +106,20 @@ const handleChange = e => {
 
   const columns = useMemo(
     () => [
-
+      {
+ // Make an expander cell
+ Header: () => null, // No header
+ id: 'expander',
+ width: 30, // It needs an ID
+ Cell: ({ row }) => (
+   // Use Cell to render an expander for each row.
+   // We can use the getToggleRowExpandedProps prop-getter
+   // to build the expander.
+   <span {...row.getToggleRowExpandedProps()}>
+     {row.isExpanded ? '㊀' : '⨁'}
+   </span>
+ ),
+},
             {
                 Header: "State",
                 accessor: "state",
@@ -119,7 +133,14 @@ const handleChange = e => {
               {
                 Header: "New Cases",
                 accessor: "deltaconfirmed",
-                width: 80
+                width: 80,
+                getProps: (state, rowInfo, column) => {
+            return {
+                style: {
+                    background: rowInfo && rowInfo.row.deltaconfirmed > 0 ? 'red' : null,
+                },
+            };
+        },
 
               },
 
@@ -127,15 +148,7 @@ const handleChange = e => {
                           Header: "Deaths",
                           accessor: "deaths",
                           width: 80,
-                          getProps: (state,rowInfo, column) => {
-                              if (rowInfo && rowInfo.row) {
-                                  return {
-                                      style:{backgroundColor: rowInfo.row.deaths > 20 ? 'red' : null},
 
-                                      };
-                                  }
-                                  return {};
-                          }
                         },
 
                       {
@@ -163,6 +176,19 @@ const handleChange = e => {
     []
   );
 
+  const renderRowSubComponent = React.useCallback(
+    ({ row }) => (
+      <pre
+        style={{
+          fontSize: '10px',
+        }}
+      >
+        <code>{JSON.stringify({ values: row.values }, null, 2)}</code>
+      </pre>
+    ),
+    []
+  )
+
   return (
     <React.Fragment>
     <div className="App">
@@ -173,7 +199,9 @@ const handleChange = e => {
          <input type="radio" name="case" value="totalconfirmed" defaultChecked onChange={handleChange}/>
          <label>Confirmed</label>
          <input type="radio" name="case" value="totaldeceased" onChange={handleChange}/>  <label>Deaths</label>
+         <input type="radio" name="case" value="totalactive" onChange={handleChange}/>  <label>Active</label>
          <input type="radio" name="case" value="totalrecovered" onChange={handleChange}/>  <label>Recovered</label>
+
          <input type="radio" name="case" value="dailyconfirmed" onChange={handleChange}/>  <label>Daily cases</label>
          </div>
          <div class="square-radio">
@@ -191,7 +219,8 @@ const handleChange = e => {
                 mode={timeseriesMode}
                 logMode={logMode} />}
                 </div>
-      <Table columns={columns} data={fdata} />
+      <Table columns={columns} data={fdata}
+      renderRowSubComponent={renderRowSubComponent} />
     </div>
     </React.Fragment>
   )

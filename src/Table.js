@@ -1,6 +1,7 @@
 import React, { useState,useEffect,forwardRef,useRef } from "react";
 import { useTable, useFilters, useSortBy,useRowSelect,useResizeColumns,
-  useFlexLayout } from "react-table";
+  useFlexLayout,useExpanded } from "react-table";
+// import Dchart from "./Dchart";
 
 const IndeterminateCheckbox = forwardRef(
   ({ indeterminate, ...rest }, ref) => {
@@ -35,7 +36,7 @@ const getStyles = (props, align = 'left') => [
     },
   },
 ]
-const Table = ({ columns,data }) => {
+const Table = ({ columns,data,renderRowSubComponent }) => {
   const [filterInput, setFilterInput] = useState("");
   // Use the state and functions returned from useTable to build your UI
 
@@ -47,6 +48,7 @@ const Table = ({ columns,data }) => {
     headerGroups,
     rows,
     prepareRow,
+    visibleColumns,
     setFilter,
     selectedFlatRows,
     state: {selectedRowIds}
@@ -55,8 +57,10 @@ const Table = ({ columns,data }) => {
       columns,
       data
     },
+
     useFilters,
     useSortBy,
+    useExpanded,
     useResizeColumns,
     useFlexLayout,
     useRowSelect,
@@ -67,11 +71,12 @@ const Table = ({ columns,data }) => {
           id: 'selection',
           // The header can use the table's getToggleAllRowsSelectedProps method
           // to render a checkbox
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-            </div>
-          ),
+          // Header: ({ getToggleAllRowsSelectedProps }) => (
+          //   <div>
+          //     <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+          //   </div>
+          // ),
+          width: 20,
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
           Cell: ({ row }) => (
@@ -79,6 +84,7 @@ const Table = ({ columns,data }) => {
               <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
             </div>
           ),
+
         },
         ...columns,
       ])
@@ -128,6 +134,7 @@ const Table = ({ columns,data }) => {
 
 
             return (
+              <React.Fragment {...row.getRowProps()}>
               <tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
                   return (
@@ -135,7 +142,26 @@ const Table = ({ columns,data }) => {
                   );
                 })}
               </tr>
-            );
+              {/*
+                     If the row is in an expanded state, render a row with a
+                     column that fills the entire length of the table.
+                   */}
+                 {row.isExpanded ? (
+                   <tr>
+                     <td colSpan={visibleColumns.length}>
+                       {/*
+                           Inside it, call our renderRowSubComponent function. In reality,
+                           you could pass whatever you want as props to
+                           a component like this, including the entire
+                           table instance. But for this example, we'll just
+                           pass the row
+                         */}
+                       {renderRowSubComponent({ row })}
+                     </td>
+                   </tr>
+                 ) : null}
+                  </React.Fragment>
+            )
 
           })}
         </tbody>

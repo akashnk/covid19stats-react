@@ -1,7 +1,6 @@
 import moment from 'moment';
 import {STATE_CODES} from './constants';
-import {format as d3format} from 'd3';
-import React,{useState,useEffect} from 'react';
+
 const months = {
   '01': 'Jan',
   '02': 'Feb',
@@ -20,24 +19,6 @@ const months = {
 export const getStateName = (code) => {
   return STATE_CODES[code.toUpperCase()];
 };
-
-export const useWindowSize = () => {
-  const [width, setWidth] = useState(document.documentElement.clientWidth);
-  const [height, setHeight] = useState(document.documentElement.clientHeight);
-  useEffect(() => {
-    const setSize = () => {
-      setWidth(document.documentElement.clientWidth);
-      setHeight(document.documentElement.clientHeight);
-    };
-    window.addEventListener('resize', setSize);
-    window.addEventListener('orientationchange', setSize);
-    return () => {
-      window.removeEventListener('resize', setSize);
-      window.removeEventListener('orientationchange', setSize);
-    }
-  }, []);
-  return [width, height];
-}
 
 export const formatDate = (unformattedDate) => {
   const day = unformattedDate.slice(0, 2);
@@ -75,7 +56,7 @@ const validateCTS = (data = []) => {
 };
 
 export const preprocessTimeseries = (timeseries) => {
-  return validateCTS(timeseries).map((stat) => ({
+  return validateCTS(timeseries).map((stat, index) => ({
     date: new Date(stat.date + ' 2020'),
     totalconfirmed: +stat.totalconfirmed,
     totalrecovered: +stat.totalrecovered,
@@ -83,6 +64,11 @@ export const preprocessTimeseries = (timeseries) => {
     dailyconfirmed: +stat.dailyconfirmed,
     dailyrecovered: +stat.dailyrecovered,
     dailydeceased: +stat.dailydeceased,
+    // Active = Confimed - Recovered - Deceased
+    totalactive:
+      +stat.totalconfirmed - +stat.totalrecovered - +stat.totaldeceased,
+    dailyactive:
+      +stat.dailyconfirmed - +stat.dailyrecovered - +stat.dailydeceased,
   }));
 };
 
@@ -97,13 +83,9 @@ export function sliceTimeseriesFromEnd(timeseries, days) {
   return timeseries.slice(-days);
 }
 
-export const formatNumber = (value, shrinkNumbers) => {
+export const formatNumber = (value) => {
   const numberFormatter = new Intl.NumberFormat('en-IN');
-  return isNaN(value)
-    ? '-'
-    : shrinkNumbers
-    ? d3format('.1~s')(value)
-    : numberFormatter.format(value);
+  return isNaN(value) ? '-' : numberFormatter.format(value);
 };
 
 export const parseStateTimeseries = ({states_daily: data}) => {
@@ -120,14 +102,27 @@ export const parseStateTimeseries = ({states_daily: data}) => {
       Object.entries(statewiseSeries).forEach(([k, v]) => {
         const stateCode = k.toLowerCase();
         const prev = v[v.length - 1] || {};
+        // Parser
+        const dailyconfirmed = +data[i][stateCode] || 0;
+        const dailyrecovered = +data[i + 1][stateCode] || 0;
+        const dailydeceased = +data[i + 2][stateCode] || 0;
+        const totalconfirmed = +data[i][stateCode] + (prev.totalconfirmed || 0);
+        const totalrecovered =
+          +data[i + 1][stateCode] + (prev.totalrecovered || 0);
+        const totaldeceased =
+          +data[i + 2][stateCode] + (prev.totaldeceased || 0);
+        // Push
         v.push({
           date: date.toDate(),
-          dailyconfirmed: +data[i][stateCode] || 0,
-          dailyrecovered: +data[i + 1][stateCode] || 0,
-          dailydeceased: +data[i + 2][stateCode] || 0,
-          totalconfirmed: +data[i][stateCode] + (prev.totalconfirmed || 0),
-          totalrecovered: +data[i + 1][stateCode] + (prev.totalrecovered || 0),
-          totaldeceased: +data[i + 2][stateCode] + (prev.totaldeceased || 0),
+          dailyconfirmed: dailyconfirmed,
+          dailyrecovered: dailyrecovered,
+          dailydeceased: dailydeceased,
+          totalconfirmed: totalconfirmed,
+          totalrecovered: totalrecovered,
+          totaldeceased: totaldeceased,
+          // Active = Confimed - Recovered - Deceased
+          totalactive: totalconfirmed - totalrecovered - totaldeceased,
+          dailyactive: dailyconfirmed - dailyrecovered - dailydeceased,
         });
       });
     }

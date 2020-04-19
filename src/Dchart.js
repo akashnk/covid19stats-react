@@ -2,8 +2,8 @@ import React, { useMemo, useState, useEffect, useRef,useCallback } from "react";
 
 // import * as d3 from 'd3';
 import { select, selectAll,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
-scaleTime ,scaleLog} from 'd3';
-
+scaleTime ,curveMonotoneX,scaleLog,scaleSymlog} from 'd3';
+import {Delaunay} from 'd3-delaunay';
 
 
 import moment from 'moment';
@@ -83,7 +83,7 @@ console.log(radiostate);
 
 
        d[radiostate]=+d[radiostate];
-      
+
         d.date= new Date(d.date);
         });
 
@@ -94,6 +94,8 @@ console.log(radiostate);
 
             const yValue = (d) => d[radiostate];
             const yAxisLabel= 'Total Cases';
+
+const delaunay = Delaunay.from( timeseries, d => d.date, d => d[radiostate] )
 
 const drawChart = () => {
   select('g').remove();
@@ -119,46 +121,54 @@ const svg = select(svgRef.current).attr("width",width).attr("height",height);
               .range([0,w])
               .nice();
 
-
+console.log(timeseries)
       const yscale = logMode === "true" ?
-          scaleLog().domain([1,max(timeseries,yValue)]).range([h,1]).nice() :
+          scaleSymlog().domain([1,max(timeseries,yValue)]).range([h,1]).nice() :
           scaleLinear().domain(extent(timeseries,yValue)).range([h,0]).nice();
 
-console.log(yscale);
 
 
+
+// console.log(yscale);
+
+const xTicks = 6;
 const xAxis = axisBottom()
     .scale(xscale)
     .tickPadding(15)
-    .ticks(15)
+    .ticks(xTicks)
+    // .tickValues((xscale.domain().filter(function(d, i) {return !(i % 2)})))
     .tickSize(-h);
+// console.log((xscale.domain().filter(function(d, i) {return (i % 2)})));
 
-  const yTicks = 15;
+  const yTicks = 6;
   const yAxis = axisLeft()
     .scale(yscale)
-    .ticks(7)
+    .ticks(yTicks,"~s")
     .tickPadding(15)
     .tickSize(-w);
+
+        g.append('g')
+        .attr("transform", "translate(0, " + h  +")").call(xAxis);
+      g.append('g').call(yAxis);
 
 
   const myline = line()
     .x(d => xscale(xValue(d)))
-    .y(d => yscale(yValue(d))).curve(curveCardinal);
+    .y(d => yscale(yValue(d))).curve(curveMonotoneX);
 
 g.append("path")
     .attr("stroke","maroon")
     .attr("fill","none")
+    .attr("stroke-width","1.5")
     .attr("d",myline(timeseries));
 
-  g.append('g').call(yAxis);
-    g.append('g')
-    .attr("transform", "translate(0, " + h  +")").call(xAxis);
 
     g.selectAll('circle').data(timeseries)
       .enter().append('circle')
         .attr('cy', d => yscale(yValue(d)))
         .attr('cx', d => xscale(xValue(d)))
-        .attr('r', 2);
+        .attr('r', 3)
+        .attr('fill','maroon');
 
   }
   drawChart();

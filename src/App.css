@@ -54,10 +54,10 @@
     .red {background-color:#db0b2e;}
 
 table {
-  border-spacing: 6;
-  max-width: 600px;
+  border-spacing: 0;
+  /* max-width: 640px; */
   height: 400px;
-  border: 1px solid #ededed;
+  border: 2px solid #ededed;
 }
 table tr:last-child td {
   border-bottom: 2;
@@ -164,6 +164,7 @@ text {
 .svg-parent:not(.legend) {
    height: 400px;
    width: 100%;
+   max-width: 960px;
    svgRef {
      height: 100%;
    }
