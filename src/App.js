@@ -25,9 +25,9 @@ function App() {
   const [timeseries,setTimeseries] = useState([]);
    const [graphOption, setGraphOption] = useState(1);
    const [timeseriesMode, setTimeseriesMode] = useState(true);
-const [timeseriesLogMode, setTimeseriesLogMode] = useState(false);
+const [logMode, setLogMode] = useState(false);
  const [activeStateCode, setActiveStateCode] = useState('TT');
- const [cases,setCase] =useState('confirmed');
+ const [cases,setCase] =useState('totalconfirmed');
   // const [testsData, setTestsData] = useState({});
   const [conf,setConf] =useState({});
 
@@ -98,28 +98,9 @@ const handleChange = e => {
  };
  const handleChangelog = e => {
     console.log(e.target.value);
-    setTimeseriesLogMode(e.target.value);
+    setLogMode(e.target.value);
   };
-// const gdata = fdata.concat(testsData.totaltested)
-// const [merged,setMerge] =useState([]);
-//
-// function mergeObjects(data,testsData){
-//   let start = 0;
-//   let merge = [];
-//
-//   while(start < data.length){
-//     if(data[start].state === testsData[start].state){
-//          //pushing the merged objects into array
-//         merge = merge.push({...data[start],...testsData[start]})
-//     }
-//     //incrementing start value
-//     start = start+1
-//   }
-//   return setMerge(merge);
-//
-// }
-//
-//  console.log(merged);
+  console.log(logMode)
 
 
   const columns = useMemo(
@@ -176,22 +157,12 @@ const handleChange = e => {
       },
 
 
-          // {
-          //   Header: "Tested",
-          //   accessor: "totaltested"
-          // },
-
 
         ],
 
     []
   );
-  // const [tym,setTym] = useState([]);
-  //
-  // setTym(timeseries[activeStateCode]);
-  // console.log(tym);
-// console.log(Object.keys(timeseries).length)
-// console.log(testsData);
+
   return (
     <React.Fragment>
     <div className="App">
@@ -199,87 +170,28 @@ const handleChange = e => {
       <Today data={data} />
       <div>
 
-         <input type="radio" name="case" value="confirmed" defaultChecked onChange={handleChange}/>
+         <input type="radio" name="case" value="totalconfirmed" defaultChecked onChange={handleChange}/>
          <label>Confirmed</label>
-         <input type="radio" name="case" value="deaths" onChange={handleChange}/>  <label>Deaths</label>
-         <input type="radio" name="case" value="active" onChange={handleChange}/>  <label>Active</label>
-         <input type="radio" name="case" value="recovered" onChange={handleChange}/>  <label>Recovered</label>
+         <input type="radio" name="case" value="totaldeceased" onChange={handleChange}/>  <label>Deaths</label>
+         <input type="radio" name="case" value="totalrecovered" onChange={handleChange}/>  <label>Recovered</label>
+         <input type="radio" name="case" value="dailyconfirmed" onChange={handleChange}/>  <label>Daily cases</label>
          </div>
          <div class="square-radio">
 
-          <input type="radio" name="timeseriesLogMode" value="false" align="right" onChange={handleChangelog}/>  <label>Linear</label>
-           <input type="radio" name="timeseriesLogMode" value="true" align="right" onChange={handleChangelog}/>  <label>Logarithmic</label>
+          <input type="radio" name="logMode" value="false" align="right" defaultChecked onChange={handleChangelog}/>  <label>Linear</label>
+           <input type="radio" name="logMode" value="true" align="right" onChange={handleChangelog}/>  <label>Logarithmic</label>
 
 
        </div>
       <div>
         {fetched && <Dchart timeseries={timeseries[activeStateCode]}
 
-      // console.log(timeseries)
-              // activeStateCode={activeStateCode}
                 casetype={cases}
                 type={graphOption}
                 mode={timeseriesMode}
-                logMode={timeseriesLogMode} />}
+                logMode={logMode} />}
                 </div>
       <Table columns={columns} data={fdata} />
-      <div>
-
-               <h1>Spread Trends</h1>
-
-               <div className="tabs">
-                 <div
-                   className={`tab ${graphOption === 1 ? 'focused' : ''}`}
-                   onClick={() => {
-                     setGraphOption(1);
-                   }}
-                 >
-                   <h4>Cumulative</h4>
-                 </div>
-                 <div
-                   className={`tab ${graphOption === 2 ? 'focused' : ''}`}
-                   onClick={() => {
-                     setGraphOption(2);
-                   }}
-                 >
-                   <h4>Daily</h4>
-                 </div>
-               </div>
-
-               <div className="scale-modes">
-                 <label className="main">Scale Modes</label>
-                 <div className="timeseries-mode">
-                   <label htmlFor="timeseries-mode">Uniform</label>
-                   <input
-                     type="checkbox"
-                     checked={timeseriesMode}
-                     className="switch"
-                     aria-label="Checked by default to scale uniformly."
-                     onChange={(event) => {
-                       setTimeseriesMode(!timeseriesMode);
-                     }}
-                   />
-                 </div>
-                 <div
-                   className={`timeseries-logmode ${
-                     graphOption !== 1 ? 'disabled' : ''
-                   }`}
-                 >
-                   <label htmlFor="timeseries-logmode">Logarithmic</label>
-                   <input
-                     type="checkbox"
-                     checked={graphOption === 1 && timeseriesLogMode}
-                     className="switch"
-                     disabled={graphOption !== 1}
-                     onChange={(event) => {
-                       setTimeseriesLogMode(!timeseriesLogMode);
-                     }}
-                   />
-                 </div>
-
-
-</div>
-    </div>
     </div>
     </React.Fragment>
   )

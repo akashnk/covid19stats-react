@@ -1,8 +1,8 @@
 import React, { useMemo, useState, useEffect, useRef,useCallback } from "react";
 
 // import * as d3 from 'd3';
-import { select, selectAll,line,curveCardinal,curveBasis,extent,axisLeft,axisBottom,scaleLinear,
-scaleTime } from 'd3';
+import { select, selectAll,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
+scaleTime ,scaleLog} from 'd3';
 
 
 
@@ -24,12 +24,13 @@ const Dchart = (props) => {
 
   const [datapoint, setDatapoint] = useState({});
   const [index, setIndex] = useState(0);
+  const [radiostate,setRadiostate] = useState([]);
   const [mode, setMode] = useState(props.mode);
-  const [logMode, setLogMode] = useState(props.logMode);
-  const [chartType, setChartType] = useState(props.type);
+  const [logMode, setLogMode] = useState([]);
+  const [chartType, setChartType] = useState(props.casetype);
   const [moving, setMoving] = useState(false);
   const [timeSeriesData, setTimeSeriesData] = useState([]);
-
+console.log(radiostate);
 //  console.log(activeStateCode);
 
   const svgRef = useRef();
@@ -41,7 +42,7 @@ const Dchart = (props) => {
   // useEffect(() => {
   //   setTimeSeriesData(timeseries.slice(timeseries.length - 20));
   // }, [timeseries]);
-  // console.log(timeSeriesData);
+
 
   useEffect(() => {
       if (props.timeseries.length > 1) {
@@ -54,10 +55,12 @@ const Dchart = (props) => {
       }
     }, [props.timeseries, lastDaysCount]);
 
-  console.log(timeseries);
 
 
 
+    useEffect(() => {
+      setRadiostate(props.casetype);
+    }, [props.casetype]);
 
 //
 //
@@ -73,14 +76,14 @@ const Dchart = (props) => {
     setChartType(props.type);
   }, [props.type]);
 
-
+//console.log(timeseries)
   useEffect(() => {
 
   timeseries.forEach((d,i)=> {
 
 
-       d.totalconfirmed=+d.totalconfirmed;
-       d.dailyconfirmed=+d.dailyconfirmed
+       d[radiostate]=+d[radiostate];
+      
         d.date= new Date(d.date);
         });
 
@@ -89,7 +92,7 @@ const Dchart = (props) => {
             const xValue = (d) => d.date;
             const xAxisLabel ='Time';
 
-            const yValue = (d) => d.totalconfirmed;
+            const yValue = (d) => d[radiostate];
             const yAxisLabel= 'Total Cases';
 
 const drawChart = () => {
@@ -115,46 +118,15 @@ const svg = select(svgRef.current).attr("width",width).attr("height",height);
               .domain(extent(timeseries,xValue))
               .range([0,w])
               .nice();
-              // console.log(extent(timeseries,xValue))
-    // console.log(chartRight);
-            const yscale = scaleLinear()
-              .domain(extent(timeseries,yValue))
-              .range([h,0])
-              .nice();
 
-//               const xAxis = axisBottom(xscale)
-//                   .ticks(6)
-//                   .tickSize(-w)
-//                   .tickPadding(15);
-//
-//     const yAxis = axisLeft(yscale)
-//       .tickSize(-h)
-//       .tickPadding(10);
-//
-//     const yAxisG = g.append('g').call(yAxis);
-//     yAxisG.selectAll('.domain').remove();
-//
-//     yAxisG.append('text')
-//         .attr('class', 'axis-label')
-//         .attr('y', -60)
-//         .attr('x', -h/2)
-//         .attr('fill', 'black')
-//         .attr('transform', `rotate(-90)`)
-//         .attr('text-anchor', 'middle')
-//         .text(yAxisLabel);
-//
-//     const xAxisG = g.append('g').call(xAxis)
-//       .attr("transform", "translate(0,"+h+")");
-//
-//     xAxisG.select('.domain').remove();
-//
-//     xAxisG.append('text')
-//         .attr('class', 'axis-label')
-//         .attr('y', 10)
-//         .attr('x', w/2 )
-//         .attr('fill', 'black')
-//         .text(xAxisLabel);
-// console.log(dimensions);
+
+      const yscale = logMode === "true" ?
+          scaleLog().domain([1,max(timeseries,yValue)]).range([h,1]).nice() :
+          scaleLinear().domain(extent(timeseries,yValue)).range([h,0]).nice();
+
+console.log(yscale);
+
+
 const xAxis = axisBottom()
     .scale(xscale)
     .tickPadding(15)
@@ -164,22 +136,29 @@ const xAxis = axisBottom()
   const yTicks = 15;
   const yAxis = axisLeft()
     .scale(yscale)
-    .ticks(10)
+    .ticks(7)
     .tickPadding(15)
     .tickSize(-w);
 
 
   const myline = line()
     .x(d => xscale(xValue(d)))
-    .y(d => yscale(yValue(d)))
+    .y(d => yscale(yValue(d))).curve(curveCardinal);
 
 g.append("path")
-    .attr("stroke","steelblue")
+    .attr("stroke","maroon")
     .attr("fill","none")
-    .attr("d",myline(timeseries))
+    .attr("d",myline(timeseries));
+
   g.append('g').call(yAxis);
     g.append('g')
     .attr("transform", "translate(0, " + h  +")").call(xAxis);
+
+    g.selectAll('circle').data(timeseries)
+      .enter().append('circle')
+        .attr('cy', d => yscale(yValue(d)))
+        .attr('cx', d => xscale(xValue(d)))
+        .attr('r', 2);
 
   }
   drawChart();
@@ -187,7 +166,7 @@ g.append("path")
 
 
 
-},[timeseries,dimensions])
+},[timeseries,dimensions,radiostate,logMode])
 
 
 
