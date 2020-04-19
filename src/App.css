@@ -37,7 +37,7 @@
   }
 } */
 .box div {
-   display: inline-block; 
+   display: inline-block;
 /*     flex-direction: row; */
     justify-content: space-between;
     align-self: center;
@@ -46,7 +46,7 @@
     text-align:center;
     color:#000000;
     font-family: arial, sans-serif;
- 
+
   }
     .orange {background-color: rgb(228, 113, 67);}
     .green {background-color: rgb(29, 202, 23);}
@@ -130,7 +130,7 @@ text {
 }
 
 .tick text {
-  font-size: 2em;
+  font-size: 1em;
   fill: #635F5D;
 }
 
@@ -139,7 +139,7 @@ text {
 }
 
 .axis-label {
-  font-size: 2em;
+  font-size: 1em;
   fill: #8E8883;
 }
 
@@ -147,3 +147,24 @@ text {
   font-size: 3.7em;
   fill: #635F5D;
 }
+/*.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  vertical-align: top;
+  overflow: hidden;
+}
+.svg-content-responsive {
+  display:inline-block;
+  position:absolute;
+  top: 10px;
+  left: 0;
+}*/
+.svg-parent:not(.legend) {
+   height: 400px;
+   width: 100%;
+   svgRef {
+     height: 100%;
+   }
+ }
