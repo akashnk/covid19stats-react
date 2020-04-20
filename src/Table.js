@@ -36,10 +36,25 @@ const getStyles = (props, align = 'left') => [
     },
   },
 ]
-const Table = ({ columns,data,renderRowSubComponent }) => {
-  const [filterInput, setFilterInput] = useState("");
-  // Use the state and functions returned from useTable to build your UI
 
+const Table = (props) => {
+  const [filterInput, setFilterInput] = useState("");
+  const [stateCode, setStatecode] = useState([]);
+  const [data,setData] =useState([]);
+  const [columns,setColumns]=useState([]);
+  const [districtWiseData,setDistrictWiseData]=useState([]);
+  // const [renderRowSubComponent,setRenderRowsub]=useState([]);
+  // Use the state and functions returned from useTable to build your UI
+  useEffect(() => {
+    setStatecode(props.stateCode);
+    setData(props.data);
+    setColumns(props.columns);
+    setDistrictWiseData(props.districtWiseData)
+    // setRenderRowsub(props.renderRowSubComponent);
+  }, [props.stateCode,props.data,props.columns,props.districtWiseData]);
+
+  console.log(stateCode);
+console.log(districtWiseData);
 
 
   const {
@@ -76,7 +91,7 @@ const Table = ({ columns,data,renderRowSubComponent }) => {
           //     <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
           //   </div>
           // ),
-          width: 20,
+          width: 28,
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
           Cell: ({ row }) => (
@@ -97,7 +112,13 @@ const Table = ({ columns,data,renderRowSubComponent }) => {
     setFilterInput(value);
   };
   console.log(Object.keys(selectedRowIds));
-  console.log(selectedFlatRows.map(d => d.original));
+
+  const sel = selectedFlatRows.map(d => d.original);
+
+  const stateode = sel.map(d => d.statecode);
+  console.log(stateode);
+
+
   // Render the UI for your table
   return (
     <>
@@ -130,11 +151,11 @@ const Table = ({ columns,data,renderRowSubComponent }) => {
         <tbody {...getTableBodyProps()}>
           {rows.map((row, i) => {
 
-            prepareRow(row);
+            prepareRow(row)
 
 
             return (
-              <React.Fragment {...row.getRowProps()}>
+<>
               <tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
                   return (
@@ -156,11 +177,11 @@ const Table = ({ columns,data,renderRowSubComponent }) => {
                            table instance. But for this example, we'll just
                            pass the row
                          */}
-                       {renderRowSubComponent({ row })}
+                       {props.renderRowSubComponent({ row })}
                      </td>
                    </tr>
                  ) : null}
-                  </React.Fragment>
+</>
             )
 
           })}

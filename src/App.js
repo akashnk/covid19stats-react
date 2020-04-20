@@ -20,7 +20,7 @@ import {
 function App() {
   const [data, setData] = useState([]);
   const [fetched,setFetched] = useState(false);
-  const [districtWiseData, setDistrictWiseData] = useState({});
+  const [districtWiseData, setDistrictWiseData] = useState([]);
   const [statesDailyResponse,setStatesDailyResponse] = useState([]);
   const [stateTestData, setStateTestData] = useState({});
   const [timeseries,setTimeseries] = useState([]);
@@ -101,9 +101,9 @@ const handleChange = e => {
     console.log(e.target.value);
     setLogMode(e.target.value);
   };
-  console.log(logMode)
+  // console.log(activeStateCode)
 
-
+console.log(districtWiseData.districtData);
   const columns = useMemo(
     () => [
       {
@@ -137,7 +137,7 @@ const handleChange = e => {
                 getProps: (state, rowInfo, column) => {
             return {
                 style: {
-                    background: rowInfo && rowInfo.row.deltaconfirmed > 0 ? 'red' : null,
+                    background: rowInfo && rowInfo.column.deltaconfirmed > 0 ? 'red' : null,
                 },
             };
         },
@@ -176,21 +176,30 @@ const handleChange = e => {
     []
   );
 
+  // const renderRowSubComponent = React.useCallback(
+  //   ({ row }) => (
+  //     <pre
+  //       style={{
+  //         fontSize: '10px',
+  //       }}
+  //     >
+  //       <code>{JSON.stringify({ values: row.values }, null, 2)}</code>
+  //     </pre>
+  //   ),
+  //   []
+  // )
   const renderRowSubComponent = React.useCallback(
-    ({ row }) => (
-      <pre
-        style={{
-          fontSize: '10px',
-        }}
-      >
-        <code>{JSON.stringify({ values: row.values }, null, 2)}</code>
-      </pre>
-    ),
-    []
-  )
+  ({ row }) => (
+    <div>
+      Hello {row.values.state} is {row.values.confirmed}
 
+    </div>
+  ),
+  []
+)
+// console.log(districtWiseData)
   return (
-    <React.Fragment>
+
     <div className="App">
 
       <Today data={data} />
@@ -219,10 +228,14 @@ const handleChange = e => {
                 mode={timeseriesMode}
                 logMode={logMode} />}
                 </div>
-      <Table columns={columns} data={fdata}
-      renderRowSubComponent={renderRowSubComponent} />
+        <div>
+      {fetched && <Table columns={columns} data={fdata}
+      renderRowSubComponent={renderRowSubComponent}
+      districtWiseData={districtWiseData}
+      stateCode = {activeStateCode}/>}
     </div>
-    </React.Fragment>
+    </div>
+
   )
 }
 
