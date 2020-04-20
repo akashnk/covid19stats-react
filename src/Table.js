@@ -2,6 +2,7 @@ import React, { useState,useEffect,forwardRef,useRef } from "react";
 import { useTable, useFilters, useSortBy,useRowSelect,useResizeColumns,
   useFlexLayout,useExpanded } from "react-table";
 // import Dchart from "./Dchart";
+import Tablecollapsed from "./Tablecollapsed";
 
 const IndeterminateCheckbox = forwardRef(
   ({ indeterminate, ...rest }, ref) => {
@@ -38,23 +39,23 @@ const getStyles = (props, align = 'left') => [
 ]
 
 const Table = (props) => {
-  const [filterInput, setFilterInput] = useState("");
+  const [filterInput, setFilterInput] = useState([]);
   const [stateCode, setStatecode] = useState([]);
   const [data,setData] =useState([]);
   const [columns,setColumns]=useState([]);
-  const [districtWiseData,setDistrictWiseData]=useState([]);
-  // const [renderRowSubComponent,setRenderRowsub]=useState([]);
+  const [districts,setDistrictWiseData]=useState(props.districtWiseData);
+   // const [renderRowSubComponent,setRenderRowsub]=useState([]);
   // Use the state and functions returned from useTable to build your UI
   useEffect(() => {
     setStatecode(props.stateCode);
     setData(props.data);
     setColumns(props.columns);
     setDistrictWiseData(props.districtWiseData)
-    // setRenderRowsub(props.renderRowSubComponent);
+  setColumns(props.columns);
   }, [props.stateCode,props.data,props.columns,props.districtWiseData]);
 
-  console.log(stateCode);
-console.log(districtWiseData);
+  // console.log(stateCode);
+// console.log(districtWiseData);
 
 
   const {
@@ -111,13 +112,13 @@ console.log(districtWiseData);
     setFilter("state", value);
     setFilterInput(value);
   };
-  console.log(Object.keys(selectedRowIds));
+  // console.log(Object.keys(selectedRowIds));
 
   const sel = selectedFlatRows.map(d => d.original);
 
   const stateode = sel.map(d => d.statecode);
-  console.log(stateode);
-
+  // console.log(stateode);
+console.log(districts);
 
   // Render the UI for your table
   return (
@@ -176,8 +177,20 @@ console.log(districtWiseData);
                            a component like this, including the entire
                            table instance. But for this example, we'll just
                            pass the row
+                           {props.renderRowSubComponent({ row })}
+                           {data.map((state, index) => {if (index !== 0 && state.confirmed > 0) {
+                             return (
+                           );
+                                   }
+                                   return null;
+                                 )}
                          */}
-                       {props.renderRowSubComponent({ row })}
+
+
+                         <Tablecollapsed rowStates={row.values.state}
+                         districts={districts[row.values.state].districtData}/>
+
+
                      </td>
                    </tr>
                  ) : null}

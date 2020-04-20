@@ -1,12 +1,15 @@
-import React, { useMemo, useState,forwardRef, useEffect } from "react";
+import React, { useMemo, useState,forwardRef, useEffect,useReducer, createContext } from "react";
 import axios from "axios";
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 
 import Table from "./Table";
+import Tablecollapsed from "./Tablecollapsed";
 import Today from "./Today";
 import Dchart from "./Dchart";
 import "./App.css";
+
+
 // import Utils from "./Utils";
 import {
   formatDate,
@@ -15,7 +18,7 @@ import {
   parseStateTimeseries,
 } from './common-functions';
 
-
+export const TableContext = createContext();
 
 function App() {
   const [data, setData] = useState([]);
@@ -39,11 +42,7 @@ const [logMode, setLogMode] = useState(false);
    const apiURL4 = 'https://api.covid19india.org/state_test_data.json';
 //   const apiURL4
 
-useEffect(() => {
-    if (fetched === false) {
-      fetchData();
-    }
-  }, [fetched]);
+
 
    const fetchData = async () => {
     try {
@@ -86,7 +85,11 @@ useEffect(() => {
      }
    };
 
-
+   useEffect(() => {
+       if (fetched === false) {
+         fetchData();
+       }
+     }, [fetched]);
    // function getMapKeyValueByIndex(testData, idx) {
    //    var key = Object.keys(obj)[idx];
    //    return { key: , value: obj[key] };
@@ -103,7 +106,7 @@ const handleChange = e => {
   };
   // console.log(activeStateCode)
 
-console.log(districtWiseData.districtData);
+// console.log(districtWiseData);
   const columns = useMemo(
     () => [
       {
@@ -188,18 +191,34 @@ console.log(districtWiseData.districtData);
   //   ),
   //   []
   // )
-  const renderRowSubComponent = React.useCallback(
-  ({ row }) => (
-    <div>
-      Hello {row.values.state} is {row.values.confirmed}
+  // const renderRowSubComponent = React.useCallback(
+  // ({ row }) => (
+  //   <div>
+  //     Hello {row.values.state} is {row.isExpanded}
+  //
+  //   </div>
+  // ),
+  // [])
 
-    </div>
-  ),
-  []
-)
+
+// console.log(districtWiseData);
+// const renderRowSubComponent = React.useCallback(
+//    ({ row }) => (
+// <div>
+// <React.Fragment>
+//
+// </React.Fragment>
+// </div>
+// ),
+//   []
+// )
 // console.log(districtWiseData)
   return (
+    <>
 
+    <TableContext.Provider value={districtWiseData}>
+      <Tablecollapsed/>
+     </TableContext.Provider>
     <div className="App">
 
       <Today data={data} />
@@ -213,7 +232,7 @@ console.log(districtWiseData.districtData);
 
          <input type="radio" name="case" value="dailyconfirmed" onChange={handleChange}/>  <label>Daily cases</label>
          </div>
-         <div class="square-radio">
+         <div classname="square-radio">
 
           <input type="radio" name="logMode" value="false" align="right" defaultChecked onChange={handleChangelog}/>  <label>Linear</label>
            <input type="radio" name="logMode" value="true" align="right" onChange={handleChangelog}/>  <label>Logarithmic</label>
@@ -230,12 +249,12 @@ console.log(districtWiseData.districtData);
                 </div>
         <div>
       {fetched && <Table columns={columns} data={fdata}
-      renderRowSubComponent={renderRowSubComponent}
-      districtWiseData={districtWiseData}
+            districtWiseData={districtWiseData}
+
       stateCode = {activeStateCode}/>}
     </div>
     </div>
-
+</>
   )
 }
 
