@@ -35,7 +35,7 @@ const Tablex = (props) => {
     //
     // }, [props.columns]);
 
-console.log(data);
+// console.log(data);
 
       const {getTableProps,
       getTableBodyProps,

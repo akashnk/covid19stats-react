@@ -96,13 +96,13 @@ const [logMode, setLogMode] = useState(false);
    // }
 
 const fdata = data.filter(d => d.confirmed > 0)
-const gdata = fdata.filter(d => d.state != "Total")
+const gdata = fdata.filter(d => d.state !== "Total")
 const handleChange = e => {
-   console.log(e.target.value);
+   // console.log(e.target.value);
    setCase(e.target.value);
  };
  const handleChangelog = e => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setLogMode(e.target.value);
   };
   // console.log(activeStateCode)
@@ -241,7 +241,7 @@ const handleChange = e => {
        </div>
       <div>
         {fetched && <Dchart timeseries={timeseries[activeStateCode]}
-
+                totdata={timeseries}
                 casetype={cases}
                 type={graphOption}
                 mode={timeseriesMode}

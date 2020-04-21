@@ -1,9 +1,9 @@
-import React, { useState,useEffect,forwardRef,useRef } from "react";
+import React, { useState,useEffect,forwardRef,useRef,createContext } from "react";
 import { useTable, useFilters, useSortBy,useRowSelect,useResizeColumns,
   useFlexLayout,useExpanded } from "react-table";
-// import Dchart from "./Dchart";
+ import TableContext from "./TableContext";
 import Tablecollapsed from "./Tablecollapsed";
-
+ export const UserContext = createContext();
 const IndeterminateCheckbox = forwardRef(
   ({ indeterminate, ...rest }, ref) => {
     const defaultRef = useRef()
@@ -45,6 +45,7 @@ const Table = (props) => {
   const [columns,setColumns]=useState([]);
   const [districts,setDistrictWiseData]=useState(props.districtWiseData);
   const [totdata,setTotdata]=useState(props.totaldata);
+
    // const [renderRowSubComponent,setRenderRowsub]=useState([]);
   // Use the state and functions returned from useTable to build your UI
   useEffect(() => {
@@ -118,14 +119,19 @@ const Table = (props) => {
   const sel = selectedFlatRows.map(d => d.original);
 
   const stateode = sel.map(d => d.statecode);
-  console.log(totdata);
+  console.log(stateode);
 
-  console.log(totdata.TN);
+  // console.log(totdata['TN']);
 // console.log(districts);
 
   // Render the UI for your table
+  // <UserContext.Provider value={stateode} >
+  //   <Dchart/>
+  //   </UserContext.Provider>
   return (
     <>
+
+
       <input
         value={filterInput}
         onChange={handleFilterChange}
