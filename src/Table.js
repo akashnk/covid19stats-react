@@ -44,6 +44,7 @@ const Table = (props) => {
   const [data,setData] =useState([]);
   const [columns,setColumns]=useState([]);
   const [districts,setDistrictWiseData]=useState(props.districtWiseData);
+  const [totdata,setTotdata]=useState(props.totaldata);
    // const [renderRowSubComponent,setRenderRowsub]=useState([]);
   // Use the state and functions returned from useTable to build your UI
   useEffect(() => {
@@ -92,7 +93,7 @@ const Table = (props) => {
           //     <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
           //   </div>
           // ),
-          width: 28,
+         width: 60,
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
           Cell: ({ row }) => (
@@ -117,8 +118,10 @@ const Table = (props) => {
   const sel = selectedFlatRows.map(d => d.original);
 
   const stateode = sel.map(d => d.statecode);
-  // console.log(stateode);
-console.log(districts);
+  console.log(totdata);
+
+  console.log(totdata.TN);
+// console.log(districts);
 
   // Render the UI for your table
   return (
@@ -128,6 +131,7 @@ console.log(districts);
         onChange={handleFilterChange}
         placeholder={"Search State"}
       />
+      <div style={{overflowX : 'ellipsis',fontSize: '14px',whitespace: 'nowrap'}}>
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
@@ -186,9 +190,7 @@ console.log(districts);
                                  )}
                          */}
 
-
-                         <Tablecollapsed rowStates={row.values.state}
-                         districts={districts[row.values.state].districtData}/>
+                         <Tablecollapsed districts={districts[row.values.state].districtData}/>
 
 
                      </td>
@@ -200,7 +202,7 @@ console.log(districts);
           })}
         </tbody>
       </table>
-
+</div>
     </>
       // <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
       // <pre>

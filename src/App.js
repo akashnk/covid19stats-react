@@ -30,7 +30,7 @@ function App() {
    const [graphOption, setGraphOption] = useState(1);
    const [timeseriesMode, setTimeseriesMode] = useState(true)
 const [logMode, setLogMode] = useState(false);
- const [activeStateCode, setActiveStateCode] = useState('AP');
+ const [activeStateCode, setActiveStateCode] = useState('TT');
  const [cases,setCase] =useState('totalconfirmed');
   // const [testsData, setTestsData] = useState({});
   const [conf,setConf] =useState({});
@@ -96,6 +96,7 @@ const [logMode, setLogMode] = useState(false);
    // }
 
 const fdata = data.filter(d => d.confirmed > 0)
+const gdata = fdata.filter(d => d.state != "Total")
 const handleChange = e => {
    console.log(e.target.value);
    setCase(e.target.value);
@@ -113,7 +114,7 @@ const handleChange = e => {
  // Make an expander cell
  Header: () => null, // No header
  id: 'expander',
- width: 30, // It needs an ID
+ width: 35, // It needs an ID
  Cell: ({ row }) => (
    // Use Cell to render an expander for each row.
    // We can use the getToggleRowExpandedProps prop-getter
@@ -125,23 +126,24 @@ const handleChange = e => {
 },
             {
                 Header: "State",
-                accessor: "state",
-                width: 110
+                accessor: "state"
+                // width: 110
               },
               {
                 Header: "Total cases",
-                accessor: "confirmed",
-                width: 80
+                accessor: "confirmed"
+                // width: 80
               },
               {
                 Header: "New Cases",
                 accessor: "deltaconfirmed",
-                width: 80,
-                getProps: (state, rowInfo, column) => {
+                // width: 80,
+               getProps: (state, rowInfo, column) => {
             return {
-                style: {
-                    background: rowInfo && rowInfo.column.deltaconfirmed > 0 ? 'red' : null,
-                },
+               style: {
+                    background: rowInfo && rowInfo.row.deltaconfirmed > 0 ? 'red' : null,
+                  },
+
             };
         },
 
@@ -149,21 +151,21 @@ const handleChange = e => {
 
                         {
                           Header: "Deaths",
-                          accessor: "deaths",
-                          width: 80,
+                          accessor: "deaths"
+                        // ? width: 80,
 
                         },
 
                       {
                           Header: "New Deaths",
-                          accessor: "deltadeaths",
-                          width: 80
+                          accessor: "deltadeaths"
+                          // width: 80
                         },
 
           {
             Header: "Active",
-            accessor: "active",
-            width: 80
+            accessor: "active"
+            // width: 80
           },
 
       {
@@ -214,11 +216,9 @@ const handleChange = e => {
 // )
 // console.log(districtWiseData)
   return (
-    <>
 
-    <TableContext.Provider value={districtWiseData}>
-      <Tablecollapsed/>
-     </TableContext.Provider>
+
+
     <div className="App">
 
       <Today data={data} />
@@ -248,13 +248,13 @@ const handleChange = e => {
                 logMode={logMode} />}
                 </div>
         <div>
-      {fetched && <Table columns={columns} data={fdata}
+      {fetched && <Table columns={columns} data={gdata}
             districtWiseData={districtWiseData}
-
+            totaldata={timeseries}
       stateCode = {activeStateCode}/>}
     </div>
     </div>
-</>
+
   )
 }
 

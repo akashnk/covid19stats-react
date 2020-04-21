@@ -93,7 +93,11 @@ console.log(radiostate);
             const xAxisLabel ='Time';
 
             const yValue = (d) => d[radiostate];
-            const yAxisLabel= 'Total Cases';
+            const yAxisLabel= (radiostate=='totalconfirmed')?'Total Cases'
+                                            :radiostate=='totalactive'?'Active Cases'
+                                            :radiostate=='totalrecovered'?'Total Recovered'
+                                            :radiostate=='totaldeceased'?'Total Deaths'
+                                            :'Daily cases';
 
 const delaunay = Delaunay.from( timeseries, d => d.date, d => d[radiostate] )
 
@@ -103,7 +107,7 @@ const drawChart = () => {
          const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
 
               if (!dimensions) return;
-              const margin = {top: 40, right: 105, bottom: 105, left: 125};
+              const margin = {top: 40, right: 35, bottom: 105, left: 45};
                          const w = width - margin.left - margin.right;
                          const h = height - margin.top - margin.bottom;
 
@@ -149,7 +153,22 @@ const xAxis = axisBottom()
 
         g.append('g')
         .attr("transform", "translate(0, " + h  +")").call(xAxis);
+        g.append("text")
+      .attr("transform",
+            "translate(" + (w/2) + " ," +
+                           (h + margin.top + 20) + ")")
+      .style("text-anchor", "middle")
+      .text(xAxisLabel);
+
       g.append('g').call(yAxis);
+
+      g.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text(yAxisLabel);
 
 
   const myline = line()

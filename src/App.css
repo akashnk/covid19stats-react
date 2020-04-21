@@ -53,17 +53,44 @@
     .gray {background-color: gray;}
     .red {background-color:#db0b2e;}
 
-table {
+  table
+    {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+     margin-left: 30px;
+     margin-right:30px;
+      width: 100%;
+    }
+
+  th,td {
+    border: 1px solid #ddd;
+    padding: 2px;
+    /* word-wrap: break-word; */
+    text-align: center;
+}
+tr:nth-child(even){background-color: #f2f2f2;}
+
+th {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 2px;
+  text-align: centre;
+  /* word-wrap: break-word; */
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* table {
   border-spacing: 0;
   /* max-width: 640px; */
-  height: 480px;
-  border: 2px solid #ededed;
-}
-table tr:last-child td {
+  /* height: 480px; */
+  /* border: 2px solid #ededed;
+} */ */
+/* tr:last-child td {
   border-bottom: 2;
 }
-table th,
-table td {
+th,
+td {
   margin: 2;
   padding: 0.5rem;
   border-bottom: 1px solid #ededed;
@@ -87,6 +114,8 @@ table th::before {
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
+  text-align: left;
+  background-color: #4CAF50;
 }
 table th.sort-asc::before {
   border-bottom: 5px solid #22543d;
@@ -94,7 +123,7 @@ table th.sort-asc::before {
 table th.sort-desc::before {
   border-top: 5px solid #22543d;
 }
-
+*/
 .App {
   display: flex;
   flex-direction: column;
@@ -114,6 +143,7 @@ input {
   padding: 8px;
   margin-bottom: 20px;
   margin-top: 20px;
+  margin-left: 30px;
   max-width: 250px;
   font-size: 18px;
   border-radius: 5px;
@@ -139,7 +169,7 @@ text {
 }
 
 .axis-label {
-  font-size: 1em;
+  font-size: 2em;
   fill: #8E8883;
 }
 
