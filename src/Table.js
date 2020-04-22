@@ -45,6 +45,7 @@ const Table = (props) => {
   const [columns,setColumns]=useState(props.columns);
   const [districts,setDistrictWiseData]=useState(props.districtWiseData);
   const [totdata,setTotdata]=useState(props.totaldata);
+  const [filt,setFilt]=useState([]);
 
 const context = useContext(TableContext);
 
@@ -92,11 +93,11 @@ console.log("Table",context.statecodes);
           id: 'selection',
           // The header can use the table's getToggleAllRowsSelectedProps method
           // to render a checkbox
-          // Header: ({ getToggleAllRowsSelectedProps }) => (
-          //   <div>
-          //     <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-          //   </div>
-          // ),
+          Header: ({ getToggleAllRowsSelectedProps }) => (
+            <div>
+              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+            </div>
+          ),
          width: 60,
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
@@ -125,6 +126,8 @@ console.log("selected",selectedFlatRows)
 
 // setT(true);
 // }
+
+
 useEffect(()=>{
   if (selectedFlatRows.length > 0) {
  const sel = selectedFlatRows.map(d => {
@@ -136,9 +139,15 @@ useEffect(()=>{
   
   
   context.setStatecodes(stateode);}
+  else {
+    context.setStatecodes(["TT"]);
+  }
  
 },[selectedFlatRows])
 
+// const handleClick = e => {
+//   context.setStatecodes(["TT"])
+// }
 
 // const toggle = () => {
 //
@@ -156,19 +165,21 @@ useEffect(()=>{
   //   </UserContext.Provider>
 //   useEffect(()=>
 // context.setStatecodes(stateode)
-// ,[])
+// ,[])<button onClick={handleClick}>Reset</button>
 
 console.log("posting",context.statecodes)
 
   return (
     <>
-
+     <div>
       <input
         value={filterInput}
         onChange={handleFilterChange}
         placeholder={"Search State"}
       />
-      <div style={{overflowX : 'ellipsis',fontSize: '14px',whitespace: 'nowrap'}}>
+      
+      </div>
+      <div className="table">
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (

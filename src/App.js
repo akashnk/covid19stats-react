@@ -101,6 +101,7 @@ useEffect(() => {
 
 const fdata = data.filter(d => d.confirmed > 0)
 const gdata = fdata.filter(d => d.state !== "Total")
+
 const handleChange = e => {
    // console.log(e.target.value);
    setCase(e.target.value);
@@ -208,7 +209,7 @@ const handleChange = e => {
          <input type="radio" name="case" value="totalconfirmed" defaultChecked onChange={handleChange}/>
          <label>Confirmed</label>
          <input type="radio" name="case" value="totaldeceased" onChange={handleChange}/>  <label>Deaths</label>
-         <input type="radio" name="case" value="totalactive" onChange={handleChange}/>  <label>Active</label>
+         
          <input type="radio" name="case" value="totalrecovered" onChange={handleChange}/>  <label>Recovered</label>
 
          <input type="radio" name="case" value="dailyconfirmed" onChange={handleChange}/>  <label>Daily cases</label>
@@ -230,7 +231,7 @@ const handleChange = e => {
                 logMode={logMode} />}
                 </div>
                 <div>
-                <button type="button">Reset</button>
+                
                 <input type="radio" name="timeMode" value="three" align="right" defaultChecked onChange={handleChangetime}/>  <label>3 weeks</label>
                  <input type="radio" name="timeMode" value="six" align="right" onChange={handleChangetime}/>  <label>6 weeks</label>
                  <input type="radio" name="timeMode" value="begin" align="right" onChange={handleChangetime}/>  <label>Beginning</label>

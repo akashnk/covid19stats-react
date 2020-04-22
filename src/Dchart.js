@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect, useRef,useCallback,useContext } fr
 
 // import * as d3 from 'd3';
 import { select, nest,selectAll,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
-scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10,bisector,mouse,pos} from 'd3';
+scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10,bisector,mouse,pos,voronoi,merge,map} from 'd3';
 import {Delaunay} from 'd3-delaunay';
 
 
@@ -14,6 +14,14 @@ import {useResizeObserver} from './hooks';
 import {formatNumber} from './common-functions';
 
 // import * from 'd3';
+
+// const Tooltip = ({ activeRow, className }) => (
+//   <text className={className} x={-10} y={-10} text-anchor="end">
+//     {activeRow.countryName}: {formatComma(activeRow.deathTotal)}{' '}
+//     {activeRow.deathTotal > 1 ? 'deaths' : 'death'} as of{' '}
+//     {formatDate(activeRow.date)}
+//   </text>
+// );
 
 const Dchart = (props) => {
   const [lastDaysCount, setLastDaysCount] = useState(
@@ -138,9 +146,10 @@ const drawChart = () => {
   select('g').remove();
 
          const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
+         
 
               if (!dimensions) return;
-              const margin = {top: 40, right: 35, bottom: 105, left: 45};
+              const margin = {top: 40, right: 30, bottom: 105, left: 55};
                          const w = width - margin.left - margin.right;
                          const h = height - margin.top - margin.bottom;
 
@@ -176,11 +185,7 @@ const svg = select(svgRef.current).attr("width",width).attr("height",height);
 // console.log(dataNest)
 var color = scaleOrdinal(schemeCategory10);
 
-        // g.append('g').append("path")
-        //     .attr("stroke","maroon")
-        //     .attr("fill","none")
-        //     .attr("stroke-width","1.5")
-        //     .attr("d",myline(allData));
+       
 var legendSpace = width/dataNest.length;
 // console.log(dataNest)
 dataNest.forEach(function(d, i)  {
@@ -196,6 +201,7 @@ dataNest.forEach(function(d, i)  {
       .style("fill", function() { // dynamic colours    // *******
           return d.color = color(d.key); })             // *******
       .text(d.key);
+
       g.append("rect")                                    // *******
           .attr("x", (legendSpace/3)+i*legendSpace-22) // spacing // ****
           .attr("y", (margin.top/2)- 37)
@@ -270,11 +276,45 @@ const xAxis = axisBottom()
       .text(yAxisLabel);
 
 //          // Add the Legend
+
+// sites = 	map(allData, function(d){return d.site;})
+// .keys() // unique sites
+// .forEach(function(d,i) {sites[d] = dataNest[i].values});
+	   
+
+// var voronoipo = voronoi()
+//     .x(function(d) { return xscale(d.date); })
+//     .y(function(d) { return yscale(d.value); })
+//     .extent([[-margin.left, -margin.top], [w + margin.right, h + margin.bottom]]);
+
+//     var voronoiGroup = g.append("g")
+//     .attr("class", "voronoi");
+
+    // voronoiGroup.selectAll("path")
+    // .data(voronoipo.polygons(merge(allData.map(function(d) { return d.values; }))))
+    // .enter().append("path")
+    //   .attr("d", function(d) { return d ? "M" + d.join("L") + "Z" : null; })
+    //   .on("mouseover", mouseover)
+    //   .on("mouseout", mouseout);
+
+    // const points = line()
+    //   .x(d => xscale(xValue(d)))
+    //   .y(d => yscale(1+yValue(d)))
+    //  const delaunay = Delaunay.from(myline);
+    // console.log(myline)
+    // const voronoi = delaunay.voronoi([
+    //   0,
+    //   0,
+    //   innerWidth + margin.right,
+    //   innerHeight
+    // ]);
+
 }
 
 
 
   drawChart();
+
 
   window.addEventListener('resize', drawChart );
 
