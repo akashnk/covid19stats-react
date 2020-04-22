@@ -29,12 +29,7 @@ setDistricts(props.districts)
 
 const array1 =[];
 const array2=[];
-// const array=[];
-// for (const x in districts)
-// {
-// array1.push(x);
-//
-// }
+
 
 for (const x in districts)
 {
@@ -42,21 +37,7 @@ for (const x in districts)
 array2.push(districts[x].confirmed);
 }
 
-// for(let i=0;i<array1.length;i++){
-//   {array[array1[i]]=array2[i];}
-// }
-// console.log(array);
-//
-// var objx = {
-//        name : "",
-//        age : "",
-//
-//    }
 
-// objx.name = array1[0];
-// objx.age = array2[0];
-// objx.name = array1[1];
-// objx.age = array2[1];
 const arr =([]);
 for (var i = 0; i < array1.length; i++) {
     arr.push({
@@ -66,31 +47,20 @@ for (var i = 0; i < array1.length; i++) {
     });
 }
 
-// useEffect(()=>
-// setobject(arr)
-// ,[])
- // console.log(arr);
-// const obj={}
-// obj.key = array1
-// obj.values= array2
 
-// useEffect(()=>
-//
-//   setobject(obj)
-// ,[obj])
-
-// console.log(obj);
 
 const columns = React.useMemo(
     () => [
 
       {
         Header: "District",
-        accessor: "District"
+        accessor: "District",
+        width: 100
       },
     {
       Header: "Confirmed Cases",
-      accessor: "Confirmed"
+      accessor: "Confirmed",
+      width: 100
     }],
       [])
 

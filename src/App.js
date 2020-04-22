@@ -1,4 +1,4 @@
-import React, { useMemo, useState,forwardRef, useEffect,useReducer, createContext } from "react";
+import React, { useMemo, useState,forwardRef, useEffect,useReducer,useContext } from "react";
 import axios from "axios";
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
@@ -8,6 +8,7 @@ import Tablecollapsed from "./Tablecollapsed";
 import Today from "./Today";
 import Dchart from "./Dchart";
 import "./App.css";
+import {TableContext} from './TableContext';
 
 
 // import Utils from "./Utils";
@@ -18,7 +19,7 @@ import {
   parseStateTimeseries,
 } from './common-functions';
 
-export const TableContext = createContext();
+
 
 function App() {
   const [data, setData] = useState([]);
@@ -29,6 +30,8 @@ function App() {
   const [timeseries,setTimeseries] = useState([]);
    const [graphOption, setGraphOption] = useState(1);
    const [timeseriesMode, setTimeseriesMode] = useState(true)
+    const [timeMode, setTimeMode] = useState('three')
+
 const [logMode, setLogMode] = useState(false);
  const [activeStateCode, setActiveStateCode] = useState('TT');
  const [cases,setCase] =useState('totalconfirmed');
@@ -41,8 +44,11 @@ const [logMode, setLogMode] = useState(false);
    const apiURL3 = 'https://api.covid19india.org/states_daily.json';
    const apiURL4 = 'https://api.covid19india.org/state_test_data.json';
 //   const apiURL4
-
-
+ const context = useContext(TableContext);
+// console.log(context.statecodes);
+useEffect(() => {
+   document.title = "Covid 19 Advanced Dashboard"
+}, []);
 
    const fetchData = async () => {
     try {
@@ -77,9 +83,7 @@ const [logMode, setLogMode] = useState(false);
         setStateTestData(testData);
        // setTestsData(resthree.data.states_tested_data);
        setFetched(true);
-       // console.log(totalTest)
-       // console.log(testData)
-      // console.log(restwo.data.statewise[0]);
+     
     } catch (err) {
        console.log(err);
      }
@@ -105,6 +109,10 @@ const handleChange = e => {
     // console.log(e.target.value);
     setLogMode(e.target.value);
   };
+  const handleChangetime = e => {
+     // console.log(e.target.value);
+     setTimeMode(e.target.value);
+   };
   // console.log(activeStateCode)
 
 // console.log(districtWiseData);
@@ -181,45 +189,18 @@ const handleChange = e => {
     []
   );
 
-  // const renderRowSubComponent = React.useCallback(
-  //   ({ row }) => (
-  //     <pre
-  //       style={{
-  //         fontSize: '10px',
-  //       }}
-  //     >
-  //       <code>{JSON.stringify({ values: row.values }, null, 2)}</code>
-  //     </pre>
-  //   ),
-  //   []
-  // )
-  // const renderRowSubComponent = React.useCallback(
-  // ({ row }) => (
-  //   <div>
-  //     Hello {row.values.state} is {row.isExpanded}
-  //
-  //   </div>
-  // ),
-  // [])
 
-
-// console.log(districtWiseData);
-// const renderRowSubComponent = React.useCallback(
-//    ({ row }) => (
-// <div>
-// <React.Fragment>
-//
-// </React.Fragment>
-// </div>
-// ),
-//   []
-// )
 // console.log(districtWiseData)
   return (
 
 
 
     <div className="App">
+
+<div class="topnav" style={{backgroundColor:"DodgerBlue"}}>
+  <a style={{backgroundColor: "DodgerBlue", align: "center"}}>Covid 19 Advanced Dashboard</a>
+
+</div>
 
       <Today data={data} />
       <div>
@@ -243,15 +224,24 @@ const handleChange = e => {
         {fetched && <Dchart timeseries={timeseries[activeStateCode]}
                 totdata={timeseries}
                 casetype={cases}
+
                 type={graphOption}
                 mode={timeseriesMode}
                 logMode={logMode} />}
                 </div>
+                <div>
+                <button type="button">Reset</button>
+                <input type="radio" name="timeMode" value="three" align="right" defaultChecked onChange={handleChangetime}/>  <label>3 weeks</label>
+                 <input type="radio" name="timeMode" value="six" align="right" onChange={handleChangetime}/>  <label>6 weeks</label>
+                 <input type="radio" name="timeMode" value="begin" align="right" onChange={handleChangetime}/>  <label>Beginning</label>
+                </div>
         <div>
+
       {fetched && <Table columns={columns} data={gdata}
             districtWiseData={districtWiseData}
             totaldata={timeseries}
-      stateCode = {activeStateCode}/>}
+      />}
+
     </div>
     </div>
 

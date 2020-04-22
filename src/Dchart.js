@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useRef,useCallback,useContext } from "react";
-import {TableContext} from './Table';
+
 // import * as d3 from 'd3';
 import { select, nest,selectAll,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
 scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10,bisector,mouse,pos} from 'd3';
@@ -7,7 +7,7 @@ import {Delaunay} from 'd3-delaunay';
 
 
 import moment from 'moment';
-
+import {TableContext} from './TableContext';
 import {sliceTimeseriesFromEnd} from './common-functions';
 import {useResizeObserver} from './hooks';
 // import {useWindowSize} from './common-functions';
@@ -31,9 +31,11 @@ const Dchart = (props) => {
   const [moving, setMoving] = useState(false);
   const [timeSeriesData, setTimeSeriesData] = useState([]);
   const [totdata,setTotdata]=useState([]);
+  // const [as,setAs]=useState(["TT"]);
 console.log(radiostate);
 //  console.log(activeStateCode);
-
+const context = useContext(TableContext);
+console.log("Chart:",context.statecodes)
   const svgRef = useRef();
   // const svgRef2 = useRef();
   // const svgRef3 = useRef();
@@ -44,24 +46,13 @@ console.log(radiostate);
   //   setTimeSeriesData(timeseries.slice(timeseries.length - 20));
   // }, [timeseries]);
   useEffect(() => {
-    setTotdata(props.totdata);
-  }, [props.totdata]);
+    const todat = props.totdata;
+    setTotdata(todat);
 
-  // useEffect(() => {
-  //     if (props.timeseries.length > 1) {
-  //       const slicedTimeseries = sliceTimeseriesFromEnd(
-  //         props.timeseries,
-  //         lastDaysCount
-  //       );
-  //       setIndex(slicedTimeseries.length - 1);
-  //       setTimeseries(slicedTimeseries);
-  //       setTotdata(props.totdata);
-  //     }
-  //   }, [props.timeseries, lastDaysCount]);
-// console.log(totdata);
-const as = ['KL','MH','DL','GJ'];
- console.log(totdata[as[1]])
-// const tv = [];
+  }, [props.totdata])
+  
+const as = context.statecodes!==[]? context.statecodes: ["TT"];
+console.log("Update",as);
  const gh = [];
 // const tc = (totdata,i)=> {for i in }
   for (var i = 0; i < as.length; i++)
@@ -85,7 +76,7 @@ const as = ['KL','MH','DL','GJ'];
          return r.concat( gh[k]);
      }, []);
 // retf =resul.map(o=>({...o, State: 'AP'}))
-
+ // console.log(gh)
 
 // useEffect(() => {
 //     if (allDatas.length > 1) {

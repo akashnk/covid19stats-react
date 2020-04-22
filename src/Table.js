@@ -1,9 +1,9 @@
-import React, { useState,useEffect,forwardRef,useRef,createContext } from "react";
+import React, { useState,useEffect,forwardRef,useRef,useContext,useMemo } from "react";
 import { useTable, useFilters, useSortBy,useRowSelect,useResizeColumns,
   useFlexLayout,useExpanded } from "react-table";
- import TableContext from "./TableContext";
+ import {TableContext} from "./TableContext";
 import Tablecollapsed from "./Tablecollapsed";
- export const UserContext = createContext();
+
 const IndeterminateCheckbox = forwardRef(
   ({ indeterminate, ...rest }, ref) => {
     const defaultRef = useRef()
@@ -40,21 +40,24 @@ const getStyles = (props, align = 'left') => [
 
 const Table = (props) => {
   const [filterInput, setFilterInput] = useState([]);
-  const [stateCode, setStatecode] = useState([]);
-  const [data,setData] =useState([]);
-  const [columns,setColumns]=useState([]);
+  // const [stateCode, setStatecode] = useState([]);
+  const [data,setData] =useState(props.data);
+  const [columns,setColumns]=useState(props.columns);
   const [districts,setDistrictWiseData]=useState(props.districtWiseData);
   const [totdata,setTotdata]=useState(props.totaldata);
 
+const context = useContext(TableContext);
+
+console.log("Table",context.statecodes);
    // const [renderRowSubComponent,setRenderRowsub]=useState([]);
   // Use the state and functions returned from useTable to build your UI
-  useEffect(() => {
-    setStatecode(props.stateCode);
-    setData(props.data);
-    setColumns(props.columns);
-    setDistrictWiseData(props.districtWiseData)
-  setColumns(props.columns);
-  }, [props.stateCode,props.data,props.columns,props.districtWiseData]);
+  // useEffect(() => {
+  //   // setStatecode(props.stateCode);
+  //   setData(props.data);
+  //   setColumns(props.columns);
+  //   setDistrictWiseData(props.districtWiseData)
+  // setColumns(props.columns);
+  // }, [props.data,props.columns,props.districtWiseData]);
 
   // console.log(stateCode);
 // console.log(districtWiseData);
@@ -116,10 +119,33 @@ const Table = (props) => {
   };
   // console.log(Object.keys(selectedRowIds));
 
-  const sel = selectedFlatRows.map(d => d.original);
+console.log("selected",selectedFlatRows)
+// const [t,setT] = useState(false);
+// if(selectedFlatRows) {
+
+// setT(true);
+// }
+useEffect(()=>{
+  if (selectedFlatRows.length > 0) {
+ const sel = selectedFlatRows.map(d => {
+   return d.original;
+ });
+
 
   const stateode = sel.map(d => d.statecode);
-  console.log(stateode);
+  
+  
+  context.setStatecodes(stateode);}
+ 
+},[selectedFlatRows])
+
+
+// const toggle = () => {
+//
+//   context.setStatecodes(stateode);
+//
+// }
+
 
   // console.log(totdata['TN']);
 // console.log(districts);
@@ -128,9 +154,14 @@ const Table = (props) => {
   // <UserContext.Provider value={stateode} >
   //   <Dchart/>
   //   </UserContext.Provider>
+//   useEffect(()=>
+// context.setStatecodes(stateode)
+// ,[])
+
+console.log("posting",context.statecodes)
+
   return (
     <>
-
 
       <input
         value={filterInput}
