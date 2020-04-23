@@ -44,62 +44,60 @@ const Today= (props) => {
       }, [data]);
 
     return(
-    <div className = "box">
-        <div className = "red">
-            <h5>Confirmed</h5>
-            <h4>
-            {confirmed} [
-              {deltas
-                ? deltas.confirmed > 0
-                  ? '+' + deltas.confirmed
-                  : '+0'
-                : ''}
-              ]
-            </h4>
+      <>
+      <div>
+      <table className="tablex">
+  <tr>
+    <th className="thx" style={{backgroundColor: "#FF5F31"}}><h5>Total Cases</h5>
+    <h4>
+    {confirmed} [
+      {deltas
+        ? deltas.confirmed > 0
+          ? '+' + deltas.confirmed
+          : '+0'
+        : ''}
+      ]
+    </h4>
+</th>
+    <th className="thx" style={{backgroundColor: "#5CB8E7"}}><h5 >Active</h5>
+    <h4>
+     {active} [
+      {deltas
+        ? deltas.active > 0
+          ? '+' + deltas.active
+          : '+0'
+        : ''}
+      ]
+    </h4></th>
+    <th className="thx" style={{backgroundColor: "#78CC5A"}}><h5 >Recovered</h5>
+    <h4>
+     {recoveries} [
+      {deltas
+        ? deltas.recovered > 0
+          ? '+' + deltas.recovered
+          : '+0'
+        : ''}
+      ]
+    </h4></th>
+    <th className="thx" style={{backgroundColor: "#A4B265"}}><h5 >Deaths</h5>
+    <h4>
+      {deaths} [
 
-       </div>
-       <div className = "orange" >
-           <h5 >Active</h5>
-           <h4>
-            {active} [
-             {deltas
-               ? deltas.active > 0
-                 ? '+' + deltas.active
-                 : '+0'
-               : ''}
-             ]
-           </h4>
+      {deltas
+        ? deltas.deaths > 0
+          ? '+' + deltas.deaths
+          : '+0'
+        : ''}
+      ]
 
-        </div>
-        <div className = "green" >
-           <h5 >Recovered</h5>
-           <h4>
-            {recoveries} [
-             {deltas
-               ? deltas.recovered > 0
-                 ? '+' + deltas.recovered
-                 : '+0'
-               : ''}
-             ]
-           </h4>
+    </h4></th>
+  </tr>
+  </table>
 
-        </div>
-        <div className = "gray" >
-           <h5 >Deaths</h5>
-           <h4>
-             {deaths} [ 
 
-             {deltas
-               ? deltas.deaths > 0
-                 ? '+' + deltas.deaths
-                 : '+0'
-               : ''}
-             ]
-
-           </h4>
-        </div>
 
     </div>
+</>
     )
 }
 

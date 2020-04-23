@@ -24,9 +24,9 @@ import {formatNumber} from './common-functions';
 // );
 
 const Dchart = (props) => {
-  const [lastDaysCount, setLastDaysCount] = useState(
-    window.innerWidth > 512 ? Infinity : 30
-  );
+  // const [lastDaysCount, setLastDaysCount] = useState(
+  //   window.innerWidth > 512 ? Infinity : 30
+  // );
   // const [activeStateCode,setActiveStateCode] = useState(props.activeStateCode);
   const [timeseries, setTimeseries] = useState([]);
 // const [allData,setallData]=useState([]);
@@ -39,6 +39,8 @@ const Dchart = (props) => {
   const [moving, setMoving] = useState(false);
   const [timeSeriesData, setTimeSeriesData] = useState([]);
   const [totdata,setTotdata]=useState([]);
+  const [lastDaysCount,setLastDaysCount]=useState(14);
+   // const [allData,setallData]=useState([]);
   // const [as,setAs]=useState(["TT"]);
 console.log(radiostate);
 //  console.log(activeStateCode);
@@ -58,7 +60,7 @@ console.log("Chart:",context.statecodes)
     setTotdata(todat);
 
   }, [props.totdata])
-  
+
 const as = context.statecodes!==[]? context.statecodes: ["TT"];
 console.log("Update",as);
  const gh = [];
@@ -83,20 +85,28 @@ console.log("Update",as);
  const allData = Object.keys(gh).reduce(function (r, k) {
          return r.concat( gh[k]);
      }, []);
+
+     useEffect(()=>
+   setLastDaysCount(props.timeMode)
+ ,[props.timeMode])
 // retf =resul.map(o=>({...o, State: 'AP'}))
  // console.log(gh)
-
-// useEffect(() => {
-//     if (allDatas.length > 1) {
-//       const slicedTimeseries = sliceTimeseriesFromEnd(
+// useEffect(()=>
+//   props.timeMode==="six"?setLastDaysCount(Infinity)
+//   :props.timeMode==="four"?setLastDaysCount(28)
+//   :setLastDaysCount(14),[])
+// console.log(sliceTimeseriesFromEnd(
 //         allDatas,
 //         lastDaysCount
-//       );
-//       setIndex(slicedTimeseries.length - 1);
-//       setallData(allDatas);
-//
-//     }
-//   }, [allDatas, lastDaysCount]);
+//       ))
+// useEffect(() => {
+//     if (allDatas.length > 1) {
+
+      // setIndex(slicedTimeseries.length - 1);
+  //     setallData(slicedTimeseries);
+  //
+  //   }
+  // }, [allDatas]);
 
     useEffect(() => {
       setRadiostate(props.casetype);
@@ -127,7 +137,7 @@ console.log("Update",as);
         d.date= new Date(d.date);
         });
 
-         console.log(allData);
+         // console.log(allData);
 
 
             const xValue = (d) => d.date;
@@ -140,13 +150,18 @@ console.log("Update",as);
                                             :radiostate==='totaldeceased'?'Total Deaths'
                                             :'Daily cases';
 
+
+
 // const delaunay = Delaunay.from( allData, d => d.date, d => d[radiostate] )
 
 const drawChart = () => {
+
   select('g').remove();
 
+
+
          const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
-         
+
 
               if (!dimensions) return;
               const margin = {top: 40, right: 30, bottom: 105, left: 55};
@@ -185,7 +200,7 @@ const svg = select(svgRef.current).attr("width",width).attr("height",height);
 // console.log(dataNest)
 var color = scaleOrdinal(schemeCategory10);
 
-       
+
 var legendSpace = width/dataNest.length;
 // console.log(dataNest)
 dataNest.forEach(function(d, i)  {
@@ -249,7 +264,7 @@ const xAxis = axisBottom()
     .tickSize(-h);
 // console.log((xscale.domain().filter(function(d, i) {return (i % 2)})));
 
-  const yTicks = 6;
+  const yTicks = 4;
   const yAxis = axisLeft()
     .scale(yscale)
     .ticks(yTicks,"~s")
@@ -280,7 +295,7 @@ const xAxis = axisBottom()
 // sites = 	map(allData, function(d){return d.site;})
 // .keys() // unique sites
 // .forEach(function(d,i) {sites[d] = dataNest[i].values});
-	   
+
 
 // var voronoipo = voronoi()
 //     .x(function(d) { return xscale(d.date); })

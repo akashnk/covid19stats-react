@@ -30,7 +30,7 @@ function App() {
   const [timeseries,setTimeseries] = useState([]);
    const [graphOption, setGraphOption] = useState(1);
    const [timeseriesMode, setTimeseriesMode] = useState(true)
-    const [timeMode, setTimeMode] = useState('three')
+    const [timeMode, setTimeMode] = useState(14);
 
 const [logMode, setLogMode] = useState(false);
  const [activeStateCode, setActiveStateCode] = useState('TT');
@@ -47,7 +47,7 @@ const [logMode, setLogMode] = useState(false);
  const context = useContext(TableContext);
 // console.log(context.statecodes);
 useEffect(() => {
-   document.title = "Covid 19 Advanced Dashboard"
+   document.title = "Covid 19 Interactive Dashboard"
 }, []);
 
    const fetchData = async () => {
@@ -83,7 +83,7 @@ useEffect(() => {
         setStateTestData(testData);
        // setTestsData(resthree.data.states_tested_data);
        setFetched(true);
-     
+
     } catch (err) {
        console.log(err);
      }
@@ -110,12 +110,10 @@ const handleChange = e => {
     // console.log(e.target.value);
     setLogMode(e.target.value);
   };
-  const handleChangetime = e => {
-     // console.log(e.target.value);
-     setTimeMode(e.target.value);
-   };
-  // console.log(activeStateCode)
 
+  // console.log(activeStateCode)
+   console.log(data)
+// console.log(JSON.stringify(timeseries["TT"])
 // console.log(districtWiseData);
   const columns = useMemo(
     () => [
@@ -135,41 +133,58 @@ const handleChange = e => {
 },
             {
                 Header: "State",
-                accessor: "state"
-                // width: 110
+                 accessor: "state"
+                //  width: 65
               },
               {
                 Header: "Total cases",
-                accessor: "confirmed"
-                // width: 80
+                accessor: (row,rowInfo) =>  {
+                return(  <div>
+               <span>  {row.confirmed}</span>
+               <br/>
+               <span style={{color: row.deltaconfirmed > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltaconfirmed}]</span>
+                </div>)}
+              //   Cell:row => {
+              // return (
+              //   <div>
+              //     <span className="class-for-name">{row.confirmed}10</span>
+              //     <span className="class-for-description">+20</span>
+              //   </div>
+            //   )
+            //
+            // }  // width: 80
               },
-              {
-                Header: "New Cases",
-                accessor: "deltaconfirmed",
-                // width: 80,
-               getProps: (state, rowInfo, column) => {
-            return {
-               style: {
-                    background: rowInfo && rowInfo.row.deltaconfirmed > 0 ? 'red' : null,
-                  },
-
-            };
-        },
-
-              },
+        //       {
+        //         Header: "New Cases",
+        //         accessor: "deltaconfirmed",
+        //         // width: 80,
+        //        getProps: (state, rowInfo, column) => {
+        //     return {
+        //        style: {
+        //             background: rowInfo && rowInfo.row.deltaconfirmed > 0 ? 'red' : null,
+        //           },
+        //
+        //     };
+        // },
+        //
+        //       },
 
                         {
                           Header: "Deaths",
-                          accessor: "deaths"
-                        // ? width: 80,
+                          accessor: (row,rowInfo) =>  {
+                          return(  <div>
+                         <span>  {row.deaths}</span>
+                         <br/>
+                         <span style={{color: row.deltadeaths > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltadeaths}]</span>
+                          </div>)}
 
                         },
 
-                      {
-                          Header: "New Deaths",
-                          accessor: "deltadeaths"
-                          // width: 80
-                        },
+                      // {
+                      //     Header: "New Deaths",
+                      //     accessor: "deltadeaths"
+                      //     // width: 80
+                      //   },
 
           {
             Header: "Active",
@@ -179,8 +194,12 @@ const handleChange = e => {
 
       {
           Header: "Recovered",
-          accessor: "recovered",
-          width: 80
+          accessor:  (row,rowInfo) =>  {
+          return(  <div>
+         <span>  {row.recovered}</span>
+         <br/>
+         <span style={{color: row.deltarecovered > 0 ? "green": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltarecovered}]</span>
+          </div>)}
       },
 
 
@@ -196,20 +215,21 @@ const handleChange = e => {
 
 
 
-    <div className="App">
+    <div className="App" style={{margin: "1em"}}>
 
-<div class="topnav" style={{backgroundColor:"DodgerBlue"}}>
-  <a style={{backgroundColor: "DodgerBlue", align: "center"}}>Covid 19 Advanced Dashboard</a>
+<div class="topnav">
+  <h3 className="center" style={{color:"#ffff"}}>Covid 19 Interactive Dashboard</h3>
 
-</div>
-
+</div >
+<div className="box">
       <Today data={data} />
+      </div>
       <div>
 
          <input type="radio" name="case" value="totalconfirmed" defaultChecked onChange={handleChange}/>
          <label>Confirmed</label>
          <input type="radio" name="case" value="totaldeceased" onChange={handleChange}/>  <label>Deaths</label>
-         
+
          <input type="radio" name="case" value="totalrecovered" onChange={handleChange}/>  <label>Recovered</label>
 
          <input type="radio" name="case" value="dailyconfirmed" onChange={handleChange}/>  <label>Daily cases</label>
@@ -230,12 +250,7 @@ const handleChange = e => {
                 mode={timeseriesMode}
                 logMode={logMode} />}
                 </div>
-                <div>
-                
-                <input type="radio" name="timeMode" value="three" align="right" defaultChecked onChange={handleChangetime}/>  <label>3 weeks</label>
-                 <input type="radio" name="timeMode" value="six" align="right" onChange={handleChangetime}/>  <label>6 weeks</label>
-                 <input type="radio" name="timeMode" value="begin" align="right" onChange={handleChangetime}/>  <label>Beginning</label>
-                </div>
+
         <div>
 
       {fetched && <Table columns={columns} data={gdata}

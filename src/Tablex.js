@@ -49,11 +49,13 @@ const Tablex = (props) => {
 
   useFlexLayout,
     useSortBy,
+    useResizeColumns,
 )
     // //
     // // // Render the UI for your table
      return (
-      <table {...getTableProps()}>
+       <div margin="22px">
+      <table className="tablex" {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -84,7 +86,7 @@ const Tablex = (props) => {
           })}
         </tbody>
       </table>
-
+</div>
     )
     // <>
     // </>)

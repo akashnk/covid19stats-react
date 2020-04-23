@@ -93,11 +93,11 @@ console.log("Table",context.statecodes);
           id: 'selection',
           // The header can use the table's getToggleAllRowsSelectedProps method
           // to render a checkbox
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-            </div>
-          ),
+          // Header: ({ getToggleAllRowsSelectedProps }) => (
+          //   <div>
+          //     <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+          //   </div>
+          // ),
          width: 60,
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
@@ -136,13 +136,13 @@ useEffect(()=>{
 
 
   const stateode = sel.map(d => d.statecode);
-  
-  
+
+
   context.setStatecodes(stateode);}
   else {
     context.setStatecodes(["TT"]);
   }
- 
+
 },[selectedFlatRows])
 
 // const handleClick = e => {
@@ -177,10 +177,10 @@ console.log("posting",context.statecodes)
         onChange={handleFilterChange}
         placeholder={"Search State"}
       />
-      
+
       </div>
       <div className="table">
-      <table {...getTableProps()}>
+      <table className="one" {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
