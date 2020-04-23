@@ -49,19 +49,8 @@ const Table = (props) => {
 
 const context = useContext(TableContext);
 
-console.log("Table",context.statecodes);
-   // const [renderRowSubComponent,setRenderRowsub]=useState([]);
-  // Use the state and functions returned from useTable to build your UI
-  // useEffect(() => {
-  //   // setStatecode(props.stateCode);
-  //   setData(props.data);
-  //   setColumns(props.columns);
-  //   setDistrictWiseData(props.districtWiseData)
-  // setColumns(props.columns);
-  // }, [props.data,props.columns,props.districtWiseData]);
 
-  // console.log(stateCode);
-// console.log(districtWiseData);
+ 
 
 
   const {
@@ -120,7 +109,7 @@ console.log("Table",context.statecodes);
   };
   // console.log(Object.keys(selectedRowIds));
 
-console.log("selected",selectedFlatRows)
+
 // const [t,setT] = useState(false);
 // if(selectedFlatRows) {
 
@@ -156,28 +145,17 @@ useEffect(()=>{
 // }
 
 
-  // console.log(totdata['TN']);
-// console.log(districts);
 
-  // Render the UI for your table
-  // <UserContext.Provider value={stateode} >
-  //   <Dchart/>
-  //   </UserContext.Provider>
-//   useEffect(()=>
-// context.setStatecodes(stateode)
-// ,[])<button onClick={handleClick}>Reset</button>
-
-console.log("posting",context.statecodes)
 
   return (
     <>
-     <div>
-      <input
+     <div> 
+      <input align="left"
         value={filterInput}
         onChange={handleFilterChange}
         placeholder={"Search State"}
-      />
-
+      /><a>    Select Checkbox to compare.  Collapse ⨁ to see districts. </a>
+     
       </div>
       <div className="table">
       <table className="one" {...getTableProps()}>

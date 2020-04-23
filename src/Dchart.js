@@ -1,38 +1,32 @@
-import React, { useMemo, useState, useEffect, useRef,useCallback,useContext } from "react";
+import React, {  useState, useEffect, useRef,useContext } from "react";
 
-// import * as d3 from 'd3';
-import { select, nest,selectAll,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
-scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10,bisector,mouse,pos,voronoi,merge,map} from 'd3';
-import {Delaunay} from 'd3-delaunay';
+// // import * as d3 from 'd3';
+// import { select, nest,selectAll,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
+// scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10,bisector,mouse,pos,voronoi,merge,map} from 'd3';
+// import {Delaunay} from 'd3-delaunay';
+import { select, nest,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
+  scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10} from 'd3';
 
-
-import moment from 'moment';
+// import moment from 'moment';
 import {TableContext} from './TableContext';
-import {sliceTimeseriesFromEnd} from './common-functions';
+// import {sliceTimeseriesFromEnd} from './common-functions';
 import {useResizeObserver} from './hooks';
 import {STATE_CODES} from './constants'
 // import {useWindowSize} from './common-functions';
-import {formatNumber} from './common-functions';
+// import {formatNumber} from './common-functions';
 console.log(STATE_CODES["AN"])
 // import * from 'd3';
 
-// const Tooltip = ({ activeRow, className }) => (
-//   <text className={className} x={-10} y={-10} text-anchor="end">
-//     {activeRow.countryName}: {formatComma(activeRow.deathTotal)}{' '}
-//     {activeRow.deathTotal > 1 ? 'deaths' : 'death'} as of{' '}
-//     {formatDate(activeRow.date)}
-//   </text>
-// );
 
 const Dchart = (props) => {
   // const [lastDaysCount, setLastDaysCount] = useState(
   //   window.innerWidth > 512 ? Infinity : 30
   // );
   // const [activeStateCode,setActiveStateCode] = useState(props.activeStateCode);
-  const [timeseries, setTimeseries] = useState([]);
-// const [allData,setallData]=useState([]);
-  const [datapoint, setDatapoint] = useState({});
-  const [index, setIndex] = useState(0);
+//   const [timeseries, setTimeseries] = useState([]);
+// // const [allData,setallData]=useState([]);
+//   const [datapoint, setDatapoint] = useState({});
+//   const [index, setIndex] = useState(0);
   const [radiostate,setRadiostate] = useState([]);
   const [mode, setMode] = useState(props.mode);
   const [logMode, setLogMode] = useState([]);
@@ -43,10 +37,10 @@ const Dchart = (props) => {
   const [lastDaysCount,setLastDaysCount]=useState(14);
    // const [allData,setallData]=useState([]);
   // const [as,setAs]=useState(["TT"]);
-console.log(radiostate);
+
 //  console.log(activeStateCode);
 const context = useContext(TableContext);
-console.log("Chart:",context.statecodes)
+
   const svgRef = useRef();
   // const svgRef2 = useRef();
   // const svgRef3 = useRef();
@@ -63,7 +57,7 @@ console.log("Chart:",context.statecodes)
   }, [props.totdata])
 
 const as = context.statecodes!==[]? context.statecodes: ["TT"];
-console.log("Update",as);
+
  const gh = [];
 // const tc = (totdata,i)=> {for i in }
   for (var i = 0; i < as.length; i++)
@@ -90,24 +84,7 @@ console.log("Update",as);
      useEffect(()=>
    setLastDaysCount(props.timeMode)
  ,[props.timeMode])
-// retf =resul.map(o=>({...o, State: 'AP'}))
- // console.log(gh)
-// useEffect(()=>
-//   props.timeMode==="six"?setLastDaysCount(Infinity)
-//   :props.timeMode==="four"?setLastDaysCount(28)
-//   :setLastDaysCount(14),[])
-// console.log(sliceTimeseriesFromEnd(
-//         allDatas,
-//         lastDaysCount
-//       ))
-// useEffect(() => {
-//     if (allDatas.length > 1) {
 
-      // setIndex(slicedTimeseries.length - 1);
-  //     setallData(slicedTimeseries);
-  //
-  //   }
-  // }, [allDatas]);
 
     useEffect(() => {
       setRadiostate(props.casetype);
@@ -191,7 +168,7 @@ const svg = select(svgRef.current).attr("width",width).attr("height",height);
 
           const myline = line()
             .x(d => xscale(xValue(d)))
-            .y(d => yscale(1+yValue(d))).curve(curveBasis)
+            .y(d => yscale(1+yValue(d))).curve(curveCardinal)
 
         var dataNest = nest()
         .key(function(d){
@@ -211,7 +188,6 @@ dataNest.forEach(function(d, i)  {
   .attr("fill","none")
 
 
-  console.log(dataNest)
   g.append("text")                                    // *******
       // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
       // .attr("y", (margin.top/2)- 25)         // *******
@@ -223,38 +199,9 @@ dataNest.forEach(function(d, i)  {
       .text(d.key)
 
 
-      // g.append("rect")                                    // *******
-      //     .attr("x", (legendSpace/3)+i*legendSpace-22) // spacing // ****
-      //     .attr("y", (margin.top/2)- 37)
-      //     .attr('width', 20)
-      //     .attr('height', 15)       // *******
-      //     .attr("class", "legend")    // style the legend   // *******
-      //     .style("fill", function() { // dynamic colours    // *******
-      //         return d.color = color(d.key); })
-
+    
 });
 
-
-
-
-// g.selectAll("circle")
-// 		.data(allData)
-// 		.enter()
-// 		.append("circle")
-// 			.attr("class","tipcircle")
-// 			.attr("cx", function(d,i){return xscale(d.date)})
-// 			.attr("cy",function(d,i){return yscale(d.values)})
-// 			.attr("r",12)
-			// .style('opacity', 1e-6)//1e-6
-
-
-
-            // g.selectAll('circle').data(allData)
-            //   .enter().append('circle')
-            //     .attr('cy', d => yscale(yValue(d)))
-            //     .attr('cx', d => xscale(xValue(d)))
-            //     .attr('r', 3)
-            //     .attr('fill','maroon');
 
 
 
@@ -296,123 +243,6 @@ const xAxis = axisBottom()
       .style("text-anchor", "middle")
       .text(yAxisLabel);
 
-//          // Add the Legend
-
-// sites = 	map(allData, function(d){return d.site;})
-// .keys() // unique sites
-// .forEach(function(d,i) {sites[d] = dataNest[i].values});
-
-
-// var voronoipo = voronoi()
-//     .x(function(d) { return xscale(d.date); })
-//     .y(function(d) { return yscale(d.value); })
-//     .extent([[-margin.left, -margin.top], [w + margin.right, h + margin.bottom]]);
-
-//     var voronoiGroup = g.append("g")
-//     .attr("class", "voronoi");
-
-    // voronoiGroup.selectAll("path")
-    // .data(voronoipo.polygons(merge(allData.map(function(d) { return d.values; }))))
-    // .enter().append("path")
-    //   .attr("d", function(d) { return d ? "M" + d.join("L") + "Z" : null; })
-    //   .on("mouseover", mouseover)
-    //   .on("mouseout", mouseout);
-      //
-      //   var mouseG = g.append("g").attr("class", "mouse-over-effects");
-      //
-      //   mouseG
-      //     .append("path")
-      //     .attr("class", "mouse-line")
-      //     .style("stroke", "black")
-      //     .style("stroke-width", "1px")
-      //     .style("opacity", "0");
-      //
-      //     var lines = document.getElementsByClassName("dataLine");
-      //   console.log(lines);
-      //
-      //   var mousePerLine = mouseG
-      //     .selectAll(".mouse-per-line")
-      //     .data(dataNest)
-      //     .enter()
-      //     .append("g")
-      //     .attr("class", "mouse-per-line");
-      //
-      // var itemMap = scaleOrdinal()
-      //   .domain(dataNest.map(n => n.key))
-      //   .range([
-      //     { color: "steelblue", lineWeight: 2 },
-      //     { color: "green", lineWeight: 3 }
-      //   ]);
-      //
-      //   mousePerLine
-      //     .append("circle")
-      //     .attr("r", 7)
-      //     .style("stroke", d => itemMap(d.key).color)
-      //     .style("fill", "none")
-      //     .style("stroke-width", "1px")
-      //     .style("opacity", "0");
-      //
-      //     mousePerLine.append("text").attr("transform", "translate(10,3)");
-      //
-      //  mouseG
-      //    .append("svg:rect")
-      //    .attr("width", w)
-      //    .attr("height", h)
-      //    .attr("fill", "none")
-      //    .attr("pointer-events", "all")
-      //    .on("mouseout", () => {
-      //      select(".mouse-line").style("opacity", "1");
-      //      select(".mouse-per-line circle").style("opacity", "1");
-      //      select(".mouse-per-line text").style("opacity", "1");
-      //    })
-      //    .on("mouseover", () => {
-      //      select(".mouse-line").style("opacity", "1");
-      //      selectAll(".mouse-per-line circle").style("opacity", "1");
-      //      selectAll(".mouse-per-line text").style("opacity", "1");
-      //    })
-      //    .on("mousemove", function() {
-      //      //@ts-ignore
-      //      // var mouse = mouse(this);
-      //      select(".mouse-line").attr("d", () => {
-      //        var d = "M" + w + "," + mouse[1];
-      //        d += " " + 0 + "," + mouse[1];
-      //        return d;
-      //      });
-      //
-      //
-      //      selectAll(".mouse-per-line").attr("transform", function(d, i) {
-      //        var yDepth = yscale.invert(mouse[1]);
-      //        var bisect = bisector(d => d.depth).right;
-      //        var idy = bisect(d.values, yDepth);
-      //
-      //        var beginning = 0;
-      //        var end = lines[i].getTotalLength();
-      //        var target = null;
-      //
-      //        while (true) {
-      //          target = Math.floor((beginning + end) / 2);
-      //          var pos = lines[i].getPointAtLength(target);
-      //          if (
-      //            (target === end || target === beginning) &&
-      //            pos.y !== mouse[1]
-      //          ) {
-      //            break;
-      //          }
-      //          if (pos.y > mouse[1]) {
-      //            end = target;
-      //          } else if (pos.y < mouse[1]) {
-      //            beginning = target;
-      //          } else {
-      //            break;
-      //          }
-      //        }
-      //        select(this)
-      //          .select("text")
-      //          .text(xscale.invert(pos.x).toFixed(2));
-      //
-      //        return "translate(" + pos.x + "," + mouse[1] + ")";
-      //      });
-        
 
 
 

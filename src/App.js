@@ -11,7 +11,6 @@ import "./App.css";
 import {TableContext} from './TableContext';
 
 
-
 // import Utils from "./Utils";
 import {
   formatDate,
@@ -112,8 +111,7 @@ const handleChange = e => {
     setLogMode(e.target.value);
   };
 
-  // console.log(activeStateCode)
-   console.log(data)
+ 
 // console.log(JSON.stringify(timeseries["TT"])
 // console.log(districtWiseData);
   const columns = useMemo(
@@ -153,7 +151,7 @@ const handleChange = e => {
               //   </div>
             //   )
             //
-
+           
               },
         //       {
         //         Header: "New Cases",
@@ -218,7 +216,7 @@ const handleChange = e => {
 
     <div className="App" style={{margin: "1em"}}>
 
-<div class="topnav">
+<div className="topnav">
   <h3 className="center" style={{color:"#ffff"}}>Covid 19 Interactive Dashboard</h3>
 
 </div >
@@ -235,7 +233,7 @@ const handleChange = e => {
 
          <input type="radio" name="case" value="dailyconfirmed" onChange={handleChange}/>  <label>Daily cases</label>
          </div>
-         <div classname="square-radio">
+         <div className="square-radio">
 
           <input type="radio" name="logMode" value="false" align="right" defaultChecked onChange={handleChangelog}/>  <label>Linear</label>
            <input type="radio" name="logMode" value="true" align="right" onChange={handleChangelog}/>  <label>Logarithmic</label>

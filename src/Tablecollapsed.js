@@ -1,31 +1,19 @@
 import React, { useState,useEffect } from "react";
-import { useTable, useSortBy,useResizeColumns,
-  useFlexLayout } from "react-table";
-  // import {TableContext} from './App';
+
 import Tablex from './Tablex'
 
 
   const Tablecollapsed = (props) => {
-const [rowStatex,setRowStates] = useState([]);
+
 
 const [districts, setDistricts] =useState([]);
 
 const [object,setobject] = useState([]);
-// const [districtWiseData, setDistrictWiseData] = useState([]);
 
-// const district = useContext(TableContext)
-// useEffect(()=>
-// setDistrictWiseData()
-// ,[]);
 useEffect(()=>
 setDistricts(props.districts)
 ,[props.districts])
 
-// const sho = (obj,prop) => {
-//   return prop.split('.').reduce((r,e)=>{
-//     return r[e];
-//   },obj);
-// }
 
 const array1 =[];
 const array2=[];
@@ -62,21 +50,11 @@ const columns = React.useMemo(
       Header: "Total Cases",
       accessor: "Confirmed",
       width: "100"
-    // },
-    // {
-    //   Header: "",
-    //   accessor: "deceased",
-    //   width: "100"
-    // },
-    // {
-    //   Header: "",
-    //   accessor: "Recovered",
-    //   width: "100"
+   
     }],
       [])
 
-  //
-  // console.log(arr.length)
+ 
 return (
   <div>
 
