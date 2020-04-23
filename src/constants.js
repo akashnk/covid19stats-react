@@ -233,19 +233,19 @@ export const MAP_META = {
 };
 
 export const STATE_CODES = {
-  AP: 'Andhra Pradesh',
-  AR: 'Arunachal Pradesh',
+  AP: 'Andhra',
+  AR: 'Arunachal',
   AS: 'Assam',
   BR: 'Bihar',
   CT: 'Chhattisgarh',
   GA: 'Goa',
   GJ: 'Gujarat',
   HR: 'Haryana',
-  HP: 'Himachal Pradesh',
+  HP: 'HP',
   JH: 'Jharkhand',
   KA: 'Karnataka',
   KL: 'Kerala',
-  MP: 'Madhya Pradesh',
+  MP: 'MP',
   MH: 'Maharashtra',
   MN: 'Manipur',
   ML: 'Meghalaya',
@@ -259,18 +259,29 @@ export const STATE_CODES = {
   TG: 'Telangana',
   TR: 'Tripura',
   UT: 'Uttarakhand',
-  UP: 'Uttar Pradesh',
+  UP: 'UP',
   WB: 'West Bengal',
-  AN: 'Andaman and Nicobar Islands',
+  AN: 'Andaman',
   CH: 'Chandigarh',
-  DN: 'Dadra and Nagar Haveli',
+  DN: 'Dadra and Nagar',
   DD: 'Daman and Diu',
   DL: 'Delhi',
-  JK: 'Jammu and Kashmir',
+  JK: 'J & K',
   LA: 'Ladakh',
   LD: 'Lakshadweep',
   PY: 'Puducherry',
+  TT: 'India',
 };
+
+const getColumnWidth = (rows, accessor, headerText) => {
+  const maxWidth = 400
+  const magicSpacing = 10
+  const cellLength = Math.max(
+    ...rows.map(row => (`${row[accessor]}` || '').length),
+    headerText.length,
+  )
+  return Math.min(maxWidth, cellLength * magicSpacing)
+}
 
 const reverseStateCodes = {};
 Object.keys(STATE_CODES).map((key, index) => {

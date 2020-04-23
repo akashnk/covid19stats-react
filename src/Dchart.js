@@ -10,9 +10,10 @@ import moment from 'moment';
 import {TableContext} from './TableContext';
 import {sliceTimeseriesFromEnd} from './common-functions';
 import {useResizeObserver} from './hooks';
+import {STATE_CODES} from './constants'
 // import {useWindowSize} from './common-functions';
 import {formatNumber} from './common-functions';
-
+console.log(STATE_CODES["AN"])
 // import * from 'd3';
 
 // const Tooltip = ({ activeRow, className }) => (
@@ -194,7 +195,7 @@ const svg = select(svgRef.current).attr("width",width).attr("height",height);
 
         var dataNest = nest()
         .key(function(d){
-          return d.state;
+          return STATE_CODES[d.state];
         })
         .entries(allData)
 // console.log(dataNest)
@@ -209,22 +210,27 @@ dataNest.forEach(function(d, i)  {
   .attr("stroke-width",2)
   .attr("fill","none")
 
+
+  console.log(dataNest)
   g.append("text")                                    // *******
-      .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
-      .attr("y", (margin.top/2)- 25)         // *******
+      // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
+      // .attr("y", (margin.top/2)- 25)         // *******
+      .attr("x", (i%4)*w/3.5) // spacing // ****
+      .attr("y", Math.floor(i/4)*20)
       .attr("class", "legend")    // style the legend   // *******
       .style("fill", function() { // dynamic colours    // *******
           return d.color = color(d.key); })             // *******
-      .text(d.key);
+      .text(d.key)
 
-      g.append("rect")                                    // *******
-          .attr("x", (legendSpace/3)+i*legendSpace-22) // spacing // ****
-          .attr("y", (margin.top/2)- 37)
-          .attr('width', 20)
-          .attr('height', 15)       // *******
-          .attr("class", "legend")    // style the legend   // *******
-          .style("fill", function() { // dynamic colours    // *******
-              return d.color = color(d.key); })
+
+      // g.append("rect")                                    // *******
+      //     .attr("x", (legendSpace/3)+i*legendSpace-22) // spacing // ****
+      //     .attr("y", (margin.top/2)- 37)
+      //     .attr('width', 20)
+      //     .attr('height', 15)       // *******
+      //     .attr("class", "legend")    // style the legend   // *******
+      //     .style("fill", function() { // dynamic colours    // *******
+      //         return d.color = color(d.key); })
 
 });
 
@@ -311,22 +317,107 @@ const xAxis = axisBottom()
     //   .attr("d", function(d) { return d ? "M" + d.join("L") + "Z" : null; })
     //   .on("mouseover", mouseover)
     //   .on("mouseout", mouseout);
+      //
+      //   var mouseG = g.append("g").attr("class", "mouse-over-effects");
+      //
+      //   mouseG
+      //     .append("path")
+      //     .attr("class", "mouse-line")
+      //     .style("stroke", "black")
+      //     .style("stroke-width", "1px")
+      //     .style("opacity", "0");
+      //
+      //     var lines = document.getElementsByClassName("dataLine");
+      //   console.log(lines);
+      //
+      //   var mousePerLine = mouseG
+      //     .selectAll(".mouse-per-line")
+      //     .data(dataNest)
+      //     .enter()
+      //     .append("g")
+      //     .attr("class", "mouse-per-line");
+      //
+      // var itemMap = scaleOrdinal()
+      //   .domain(dataNest.map(n => n.key))
+      //   .range([
+      //     { color: "steelblue", lineWeight: 2 },
+      //     { color: "green", lineWeight: 3 }
+      //   ]);
+      //
+      //   mousePerLine
+      //     .append("circle")
+      //     .attr("r", 7)
+      //     .style("stroke", d => itemMap(d.key).color)
+      //     .style("fill", "none")
+      //     .style("stroke-width", "1px")
+      //     .style("opacity", "0");
+      //
+      //     mousePerLine.append("text").attr("transform", "translate(10,3)");
+      //
+      //  mouseG
+      //    .append("svg:rect")
+      //    .attr("width", w)
+      //    .attr("height", h)
+      //    .attr("fill", "none")
+      //    .attr("pointer-events", "all")
+      //    .on("mouseout", () => {
+      //      select(".mouse-line").style("opacity", "1");
+      //      select(".mouse-per-line circle").style("opacity", "1");
+      //      select(".mouse-per-line text").style("opacity", "1");
+      //    })
+      //    .on("mouseover", () => {
+      //      select(".mouse-line").style("opacity", "1");
+      //      selectAll(".mouse-per-line circle").style("opacity", "1");
+      //      selectAll(".mouse-per-line text").style("opacity", "1");
+      //    })
+      //    .on("mousemove", function() {
+      //      //@ts-ignore
+      //      // var mouse = mouse(this);
+      //      select(".mouse-line").attr("d", () => {
+      //        var d = "M" + w + "," + mouse[1];
+      //        d += " " + 0 + "," + mouse[1];
+      //        return d;
+      //      });
+      //
+      //
+      //      selectAll(".mouse-per-line").attr("transform", function(d, i) {
+      //        var yDepth = yscale.invert(mouse[1]);
+      //        var bisect = bisector(d => d.depth).right;
+      //        var idy = bisect(d.values, yDepth);
+      //
+      //        var beginning = 0;
+      //        var end = lines[i].getTotalLength();
+      //        var target = null;
+      //
+      //        while (true) {
+      //          target = Math.floor((beginning + end) / 2);
+      //          var pos = lines[i].getPointAtLength(target);
+      //          if (
+      //            (target === end || target === beginning) &&
+      //            pos.y !== mouse[1]
+      //          ) {
+      //            break;
+      //          }
+      //          if (pos.y > mouse[1]) {
+      //            end = target;
+      //          } else if (pos.y < mouse[1]) {
+      //            beginning = target;
+      //          } else {
+      //            break;
+      //          }
+      //        }
+      //        select(this)
+      //          .select("text")
+      //          .text(xscale.invert(pos.x).toFixed(2));
+      //
+      //        return "translate(" + pos.x + "," + mouse[1] + ")";
+      //      });
+        
 
-    // const points = line()
-    //   .x(d => xscale(xValue(d)))
-    //   .y(d => yscale(1+yValue(d)))
-    //  const delaunay = Delaunay.from(myline);
-    // console.log(myline)
-    // const voronoi = delaunay.voronoi([
-    //   0,
-    //   0,
-    //   innerWidth + margin.right,
-    //   innerHeight
-    // ]);
+
+
 
 }
-
-
 
   drawChart();
 

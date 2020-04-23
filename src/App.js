@@ -4,11 +4,12 @@ import axios from "axios";
 
 
 import Table from "./Table";
-import Tablecollapsed from "./Tablecollapsed";
+import {getColumnWidth} from "./common-functions.js"
 import Today from "./Today";
 import Dchart from "./Dchart";
 import "./App.css";
 import {TableContext} from './TableContext';
+
 
 
 // import Utils from "./Utils";
@@ -42,7 +43,7 @@ const [logMode, setLogMode] = useState(false);
   const apiURL1 = 'https://api.covid19india.org/state_district_wise.json';
   const apiURL2 = 'https://api.covid19india.org/data.json';
    const apiURL3 = 'https://api.covid19india.org/states_daily.json';
-   const apiURL4 = 'https://api.covid19india.org/state_test_data.json';
+  //  const apiURL4 = 'https://api.covid19india.org/state_test_data.json';
 //   const apiURL4
  const context = useContext(TableContext);
 // console.log(context.statecodes);
@@ -56,13 +57,13 @@ useEffect(() => {
         {data},
 
        {data: statesDailyResponse},
-       {data: stateTestData}
+      //  {data: stateTestData}
      ] =
      await Promise.all([
       axios.get(apiURL1),
       axios.get(apiURL2),
-     axios.get(apiURL3),
-     axios.get(apiURL4)
+     axios.get(apiURL3)
+    //  axios.get(apiURL4)
    ]);
 
        //console.log(resone.data);
@@ -72,15 +73,15 @@ useEffect(() => {
        const ts = parseStateTimeseries(statesDailyResponse);
        ts['TT'] = preprocessTimeseries(data.cases_time_series); // TT -> India
        setTimeseries(ts);
-       const testData = stateTestData.states_tested_data.reverse();
-     const totalTest = data.tested[data.tested.length - 1];
-     testData.push({
-       updatedon: totalTest.updatetimestamp.split(' ')[0],
-       totaltested: totalTest.totalindividualstested,
-       source: totalTest.source,
-       state: 'Total', // India
-     });
-        setStateTestData(testData);
+      //  const testData = stateTestData.states_tested_data.reverse();
+    //  const totalTest = data.tested[data.tested.length - 1];
+    //  testData.push({
+      //  updatedon: totalTest.updatetimestamp.split(' ')[0],
+      //  totaltested: totalTest.totalindividualstested,
+      //  source: totalTest.source,
+      //  state: 'Total', // India
+    //  });
+        // setStateTestData(testData);
        // setTestsData(resthree.data.states_tested_data);
        setFetched(true);
 
@@ -133,8 +134,8 @@ const handleChange = e => {
 },
             {
                 Header: "State",
-                 accessor: "state"
-                //  width: 65
+                 accessor: "state",
+                width: "100"
               },
               {
                 Header: "Total cases",
@@ -152,7 +153,7 @@ const handleChange = e => {
               //   </div>
             //   )
             //
-            // }  // width: 80
+
               },
         //       {
         //         Header: "New Cases",

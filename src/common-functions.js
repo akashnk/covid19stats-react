@@ -16,6 +16,16 @@ const months = {
   '12': 'Dec',
 };
 
+export const getColumnWidth = (row, accessor, headerText) => {
+  const maxWidth = 400
+  const magicSpacing = 10
+  const cellLength = Math.max(
+    ...row.map(row => (`${row[accessor]}` || '').length),
+    headerText.length,
+  )
+  return Math.min(maxWidth, cellLength * magicSpacing)
+}
+
 export const getStateName = (code) => {
   return STATE_CODES[code.toUpperCase()];
 };
@@ -93,6 +103,8 @@ export const parseStateTimeseries = ({states_daily: data}) => {
     a[c] = [];
     return a;
   }, {});
+
+
 
   const today = moment();
   for (let i = 0; i < data.length; i += 3) {
