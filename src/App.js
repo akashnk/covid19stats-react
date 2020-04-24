@@ -100,9 +100,8 @@ useEffect(() => {
    //    return { key: , value: obj[key] };
    // }
 
-const fdata = data.filter(d => d.confirmed > 0);
-const kdata = fdata.filter(d => d.state !== "Total");
-const gdata = kdata.sort((a, b) => (b.confirmed - a.confirmed));
+const fdata = data.filter(d => d.confirmed > 0)
+const gdata = fdata.filter(d => d.state !== "Total")
 
 const handleChange = e => {
    // console.log(e.target.value);
