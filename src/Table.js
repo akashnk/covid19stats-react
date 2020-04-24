@@ -201,16 +201,27 @@ useEffect(()=>{
   }
 
 },[selectedFlatRows])
-
-// const handleClick = e => {
-//   context.setStatecodes(["TT"])
-// }
-
-// const toggle = () => {
-//
-//   context.setStatecodes(stateode);
-//
-// }
+{/* <div className="table">
+<table className="one" {...getTableProps()}>
+  <thead>
+    {headerGroups.map(headerGroup => (
+      <tr {...headerGroup.getHeaderGroupProps()}>
+        {headerGroup.headers.map(column => (
+          <th
+            {...column.getHeaderProps(column.getSortByToggleProps())}
+            className={
+              column.isSorted
+                ? column.isSortedDesc
+                  ? "sort-desc"
+                  : "sort-asc"
+                : ""
+            }
+          >
+            {column.render("Header")}
+          </th>
+        ))}
+      </tr>
+    ))} */}
 
 
 
@@ -225,50 +236,41 @@ useEffect(()=>{
       /><a>    Select Checkbox to compare.  Collapse ⨁ to see districts. </a>
      
       </div>
-      <div className="table">
-      <table className="one" {...getTableProps()}>
-        <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className={
-                    column.isSorted
-                      ? column.isSortedDesc
-                        ? "sort-desc"
-                        : "sort-asc"
-                      : ""
-                  }
-                >
-                  {column.render("Header")}
-                </th>
+      <Styles>
+      <div {...getTableProps()} className="table sticky" style={{ width: 1000, height: 500 }}>
+        <div className="header">
+          {headerGroups.map((headerGroup) => (
+            <div {...headerGroup.getHeaderGroupProps()} className="tr">
+              {headerGroup.headers.map((column) => (
+                <div {...column.getHeaderProps()} className="th">
+                  {column.render('Header')}
+                </div>
               ))}
-            </tr>
+            </div>
           ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
-
-            prepareRow(row)
-
-
+        </div>
+    
+        <div {...getTableBodyProps()} className="body">
+          {rows.map((row) => {
+            prepareRow(row);
             return (
-<>
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
-              </tr>
+              <div {...row.getRowProps()} className="tr">
+                {row.cells.map((cell) => (
+                  <div {...cell.getCellProps()} className="td">
+                    {cell.render('Cell')}
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </div>
               {/*
                      If the row is in an expanded state, render a row with a
                      column that fills the entire length of the table.
                    */}
                  {row.isExpanded ? (
-                   <tr>
-                     <td colSpan={visibleColumns.length}>
+                   <div className="tr">
+                     <div className="td" colSpan={visibleColumns.length}>
                        {/*
                            Inside it, call our renderRowSubComponent function. In reality,
                            you could pass whatever you want as props to
@@ -287,16 +289,16 @@ useEffect(()=>{
                          <Tablecollapsed districts={districts[row.values.state].districtData}/>
 
 
-                     </td>
-                   </tr>
+                     </div>
+                   </div>
                  ) : null}
-</>
+
             )
 
           })}
-        </tbody>
-      </table>
-</div>
+        </div>
+      </Styles>
+
     </>
       // <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
       // <pre>
