@@ -46,6 +46,7 @@ const [logMode, setLogMode] = useState(false);
 //   const apiURL4
  const context = useContext(TableContext);
 // console.log(context.statecodes);
+
 useEffect(() => {
    document.title = "Covid 19 Interactive Dashboard"
 }, []);
@@ -133,7 +134,8 @@ const handleChange = e => {
             {
                 Header: "State",
                  accessor: "state",
-                width: "100"
+                width: "110",
+                sticky: 'left',
               },
               {
                 Header: "Total cases",
@@ -142,7 +144,7 @@ const handleChange = e => {
                <span>  {row.confirmed}</span>
                <br/>
                <span style={{color: row.deltaconfirmed > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltaconfirmed}]</span>
-                </div>)}
+                </div>)},
               //   Cell:row => {
               // return (
               //   <div>
@@ -151,7 +153,7 @@ const handleChange = e => {
               //   </div>
             //   )
             //
-           
+            sticky: 'left'
               },
         //       {
         //         Header: "New Cases",

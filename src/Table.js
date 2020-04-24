@@ -1,8 +1,10 @@
 import React, { useState,useEffect,forwardRef,useRef,useContext,useMemo } from "react";
+import styled from 'styled-components';
 import { useTable, useFilters, useSortBy,useRowSelect,useResizeColumns,
-  useFlexLayout,useExpanded } from "react-table";
+  useFlexLayout,useExpanded, useBlockLayout } from "react-table";
  import {TableContext} from "./TableContext";
 import Tablecollapsed from "./Tablecollapsed";
+import { useSticky } from "react-table-sticky";
 
 const IndeterminateCheckbox = forwardRef(
   ({ indeterminate, ...rest }, ref) => {
@@ -49,6 +51,70 @@ const Table = (props) => {
 
 const context = useContext(TableContext);
 
+const Styles = styled.div`
+  .table {
+    border: 1px solid #ddd;
+ 
+    .tr {
+      :last-child {
+        .td {
+          border-bottom: 0;
+        }
+      }
+    }
+ 
+    .th,
+    .td {
+      padding: 5px;
+      border-bottom: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      background-color: #fff;
+      overflow: hidden;
+ 
+      :last-child {
+        border-right: 0;
+      }
+    }
+ 
+    &.sticky {
+      overflow: scroll;
+      .header,
+      .footer {
+        position: sticky;
+        z-index: 1;
+        width: fit-content;
+      }
+ 
+      .header {
+        top: 0;
+        box-shadow: 0px 3px 3px #ccc;
+      }
+ 
+      .footer {
+        bottom: 0;
+        box-shadow: 0px -3px 3px #ccc;
+      }
+ 
+      .body {
+        position: relative;
+        z-index: 0;
+      }
+ 
+      [data-sticky-td] {
+        position: sticky;
+      }
+ 
+      [data-sticky-last-left-td] {
+        box-shadow: 2px 0px 3px #ccc;
+      }
+ 
+      [data-sticky-first-right-td] {
+        box-shadow: -2px 0px 3px #ccc;
+      }
+    }
+  }
+`;
+  
 
  
 
@@ -75,6 +141,8 @@ const context = useContext(TableContext);
     useResizeColumns,
     useFlexLayout,
     useRowSelect,
+    useBlockLayout,
+    useSticky,
     hooks => {
       hooks.visibleColumns.push(columns => [
         // Let's make a column for selection
