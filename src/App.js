@@ -220,7 +220,7 @@ const handleChange = e => {
     <div className="App" style={{margin: "1em"}}>
 
 <div className="topnav">
-  <h3 className="center" style={{color:"#ffff"}}>Covid 19 Interactive Dashboard</h3>
+  <h3 style={{color:"#ffff"}}>Covid 19 Interactive Dashboard</h3>
 
 </div >
 <div className="box">

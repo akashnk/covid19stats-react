@@ -224,9 +224,9 @@ table th.sort-desc::before {
 /* Add a black background color to the top navigation */
 .topnav {
   background-color: #333;
-/*   overflow: hidden; */
-  height: 2.5em;
-
+  /* overflow: auto;  */
+   padding: 0.1em; 
+  /* height: 1em; */
 }
 .badge {
   background-color: #9ae6b4;
