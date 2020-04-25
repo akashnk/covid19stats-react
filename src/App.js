@@ -165,12 +165,6 @@ let merged = [];
 // arrayv.push(j)
 
 
-//  }
-// console.log(arrayv)
-// var st = []
-// st=Object.values(STATES)[2];
-// console.log(st)
-
 const handleChange = e => {
    // console.log(e.target.value);
    setCase(e.target.value);
