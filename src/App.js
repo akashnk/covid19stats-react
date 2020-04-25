@@ -108,9 +108,6 @@ useEffect(() => {
    //    return { key: , value: obj[key] };
    // }
 
-const fdata = data.filter(d => d.confirmed > 0);
-const kdata = fdata.filter(d => d.state !== "Total");
-const gdata = kdata.sort((a, b) => (b.confirmed - a.confirmed));
 // const testkData = testData.reverse();
 // const totalTest = data.tested[data.tested.length - 1];
 // var arrayv=[];
@@ -121,7 +118,22 @@ const gdata = kdata.sort((a, b) => (b.confirmed - a.confirmed));
 // st = Object.values(STATES)[i];
 // j = testData.find(d => d.state === st);
 
-const filtTest=testData.filter((v,i,a)=> a.findIndex(t=>(t.state===v.state && t.totaltested>0))===i)
+
+const fdata = data.filter(d => d.confirmed > 0);
+const kdata = fdata.filter(d => d.state !== "Total");
+const gdata = kdata.sort((a, b) => (b.confirmed - a.confirmed));
+const filtTest=testData.filter((v,i,a)=> a.findIndex(t=>(t.state===v.state && t.totaltested>0))===i);
+
+let merged = [];
+
+ for(let i=0; i<gdata.length; i++) {
+// gdata.forEach(function(i) {
+  merged.push({
+   ...gdata[i], 
+   ...(filtTest.find((itmInner) => itmInner.state === gdata[i].state))}
+  );
+};
+
 // console.log(gdata.map((, i) => Object.assign({}, item, filtTest[i]));
 // const ddata= [...gdata,...filtTest,]
 // let set = new Set();
@@ -145,19 +157,10 @@ const filtTest=testData.filter((v,i,a)=> a.findIndex(t=>(t.state===v.state && t.
 // setTimeMode(mergeArrayObjects(gdata,filtTest));
 // }
 // ,[gdata,filtTest])
-console.log(pop);
 
-let merged = [];
 
- for(let i=0; i<gdata.length; i++) {
-// gdata.forEach(function(i) {
-  merged.push({
-   ...gdata[i], 
-   ...(filtTest.find((itmInner) => itmInner.state === gdata[i].state))}
-  );
-}
 
-console.log(merged);
+// console.log(merged);
 // console.log(testData)
 // arrayv.push(j)
 
