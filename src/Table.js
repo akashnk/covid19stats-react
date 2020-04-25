@@ -51,65 +51,100 @@ const Table = (props) => {
 
 const context = useContext(TableContext);
 
+ const colors = {
+  black: "#2D3E4B",
+  darkBlue: "#25343F",
+  mediumBlue: "#2D3E4B",
+  primaryBlue: "#419BDA",
+  highlight: "#E9F7FE",
+  highlightLight: "#F3F7FA",
+  background: "#FAFBFD",
+  white: "#FFFFFF",
+  green: "#1F8E3F",
+  darkGrey: "#828282",
+  mediumGrey: "#BDBDBD",
+  lightGrey: "#F2F2F2",
+  yellow: "#F7DF94",
+  grey: "#828282",
+  backdropColor: "#000000b3",
+  errorColor: "#EB5757"
+};
 const Styles = styled.div`
-  .table {
-    border: 1px solid #ddd;
- 
-    .tr {
+  padding: 2.75rem;
+  > div {
+    width: 100%;
+    height: 50vh;
+    overflow: auto;
+  }
+  table {
+    width: 100%;
+    border-spacing: 0;
+    border: 1px solid ${colors.lightGrey};
+
+    thead > tr {
+      position: sticky;
+      left: 0;
+      top: 0;
+      z-index: 50;
+      height: auto;
+      display: block;
+      th:first-child {
+        background-color: ${colors.white};
+        text-align: center;
+      }
+    }
+
+    tbody {
+      display: block;
+    }
+
+    tr {
+      height: 5.375rem;
+      cursor: pointer;
+      :nth-child(even) {
+        background-color: ${colors.lightGrey};
+      }
+      :nth-child(odd) {
+        background-color: ${colors.background};
+      }
+      th:first-child {
+        text-align: left;
+        font-weight: normal;
+        position: sticky;
+        left: 0px;
+        z-index: 40;
+        background-color: inherit;
+      }
+      &:hover {
+        background-color: ${colors.highlightLight};
+      }
       :last-child {
-        .td {
+        td {
           border-bottom: 0;
         }
       }
     }
- 
-    .th,
-    .td {
-      padding: 5px;
-      border-bottom: 1px solid #ddd;
-      border-right: 1px solid #ddd;
-      background-color: #fff;
-      overflow: hidden;
- 
-      :last-child {
-        border-right: 0;
-      }
+
+    th,
+    td {
+      min-width: 16rem;
+      max-width: 16rem;
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid ${colors.lightGrey};
+      border-right: 1px solid ${colors.darkGrey};
     }
- 
-    &.sticky {
-      overflow: scroll;
-      .header,
-      .footer {
-        position: sticky;
-        z-index: 1;
-        width: fit-content;
-      }
- 
-      .header {
-        top: 0;
-        box-shadow: 0px 3px 3px #ccc;
-      }
- 
-      .footer {
-        bottom: 0;
-        box-shadow: 0px -3px 3px #ccc;
-      }
- 
-      .body {
-        position: relative;
-        z-index: 0;
-      }
- 
-      [data-sticky-td] {
-        position: sticky;
-      }
- 
-      [data-sticky-last-left-td] {
-        box-shadow: 2px 0px 3px #ccc;
-      }
- 
-      [data-sticky-first-right-td] {
-        box-shadow: -2px 0px 3px #ccc;
+    td#selected {
+      background-color: ${colors.primaryBlue};
+    }
+    th {
+      font-size: 1rem;
+      cursor: default;
+      :not(:first-child) {
+        border-left: 8px solid ${colors.black};
+        background-color: ${colors.highlightLight};
+        text-align: left;
+        font-size: 2.25rem;
       }
     }
   }
@@ -142,7 +177,7 @@ const Styles = styled.div`
     useFlexLayout,
     useRowSelect,
     useBlockLayout,
-    useSticky,
+    // useSticky,
     hooks => {
       hooks.visibleColumns.push(columns => [
         // Let's make a column for selection
@@ -163,7 +198,7 @@ const Styles = styled.div`
               <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
             </div>
           ),
-
+          sticky: "left",
         },
         ...columns,
       ])
@@ -213,52 +248,57 @@ useEffect(()=>{
 // }
 
 
+const footerGroups = headerGroups.slice().reverse();
 
+return (
+  <>
+ 
+   <div> 
+    <input align="left"
+      value={filterInput}
+      onChange={handleFilterChange}
+      placeholder={"Search State"}
+    /><a>    Select Checkbox to compare.  Collapse ⨁ to see districts. </a>
+   
+    </div>
+    <div className="table">
+    <table className="one" {...getTableProps()}>
+      <thead>
+        {headerGroups.map(headerGroup => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map(column => (
+              <th
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+                className={
+                  column.isSorted
+                    ? column.isSortedDesc
+                      ? "sort-desc"
+                      : "sort-asc"
+                    : ""
+                }
+              >
+                {column.render("Header")}
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row, i) => {
 
-  return (
-    <>
-     <div> 
-      <input align="left"
-        value={filterInput}
-        onChange={handleFilterChange}
-        placeholder={"Search State"}
-      /><a>    Select Checkbox to compare.  Collapse ⨁ to see districts. </a>
-     
-      </div>
-      <div className="table">
-      <table className="one" {...getTableProps()}>
-        <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className={
-                    column.isSorted
-                      ? column.isSortedDesc
-                        ? "sort-desc"
-                        : "sort-asc"
-                      : ""
-                  }
-                >
-                  {column.render("Header")}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
-
-            prepareRow(row)
+          prepareRow(row)
 
 
             return (
 <>
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+<tr {...row.getRowProps()} key={i}>
+                      {row.cells.map((cell, j) => {
+                        if (j === 0) {
+                          return <th key={j}>{cell.render("Cell")}</th>;
+                        }
+                        return (
+                          <td {...cell.getCellProps()} key={j}>
+                            {cell.render("Cell")}</td>
                   );
                 })}
               </tr>
@@ -297,25 +337,14 @@ useEffect(()=>{
         </tbody>
       </table>
 </div>
+
     </>
-      // <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
-      // <pre>
-      //   <code>
-      //     {JSON.stringify(
-      //       {
-      //         selectedRowIds: selectedRowIds,
-      //         'selectedFlatRows[].original': selectedFlatRows.map(
-      //           d => d.original
-      //         ),
-      //       },
-      //       null,
-      //       2
-      //     )}
-      //   </code>
-      // </pre>
+      
 
 
   );
-
 }
+
+
+
 export default Table;
