@@ -108,9 +108,6 @@ useEffect(() => {
    //    return { key: , value: obj[key] };
    // }
 
-const fdata = data.filter(d => d.confirmed > 0);
-const kdata = fdata.filter(d => d.state !== "Total");
-const gdata = kdata.sort((a, b) => (b.confirmed - a.confirmed));
 // const testkData = testData.reverse();
 // const totalTest = data.tested[data.tested.length - 1];
 // var arrayv=[];
@@ -121,7 +118,22 @@ const gdata = kdata.sort((a, b) => (b.confirmed - a.confirmed));
 // st = Object.values(STATES)[i];
 // j = testData.find(d => d.state === st);
 
-const filtTest=testData.filter((v,i,a)=> a.findIndex(t=>(t.state===v.state && t.totaltested>0))===i)
+
+const fdata = data.filter(d => d.confirmed > 0);
+const kdata = fdata.filter(d => d.state !== "Total");
+const gdata = kdata.sort((a, b) => (b.confirmed - a.confirmed));
+const filtTest=testData.filter((v,i,a)=> a.findIndex(t=>(t.state===v.state && t.totaltested>0))===i);
+
+let merged = [];
+
+ for(let i=0; i<gdata.length; i++) {
+// gdata.forEach(function(i) {
+  merged.push({
+   ...gdata[i], 
+   ...(filtTest.find((itmInner) => itmInner.state === gdata[i].state))}
+  );
+};
+
 // console.log(gdata.map((, i) => Object.assign({}, item, filtTest[i]));
 // const ddata= [...gdata,...filtTest,]
 // let set = new Set();
@@ -145,19 +157,10 @@ const filtTest=testData.filter((v,i,a)=> a.findIndex(t=>(t.state===v.state && t.
 // setTimeMode(mergeArrayObjects(gdata,filtTest));
 // }
 // ,[gdata,filtTest])
-console.log(pop);
 
-let merged = [];
 
- for(let i=0; i<gdata.length; i++) {
-// gdata.forEach(function(i) {
-  merged.push({
-   ...gdata[i], 
-   ...(filtTest.find((itmInner) => itmInner.state === gdata[i].state))}
-  );
-}
 
-console.log(merged);
+// console.log(merged);
 // console.log(testData)
 // arrayv.push(j)
 
@@ -195,12 +198,13 @@ const handleChange = e => {
      {row.isExpanded ? '㊀' : '⨁'}
    </span>
  ),
+ sticky: "left"
 },
             {
                 Header: "State",
                  accessor: "state",
                 width: "110",
-                sticky: 'left',
+                sticky: "left",
               },
               {
                 Header: "Total cases",
@@ -210,6 +214,7 @@ const handleChange = e => {
                <br/>
                <span style={{color: row.deltaconfirmed > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltaconfirmed}]</span>
                 </div>)},
+                width: 90
               //   Cell:row => {
               // return (
               //   <div>
@@ -218,7 +223,7 @@ const handleChange = e => {
               //   </div>
             //   )
             //
-            sticky: 'left'
+            
               },
         //       {
         //         Header: "New Cases",
@@ -242,7 +247,8 @@ const handleChange = e => {
                          <span>  {row.deaths}</span>
                          <br/>
                          <span style={{color: row.deltadeaths > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltadeaths}]</span>
-                          </div>)}
+                          </div>)},
+                          width: 90
 
                         },
 
@@ -254,8 +260,8 @@ const handleChange = e => {
 
           {
             Header: "Active",
-            accessor: "active"
-            // width: 80
+            accessor: "active",
+             width: 90
           },
 
       {
@@ -265,28 +271,29 @@ const handleChange = e => {
          <span>  {row.recovered}</span>
          <br/>
          <span style={{color: row.deltarecovered > 0 ? "green": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltarecovered}]</span>
-          </div>)}
+          </div>)},
+          width: 90
       },
 
       {
         Header: "Total Tested",
-        accessor: "totaltested"
-        // width: 80
+        accessor: "totaltested",
+        width: 90
       },
 
       {
         Header: "Positivity %",
         accessor: (row) => {
           return( ((row.positive/row.totaltested)*100).toFixed(2))
-        }
-        // width: 80
+        },
+         width: 90
       },
       {
-        Header: "Tests per million",
+        Header: "Tests/million",
         accessor: (row) => {
           return((row.totaltested/pop[row.statecode]*1000000).toFixed(0))
-        }
-        // width: 80
+        },
+         width: 90
       }
       
 
