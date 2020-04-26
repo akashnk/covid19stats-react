@@ -198,13 +198,12 @@ const handleChange = e => {
      {row.isExpanded ? '㊀' : '⨁'}
    </span>
  ),
- sticky: "left"
 },
             {
                 Header: "State",
                  accessor: "state",
                 width: "110",
-                sticky: "left",
+                sticky: 'left',
               },
               {
                 Header: "Total cases",
@@ -222,7 +221,7 @@ const handleChange = e => {
               //   </div>
             //   )
             //
-            
+            sticky: 'left'
               },
         //       {
         //         Header: "New Cases",
