@@ -298,3 +298,7 @@ text {
      height: 100%;
    }
  }
+.tooltip {
+  position: fixed;
+  opacity: 0;
+}

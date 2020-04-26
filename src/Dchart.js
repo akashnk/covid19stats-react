@@ -5,7 +5,8 @@ import React, {  useState, useEffect, useRef,useContext } from "react";
 // scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10,bisector,mouse,pos,voronoi,merge,map} from 'd3';
 // import {Delaunay} from 'd3-delaunay';
 import { select, nest,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
-  scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10} from 'd3';
+  scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10, selectAll} from 'd3';
+import {event as currentEvent} from 'd3';
 
 // import moment from 'moment';
 import {TableContext} from './TableContext';
@@ -165,7 +166,6 @@ const svg = select(svgRef.current).attr("width",width).attr("height",height);
           scaleSymlog().domain([1,max(allData,yValue)]).range([h,1]).nice() :
           scaleLinear().domain(extent(allData,yValue)).range([h,0]).nice();
 
-
           const myline = line()
             .x(d => xscale(xValue(d)))
             .y(d => yscale(1+yValue(d))).curve(curveCardinal)
@@ -246,6 +246,51 @@ const xAxis = axisBottom()
 
 
 
+   
+
+
+// const linechart = g
+//         .append('g')
+//         .attr('class','linechart');
+// var legendSpace = width/dataNest.length;
+// // console.log(dataNest)
+// dataNest.forEach(function(d, i)  {
+//   linechart.append("path").attr("d",myline(d.values))
+//   .attr("stroke",d.color=()=>color(d.key))
+//   .attr("stroke-width",2)
+//   .attr("fill","none")
+//   .transition()
+//   .duration(1000)
+
+//   g.append("text")                                    // *******
+//   // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
+//   // .attr("y", (margin.top/2)- 25)         // *******
+//   .attr("x", (i%4)*w/3.5) // spacing // ****
+//   .attr("y", Math.floor(i/4)*20)
+//   .attr("class", "legend")    // style the legend   // *******
+//   .style("fill", function() { // dynamic colours    // *******
+//       return d.color = color(d.key); })             // *******
+//   .text(d.key)
+
+
+
+
+
+// });
+
+
+
+// function mouseover(){
+ 
+//   tip
+//   .style('left', currentEvent.clientX+'px')
+//   .style('top',currentEvent.clientY+'px')
+// }
+
+// const tip = select('.tooltip');
+// selectAll('linechart').on('mouseover',mouseover);
+
+
 
 }
 
@@ -253,11 +298,10 @@ const xAxis = axisBottom()
 
 
   window.addEventListener('resize', drawChart );
-
+ 
 
 
 },[allData,dimensions,radiostate,logMode])
-
 
 
   return (
@@ -265,6 +309,7 @@ const xAxis = axisBottom()
 
      <div className="svg-parent" ref={wrapperRef} >
      <svg ref={svgRef} />
+     <div className="tooltip"></div>
       </div>
 
 

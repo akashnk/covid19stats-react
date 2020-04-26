@@ -3,7 +3,7 @@ import axios from "axios";
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 
-import Table from "./Table";
+import Tables from "./Tables";
 import {getColumnWidth} from "./common-functions.js"
 import Today from "./Today";
 import Dchart from "./Dchart";
@@ -177,126 +177,7 @@ const handleChange = e => {
 
 // console.log(JSON.stringify(timeseries["TT"])
 // console.log(districtWiseData);
-  const columns = useMemo(
-    () => [
-      {
- // Make an expander cell
- Header: () => null, // No header
- id: 'expander',
- width: 35, // It needs an ID
- Cell: ({ row }) => (
-   // Use Cell to render an expander for each row.
-   // We can use the getToggleRowExpandedProps prop-getter
-   // to build the expander.
-   <span {...row.getToggleRowExpandedProps()}>
-     {row.isExpanded ? '㊀' : '⨁'}
-   </span>
- ),
- sticky: "left"
-},
-            {
-                Header: "State",
-                 accessor: "state",
-                width: "110",
-                sticky: "left",
-              },
-              {
-                Header: "Total cases",
-                accessor: (row,rowInfo) =>  {
-                return(  <div>
-               <span>  {row.confirmed}</span>
-               <br/>
-               <span style={{color: row.deltaconfirmed > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltaconfirmed}]</span>
-                </div>)},
-                width: 90
-              //   Cell:row => {
-              // return (
-              //   <div>
-              //     <span className="class-for-name">{row.confirmed}10</span>
-              //     <span className="class-for-description">+20</span>
-              //   </div>
-            //   )
-            //
-            
-              },
-        //       {
-        //         Header: "New Cases",
-        //         accessor: "deltaconfirmed",
-        //         // width: 80,
-        //        getProps: (state, rowInfo, column) => {
-        //     return {
-        //        style: {
-        //             background: rowInfo && rowInfo.row.deltaconfirmed > 0 ? 'red' : null,
-        //           },
-        //
-        //     };
-        // },
-        //
-        //       },
-
-                        {
-                          Header: "Deaths",
-                          accessor: (row,rowInfo) =>  {
-                          return(  <div>
-                         <span>  {row.deaths}</span>
-                         <br/>
-                         <span style={{color: row.deltadeaths > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltadeaths}]</span>
-                          </div>)},
-                          width: 90
-
-                        },
-
-                      // {
-                      //     Header: "New Deaths",
-                      //     accessor: "deltadeaths"
-                      //     // width: 80
-                      //   },
-
-          {
-            Header: "Active",
-            accessor: "active",
-             width: 90
-          },
-
-      {
-          Header: "Recovered",
-          accessor:  (row,rowInfo) =>  {
-          return(  <div>
-         <span>  {row.recovered}</span>
-         <br/>
-         <span style={{color: row.deltarecovered > 0 ? "green": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltarecovered}]</span>
-          </div>)},
-          width: 90
-      },
-
-      {
-        Header: "Total Tested",
-        accessor: "totaltested",
-        width: 90
-      },
-
-      {
-        Header: "Positivity %",
-        accessor: (row) => {
-          return( ((row.positive/row.totaltested)*100).toFixed(2))
-        },
-         width: 90
-      },
-      {
-        Header: "Tests/million",
-        accessor: (row) => {
-          return((row.totaltested/pop[row.statecode]*1000000).toFixed(0))
-        },
-         width: 90
-      }
-      
-
-
-
-        ],
-
-    []
-  );
+  
 
 
 // console.log(districtWiseData)
@@ -340,7 +221,8 @@ const handleChange = e => {
                 logMode={logMode} />}
                 </div>
         <div>
-      {fetched && <Table columns={columns} data={merged}
+
+      {fetched && <Tables  rows={merged}
             districtWiseData={districtWiseData}
             totaldata={timeseries}
       />}
