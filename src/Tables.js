@@ -1,21 +1,39 @@
 import React, { useState,useContext,useEffect } from 'react';
-import { SelectionState } from '@devexpress/dx-react-grid';
+import { 
+    SearchState,
+    SelectionState, 
+    SortingState,
+    IntegratedFiltering,
+    IntegratedSorting,
+    RowDetailState,
+} from '@devexpress/dx-react-grid';
 import {
   Grid,
   Table,
+  Toolbar,
+  SearchPanel,
   TableHeaderRow,
+ 
   TableSelection,
+  TableRowDetail,
+  TableFixedColumns,
 } from '@devexpress/dx-react-grid-bootstrap4';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 import {pop} from './constants';
 import {TableContext} from "./TableContext";
+import Tablecollapsed from "./Tablecollapsed";
 
 
 const Tables = (props) => {
+    const [districts,setDistrictWiseData]=useState(props.districtWiseData);
 
     const [rows,setrows] =useState(props.rows);
     const [selection, setSelection] = useState([]);
     const context = useContext(TableContext);
+    const [searchValue, setSearchState] = useState([]);
+    const [expandedRowIds, setExpandedRowIds] = useState([]);
+
+    
   const [columns] = useState([
     
     {
@@ -69,7 +87,7 @@ const Tables = (props) => {
 
 {
 name: "totaltested",
-header: "Total Tested"
+title: "Total Tested"
 // width: 80
 },
 
@@ -83,7 +101,7 @@ getCellValue: (row) => {
 },
 {
 name: "positive",
-title: "Tests per million",
+title: "Tests/million",
 getCellValue: (row) => {
   return((row.totaltested/pop[row.statecode]*1000000).toFixed(0))
 }
@@ -92,10 +110,28 @@ getCellValue: (row) => {
 
   ]);
 
- 
-  
- 
+  const [tableColumnExtensions] = useState([
+    { columnName: 'state', width: 180 },
+    { columnName: 'confirmed', width: 100 },
+    { columnName: 'deaths', width: 100 },
+    { columnName: 'active', width: 100 },
+    { columnName: 'recovered', width: 100 },
+    { columnName: 'totaltested',width: 100 },
+    { columnName: 'positive',width: 100 },
+    { columnName: 'Tests/million',width: 100 },
 
+  ]);
+
+  
+//   const [rightColumns] = useState(['amount']);
+ 
+ 
+ 
+  const RowDetail = ({ row }) => (
+    <div>
+<Tablecollapsed districts={districts[row.state].districtData}/>
+    </div>
+  );
  
 
  useEffect(()=>{
@@ -112,19 +148,46 @@ getCellValue: (row) => {
     }
 },[selection,rows])
 
+const [leftColumns] = useState([TableSelection.COLUMN_TYPE,TableRowDetail.COLUMN_TYPE,'state']);
+
   return (
     <div className="card">
       <Grid
         rows={rows}
         columns={columns}
       >
+          <SearchState value={searchValue}
+          onValueChange={setSearchState} />
+          <IntegratedFiltering/>
+          <Toolbar />
+        <SearchPanel />
         <SelectionState
           selection={selection}
           onSelectionChange={setSelection}
         />
-        <Table />
-        <TableHeaderRow />
+         <SortingState
+          defaultSorting={[{ columnName: 'confirmed', direction: 'desc' }]}
+        />
+        <IntegratedSorting />
+        <RowDetailState
+          expandedRowIds={expandedRowIds}
+          onExpandedRowIdsChange={setExpandedRowIds}
+        />
+        <Table columnExtensions={tableColumnExtensions}/>
+       
+       
+        <TableHeaderRow showSortingControls />
+      
+        
         <TableSelection />
+ 
+        <TableRowDetail
+          contentComponent={RowDetail}
+        />
+               <TableFixedColumns
+          leftColumns={leftColumns}
+          
+        />
       </Grid>
     </div>
   );

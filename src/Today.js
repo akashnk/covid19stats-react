@@ -46,7 +46,7 @@ const Today= (props) => {
     return(
       <>
       <div>
-      <table className="tablex">
+      <table className="tablexx">
   <tr>
     <th className="thx" style={{backgroundColor: "#FF5F31"}}><h5>Total Cases</h5>
     <h4>

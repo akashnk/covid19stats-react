@@ -4,12 +4,12 @@ import axios from "axios";
 
 
 import Tables from "./Tables";
-import {getColumnWidth} from "./common-functions.js"
+// import {getColumnWidth} from "./common-functions.js"
 import Today from "./Today";
 import Dchart from "./Dchart";
 import "./App.css";
 import {TableContext} from './TableContext';
-import {STATES,pop} from './constants';
+
 
 
 // import Utils from "./Utils";
