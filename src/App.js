@@ -339,9 +339,7 @@ const handleChange = e => {
                 mode={timeseriesMode}
                 logMode={logMode} />}
                 </div>
-
         <div>
-
       {fetched && <Table columns={columns} data={merged}
             districtWiseData={districtWiseData}
             totaldata={timeseries}

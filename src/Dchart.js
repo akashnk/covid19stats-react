@@ -142,7 +142,7 @@ const drawChart = () => {
 
 
               if (!dimensions) return;
-              const margin = {top: 40, right: 30, bottom: 105, left: 55};
+              const margin = {top: 40, right: 30, bottom: 65, left: 55};
                          const w = width - margin.left - margin.right;
                          const h = height - margin.top - margin.bottom;
 
@@ -192,7 +192,7 @@ dataNest.forEach(function(d, i)  {
       // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
       // .attr("y", (margin.top/2)- 25)         // *******
       .attr("x", (i%4)*w/3.5) // spacing // ****
-      .attr("y", Math.floor(i/4)*20)
+      .attr("y", Math.floor(i/4)*20-3)
       .attr("class", "legend")    // style the legend   // *******
       .style("fill", function() { // dynamic colours    // *******
           return d.color = color(d.key); })             // *******
