@@ -18,6 +18,7 @@ setDistricts(props.districts)
 const array1 =[];
 const array2=[];
 // const array3=[];
+console.log(districts);
 
 for (const x in districts)
 {

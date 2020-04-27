@@ -13,7 +13,7 @@ import {
   Toolbar,
   SearchPanel,
   TableHeaderRow,
- 
+  TableColumnResizing,
   TableSelection,
   TableRowDetail,
   TableFixedColumns,
@@ -76,7 +76,7 @@ const Tables = (props) => {
 
 {
   name: "recovered",
-  title: "Recovered",
+  title: "Recvrd",
   getCellValue:  (row,rowInfo) =>  {
   return(  <div>
  <span>  {row.recovered}</span>
@@ -93,15 +93,15 @@ title: "Total Tested"
 
 {
 name: "positive",
-title: "Positivity %",
+title: "Positive rate",
 getCellValue: (row) => {
   return( ((row.positive/row.totaltested)*100).toFixed(2))
 }
 // width: 80
 },
 {
-name: "positive",
-title: "Tests per million",
+name: "tests",
+title: "Tests/ million",
 getCellValue: (row) => {
   return((row.totaltested/pop[row.statecode]*1000000).toFixed(0))
 }
@@ -122,6 +122,33 @@ getCellValue: (row) => {
   //   { columnName: 'Tests/million',width: 100 },
 
   // ]);
+
+   const [tableColumnExtensions] = useState([
+     { columnName: TableSelection.COLUMN_TYPE, wordWrapEnabled: true },
+      {columnName: 'state', wordWrapEnabled: true},
+     { columnName: 'confirmed', wordWrapEnabled: true },
+    { columnName: 'deaths', wordWrapEnabled: true },
+    { columnName: 'active', wordWrapEnabled: true },
+    { columnName: 'recovered', wordWrapEnabled: true },
+    { columnName: 'totaltested',wordWrapEnabled: true },
+    { columnName: 'positive',wordWrapEnabled: true},
+    { columnName: 'tests',wordWrapEnabled: true},
+
+   ]);
+
+   const [columnWidths, setColumnWidths] = useState([
+     { columnName: TableRowDetail.COLUMN_TYPE,width:20},
+    { columnName: TableSelection.COLUMN_TYPE, width:20},
+    {columnName: 'state', width: 100},
+    { columnName: 'confirmed', width: 90 },
+   { columnName: 'deaths', width: 100 },
+   { columnName: 'active', width: 100 },
+   { columnName: 'recovered', width: 100 },
+   { columnName: 'totaltested',width: 100 },
+   { columnName: 'positive',width: 100 },
+   { columnName: 'tests',width: 100 },
+
+  ]);
   const [leftColumns] = useState([TableSelection.COLUMN_TYPE,TableRowDetail.COLUMN_TYPE,'state']);
   const RowDetail = ({ row }) => (
     <div>
@@ -169,9 +196,12 @@ getCellValue: (row) => {
           expandedRowIds={expandedRowIds}
           onExpandedRowIdsChange={setExpandedRowIds}
         />
-        <VirtualTable />
+        <VirtualTable  columnExtensions={tableColumnExtensions}/>
        
-       
+        <TableColumnResizing
+          columnWidths={columnWidths}
+          onColumnWidthsChange={setColumnWidths}
+        />
         <TableHeaderRow showSortingControls />
       
         
