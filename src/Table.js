@@ -2,7 +2,7 @@ import React, { useState,useEffect,forwardRef,useRef,useContext,useMemo } from "
 import styled from 'styled-components';
 import { useTable, useFilters, useSortBy,useRowSelect,useResizeColumns,
   useFlexLayout,useExpanded, useBlockLayout } from "react-table";
- import {TableContext} from "./TableContext";
+
 import Tablecollapsed from "./Tablecollapsed";
 import { useSticky } from "react-table-sticky";
 

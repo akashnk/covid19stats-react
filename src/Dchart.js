@@ -5,7 +5,8 @@ import React, {  useState, useEffect, useRef,useContext } from "react";
 // scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10,bisector,mouse,pos,voronoi,merge,map} from 'd3';
 // import {Delaunay} from 'd3-delaunay';
 import { select, nest,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
-  scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10, selectAll} from 'd3';
+  scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10, selectAll, zoom,
+  zoomTransform} from 'd3';
 import {event as currentEvent} from 'd3';
 
 // import moment from 'moment';
@@ -81,6 +82,7 @@ const as = context.statecodes!==[]? context.statecodes: ["TT"];
  const allData = Object.keys(gh).reduce(function (r, k) {
          return r.concat( gh[k]);
      }, []);
+     const [currentZoomState, setCurrentZoomState] = useState();
 
      useEffect(()=>
    setLastDaysCount(props.timeMode)
@@ -91,6 +93,7 @@ const as = context.statecodes!==[]? context.statecodes: ["TT"];
       setRadiostate(props.casetype);
     }, [props.casetype]);
 
+   
 //
 //
   useEffect(() => {
@@ -101,6 +104,7 @@ const as = context.statecodes!==[]? context.statecodes: ["TT"];
     setLogMode(props.logMode);
   }, [props.logMode]);
 //
+// console.log(logMode);
   useEffect(() => {
     setChartType(props.type);
   }, [props.type]);
@@ -155,6 +159,10 @@ const svg = select(svgRef.current).attr("width",width).attr("height",height);
           const g =  svg.append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+            const yscale = logMode === true ?
+            scaleSymlog().domain([1,max(allData,yValue)]).range([h,1]).nice() :
+            scaleLinear().domain(extent(allData,yValue)).range([h,0]).nice();
+
 
             const xscale =  scaleTime()
               .domain(extent(allData,xValue))
@@ -162,9 +170,11 @@ const svg = select(svgRef.current).attr("width",width).attr("height",height);
               .nice();
 
 // console.log(timeseries)
-          const yscale = logMode === "true" ?
-          scaleSymlog().domain([1,max(allData,yValue)]).range([h,1]).nice() :
-          scaleLinear().domain(extent(allData,yValue)).range([h,0]).nice();
+if (currentZoomState) {
+  const newXScale = currentZoomState.rescaleX(xscale);
+  xscale.domain(newXScale.domain());
+}
+
 
           const myline = line()
             .x(d => xscale(xValue(d)))
@@ -186,6 +196,16 @@ dataNest.forEach(function(d, i)  {
   .attr("stroke",d.color=()=>color(d.key))
   .attr("stroke-width",2)
   .attr("fill","none")
+  // .on("mouseenter",(d,i)=>
+  // {
+  //   g.selectAll(".tooltip")
+  //   .data(dataNest)
+  //   .join("text")
+  //   .attr("class","tooltip")
+  //   .text(d.value)
+  //   .attr("x",d.key)
+  //   .attr("y",d.values)
+  // })
 
 
   g.append("text")                                    // *******
@@ -202,7 +222,16 @@ dataNest.forEach(function(d, i)  {
     
 });
 
-
+// dataNest.forEach(function(d,i){
+//   console.log(d)
+//     g.append("circle") // Uses the enter().append() method
+//         .attr("class", "dot") // Assign a class for styling
+//         .attr('fill', color.range()[i])
+//         .attr("cx", function(d, i) { return xscale(d.key) })
+//         .attr("cy", function(d) { console.log(d); return yscale(d.values) })//this is not working
+//         .attr("r", 5);
+  
+//   });
 
 
 
@@ -247,7 +276,18 @@ const xAxis = axisBottom()
 
 
    
+    //   const zoomBehavior = zoom()
+    //   .scaleExtent([0.5, 5])
+    //   .translateExtent([
+    //     [0, 0],
+    //     [w, h]
+    //   ])
+    //   .on("zoom", () => {
+    //     const zoomState = zoomTransform(svg.node());
+    //     setCurrentZoomState(zoomState);
+    //   });
 
+    // svg.call(zoomBehavior);
 
 // const linechart = g
 //         .append('g')

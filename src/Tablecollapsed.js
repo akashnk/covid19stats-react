@@ -1,24 +1,32 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect } from 'react';
+import {
+  SortingState,
+  IntegratedSorting,
+} from '@devexpress/dx-react-grid';
+import {
+  Grid,
+  Table,
+  TableHeaderRow,
+} from '@devexpress/dx-react-grid-material-ui';
 
-import Tablex from './Tablex'
+
+import Paper from '@material-ui/core/Paper';
+
+const Tablecollapsed=(props) => {
+
+    const [districts, setDistricts] =useState([]);
 
 
-  const Tablecollapsed = (props) => {
-
-
-const [districts, setDistricts] =useState([]);
-
-const [object,setobject] = useState([]);
 
 useEffect(()=>
 setDistricts(props.districts)
 ,[props.districts])
 
 
+
 const array1 =[];
 const array2=[];
 // const array3=[];
-console.log(districts);
 
 for (const x in districts)
 {
@@ -26,7 +34,6 @@ for (const x in districts)
 array2.push(districts[x].confirmed);
 
 }
-console.log(districts[1])
 
 const arr =([]);
 for (var i = 0; i < array1.length; i++) {
@@ -37,35 +44,45 @@ for (var i = 0; i < array1.length; i++) {
     });
 }
 
+console.log(districts);
 
-const arrx = arr.sort((a, b) => (b.Confirmed - a.Confirmed))
-const columns = React.useMemo(
-    () => [
+const rows = arr.sort((a, b) => (b.Confirmed - a.Confirmed));
 
-      {
-        Header: "District",
-        accessor: "District",
-        width: "100"
+  const [columns] = useState([
+   
+    {
+        name: "District",
+       title: "District",
+        
+        
       },
     {
-      Header: "Total Cases",
-      accessor: "Confirmed",
-      width: "100"
-   
-    }],
-      [])
+        name: "Confirmed",
+      title: "Total Cases",
+    }
+      
+  ]);
+   const [tableColumnExtensions] = useState([
+    { columnName: 'District', width: 200 },
+    { columnName: 'Confirmed', width: 120 },
+   ])
 
- 
-return (
-  <div>
-
- {object && <Tablex columns={columns} arr={arrx} />}
-</div>
-)
-}
-
-
-
+  return (
+    <Paper>
+      <Grid
+        rows={rows}
+        columns={columns}
+      >
+        <SortingState
+          defaultSorting={[{ columnName: 'Confirmed', direction: 'desc' }]}
+        />
+        <IntegratedSorting />
+        <Table columnExtensions={tableColumnExtensions}/>
+        <TableHeaderRow showSortingControls />
+      </Grid>
+    </Paper>
+  );
+};
 
 
 

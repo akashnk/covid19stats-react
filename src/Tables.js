@@ -25,6 +25,7 @@ import {TableContext} from "./TableContext";
 import Tablecollapsed from "./Tablecollapsed";
 
 
+
 const Tables = (props) => {
 
     const [rows,setrows] =useState(props.rows);
@@ -158,7 +159,7 @@ getCellValue: (row) => {
  
 
  
-
+console.log(districts)
  useEffect(()=>{
     if (selection.length > 0) {
         
