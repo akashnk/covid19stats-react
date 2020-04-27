@@ -82,7 +82,10 @@
       overflow: auto;
       table-layout: fixed; 
     }
-
+    .dx-command-select {  
+      width: 10px!important;  
+      min-width: 10px!important;  
+  }  
   /* table
     {
       font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
