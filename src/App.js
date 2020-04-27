@@ -124,6 +124,7 @@ const kdata = fdata.filter(d => d.state !== "Total");
 const gdata = kdata.sort((a, b) => (b.confirmed - a.confirmed));
 const filtTest=testData.filter((v,i,a)=> a.findIndex(t=>(t.state===v.state && t.totaltested>0))===i);
 
+
 let merged = [];
 
  for(let i=0; i<gdata.length; i++) {

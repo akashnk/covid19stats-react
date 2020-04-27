@@ -93,15 +93,15 @@ title: "Total Tested"
 
 {
 name: "positive",
-title: "Positivity %",
+title: "Positive rate",
 getCellValue: (row) => {
   return( ((row.positive/row.totaltested)*100).toFixed(2))
 }
 // width: 80
 },
 {
-name: "positive",
-title: "Tests per million",
+name: "tests",
+title: "Tests/million",
 getCellValue: (row) => {
   return((row.totaltested/pop[row.statecode]*1000000).toFixed(0))
 }
