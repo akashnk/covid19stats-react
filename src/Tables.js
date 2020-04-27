@@ -1,16 +1,28 @@
 import React, { useState,useContext,useEffect } from 'react';
 // import { SelectionState } from '@devexpress/dx-react-grid';
-import { SelectionState } from '@devexpress/dx-react-grid';
+import { SearchState,
+  SelectionState, 
+  SortingState,
+  IntegratedFiltering,
+  IntegratedSorting,
+  RowDetailState, } from '@devexpress/dx-react-grid';
 import Paper from '@material-ui/core/Paper';
 import {
   Grid,
-  Table,
+  VirtualTable,
+  Toolbar,
+  SearchPanel,
   TableHeaderRow,
+ 
   TableSelection,
+  TableRowDetail,
+  TableFixedColumns,
 } from '@devexpress/dx-react-grid-material-ui';
 
 import {pop} from './constants';
 import {TableContext} from "./TableContext";
+
+import Tablecollapsed from "./Tablecollapsed";
 
 
 const Tables = (props) => {
@@ -18,6 +30,10 @@ const Tables = (props) => {
     const [rows,setrows] =useState(props.rows);
     const [selection, setSelection] = useState([]);
     const context = useContext(TableContext);
+    const [districts,setDistrictWiseData]=useState(props.districtWiseData);
+    const [searchValue, setSearchState] = useState([]);
+    const [expandedRowIds, setExpandedRowIds] = useState([]);
+
   const [columns] = useState([
     
     {
@@ -71,7 +87,7 @@ const Tables = (props) => {
 
 {
 name: "totaltested",
-header: "Total Tested"
+title: "Total Tested"
 // width: 80
 },
 
@@ -95,7 +111,23 @@ getCellValue: (row) => {
   ]);
 
  
-  
+  // const [tableColumnExtensions] = useState([
+  //   { columnName: 'state', width: 180 },
+  //   { columnName: 'confirmed', width: 100 },
+  //   { columnName: 'deaths', width: 100 },
+  //   { columnName: 'active', width: 100 },
+  //   { columnName: 'recovered', width: 100 },
+  //   { columnName: 'totaltested',width: 100 },
+  //   { columnName: 'positive',width: 100 },
+  //   { columnName: 'Tests/million',width: 100 },
+
+  // ]);
+  const [leftColumns] = useState([TableSelection.COLUMN_TYPE,TableRowDetail.COLUMN_TYPE,'state']);
+  const RowDetail = ({ row }) => (
+    <div>
+<Tablecollapsed districts={districts[row.state].districtData}/>
+    </div>
+  );
  
 
  
@@ -120,13 +152,36 @@ getCellValue: (row) => {
         rows={rows}
         columns={columns}
       >
+       <SearchState value={searchValue}
+          onValueChange={setSearchState} />
+          <IntegratedFiltering/>
+          <Toolbar />
+        <SearchPanel />
         <SelectionState
           selection={selection}
           onSelectionChange={setSelection}
         />
-        <Table />
-        <TableHeaderRow />
+         <SortingState
+          defaultSorting={[{ columnName: 'confirmed', direction: 'desc' }]}
+        />
+        <IntegratedSorting />
+        <RowDetailState
+          expandedRowIds={expandedRowIds}
+          onExpandedRowIdsChange={setExpandedRowIds}
+        />
+        <VirtualTable />
+       
+       
+        <TableHeaderRow showSortingControls />
+      
+        
         <TableSelection />
+ 
+        <TableRowDetail
+          contentComponent={RowDetail}
+        /> 
+               <TableFixedColumns
+          leftColumns={leftColumns}/>
       </Grid>
     </Paper>
   );
