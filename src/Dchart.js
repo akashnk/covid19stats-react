@@ -8,7 +8,7 @@ import { select, nest,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBott
   scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10, selectAll, zoom,
   zoomTransform} from 'd3';
 import {event as currentEvent} from 'd3';
-
+import { tooltipContext } from "./useTooltip";
 // import moment from 'moment';
 import {TableContext} from './TableContext';
 // import {sliceTimeseriesFromEnd} from './common-functions';
@@ -16,7 +16,7 @@ import {useResizeObserver} from './hooks';
 import {STATE_CODES} from './constants'
 // import {useWindowSize} from './common-functions';
 // import {formatNumber} from './common-functions';
-console.log(STATE_CODES["AN"])
+
 // import * from 'd3';
 
 
@@ -37,9 +37,10 @@ const Dchart = (props) => {
   const [timeSeriesData, setTimeSeriesData] = useState([]);
   const [totdata,setTotdata]=useState([]);
   const [lastDaysCount,setLastDaysCount]=useState(14);
+  const conts = useContext(tooltipContext);
    // const [allData,setallData]=useState([]);
   // const [as,setAs]=useState(["TT"]);
-
+// console.log(conts.tooltip)
 //  console.log(activeStateCode);
 const context = useContext(TableContext);
 
@@ -153,10 +154,12 @@ const drawChart = () => {
 
 
 
-const svg = select(svgRef.current).attr("width",width).attr("height",height);
+const svgk = select(svgRef.current).attr("width",width).attr("height",height)
+
+const svg= svgk.append("svg:svg").attr("width",width).attr("height",height);
 
 
-          const g =  svg.append("g")
+          const g =  svg.append("svg:g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             const yscale = logMode === true ?
@@ -190,7 +193,24 @@ var color = scaleOrdinal(schemeCategory10);
 
 
 var legendSpace = width/dataNest.length;
-// console.log(dataNest)
+g.append('g')
+.selectAll("dot")
+.data(allData)
+.enter()
+.append("svg:circle")
+        .attr("cx",function (d) { return xscale(xValue(d)); } )
+        .attr("cy",function (d) { return yscale(1+yValue(d)); })
+        .attr("r",1)
+        .attr("fill","red")
+        .append("svg:title")
+        .text(function (d) { return (yValue(d)); })
+
+
+      //  g.append('g') 
+      //   .append("svg:title")
+      //   .text(function(d) { return yValue(d); });
+      //   .attr("x",)
+
 dataNest.forEach(function(d, i)  {
   g.append("path").attr("d",myline(d.values))
   .attr("stroke",d.color=()=>color(d.key))
@@ -206,7 +226,14 @@ dataNest.forEach(function(d, i)  {
   //   .attr("x",d.key)
   //   .attr("y",d.values)
   // })
-
+ 
+  // g.append("text")
+  //  .html(d.key)
+  //  .attr('fill', d.color)   
+  //  .attr('alignment-baseline', 'middle')
+  //  .attr('x', w-20)
+  //  .attr('dx', '.5em')
+  //  .attr('y', yscale(d.values[d.values.length-1].totalconfirmed)); 
 
   g.append("text")                                    // *******
       // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
@@ -217,6 +244,8 @@ dataNest.forEach(function(d, i)  {
       .style("fill", function() { // dynamic colours    // *******
           return d.color = color(d.key); })             // *******
       .text(d.key)
+
+    
 
 
     
@@ -273,9 +302,9 @@ const xAxis = axisBottom()
       .text(yAxisLabel);
 
 
+console.log(dataNest)
 
-
-   
+ 
     //   const zoomBehavior = zoom()
     //   .scaleExtent([0.5, 5])
     //   .translateExtent([

@@ -9,7 +9,7 @@ import { SearchState,
 import Paper from '@material-ui/core/Paper';
 import {
   Grid,
-  VirtualTable,
+  Table,
   Toolbar,
   SearchPanel,
   TableHeaderRow,
@@ -140,9 +140,9 @@ getCellValue: (row) => {
    const [columnWidths, setColumnWidths] = useState([
      { columnName: TableRowDetail.COLUMN_TYPE,width:20},
     { columnName: TableSelection.COLUMN_TYPE, width:20},
-    {columnName: 'state', width: 100},
-    { columnName: 'confirmed', width: 90 },
-   { columnName: 'deaths', width: 100 },
+    {columnName: 'state', width: 90},
+    { columnName: 'confirmed', width: 80 },
+   { columnName: 'deaths', width: 84},
    { columnName: 'active', width: 100 },
    { columnName: 'recovered', width: 100 },
    { columnName: 'totaltested',width: 100 },
@@ -159,7 +159,7 @@ getCellValue: (row) => {
  
 
  
-console.log(districts)
+
  useEffect(()=>{
     if (selection.length > 0) {
         
@@ -197,7 +197,7 @@ console.log(districts)
           expandedRowIds={expandedRowIds}
           onExpandedRowIdsChange={setExpandedRowIds}
         />
-        <VirtualTable  columnExtensions={tableColumnExtensions}/>
+        <Table  columnExtensions={tableColumnExtensions}/>
        
         <TableColumnResizing
           columnWidths={columnWidths}

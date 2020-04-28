@@ -1,16 +1,16 @@
-import React, { useMemo, useState,forwardRef, useEffect,useReducer,useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 
 import Tables from "./Tables";
-import {getColumnWidth} from "./common-functions.js"
+
 import Today from "./Today";
 import Dchart from "./Dchart";
-import Racechart from "./Racechart";
+// import Racechart from "./Racechart";
 import "./App.css";
-import {TableContext} from './TableContext';
-import {STATES,pop} from './constants';
+
+
 
 
 // import Utils from "./Utils";
@@ -39,11 +39,11 @@ import { createMuiTheme, ThemeProvider, createStyles } from '@material-ui/core/s
 
 
 const theme = createMuiTheme({
-  props: {
-    MuiTypography: {
-      "fontSize": 14,
+
+    typography: {
+      "fontSize": 12.5,
       variantMapping: {
-        fontsize: 12,
+        
         h1: 'h3',
         h2: 'h4',
         h3: 'h5',
@@ -56,7 +56,7 @@ const theme = createMuiTheme({
         body2: 'span',
       },
     },
-  },
+ 
 });
 
 const styles = createStyles({
@@ -89,12 +89,11 @@ function App() {
   const [data, setData] = useState([]);
   const [fetched,setFetched] = useState(false);
   const [districtWiseData, setDistrictWiseData] = useState([]);
-  const [statesDailyResponse,setStatesDailyResponse] = useState([]);
-  const [stateTestData, setStateTestData] = useState({});
+
   const [timeseries,setTimeseries] = useState([]);
-   const [graphOption, setGraphOption] = useState(1);
+  
    const [timeseriesMode, setTimeseriesMode] = useState(true)
-    const [timeMode, setTimeMode] = useState([]);
+  
 
 const [logMode, setLogMode] = useState(false);
  const [activeStateCode, setActiveStateCode] = useState('TT');
@@ -108,7 +107,7 @@ const [logMode, setLogMode] = useState(false);
    const apiURL3 = 'https://api.covid19india.org/states_daily.json';
    const apiURL4 = 'https://api.covid19india.org/state_test_data.json';
 //   const apiURL4
- const context = useContext(TableContext);
+ 
 // console.log(context.statecodes);
 
 useEffect(() => {
@@ -304,7 +303,7 @@ const classes = useStyles();
                 totdata={timeseries}
                 casetype={value}
 
-                type={graphOption}
+               
                 mode={timeseriesMode}
                 logMode={logMode} />}
                 </Grid>
