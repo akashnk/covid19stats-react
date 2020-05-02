@@ -26,13 +26,18 @@ setDistricts(props.districts)
 
 const array1 =[];
 const array2=[];
+const array3=[];
+const array4=[];
+const array5=[];
 // const array3=[];
 
 for (const x in districts)
 {
   array1.push(x);
 array2.push(districts[x].confirmed);
-
+array3.push(districts[x].deceased);
+array4.push(districts[x].recovered);
+array5.push(districts[x].active);
 }
 
 const arr =([]);
@@ -40,7 +45,9 @@ for (var i = 0; i < array1.length; i++) {
     arr.push({
         District: array1[i],
         Confirmed: array2[i],
-        
+        Deaths: array3[i],
+        Recovered: array4[i],
+        Active: array5[i]
     });
 }
 
@@ -59,12 +66,23 @@ const rows = arr.sort((a, b) => (b.Confirmed - a.Confirmed));
     {
         name: "Confirmed",
       title: "Total Cases",
-    }
+    },
+    {
+      name: "Deaths",
+    title: "Deaths",
+  },
+  {
+    name: "Recovered",
+  title: "Recovered",
+},
+{
+  name: "Active",
+title: "Active",
+}
       
   ]);
    const [tableColumnExtensions] = useState([
-    { columnName: 'District', width: 200 },
-    { columnName: 'Confirmed', width: 120 },
+    { columnName: 'District', width: 200 }
    ])
 
   return (

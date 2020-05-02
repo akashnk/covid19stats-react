@@ -99,6 +99,16 @@
     border-radius: 8px;			
     pointer-events: none;			
 }
+.line {
+  stroke-width: 2;
+  fill: none;
+}
+.textback {
+  background-color: rgba(0, 0, 0, .5);
+}
+.text {
+  background-color: rgba(0, 0, 0, .9);
+}
   /* table
     {
       font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -316,7 +326,7 @@ text {
   left: 0;
 }*/
 .svg-parent:not(.legend) {
-   height: 50vh;
+   height: 60vh; 
    width: 100%;
    /* max-width: 960px; */
    svgRef {

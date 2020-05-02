@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-
-import Tables from "./Tables";
+// import CssBaseline from '@material-ui/core/CssBaseline';
+import Tables from "./Table";
 
 import Today from "./Today";
 import Dchart from "./Dchart";
 // import Racechart from "./Racechart";
-import "./App.css";
+import "../App.css";
 
 
 
@@ -19,7 +19,7 @@ import {
   formatDateAbsolute,
   preprocessTimeseries,
   parseStateTimeseries,
-} from './common-functions';
+} from '../Common/common-functions';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -37,6 +37,13 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { createMuiTheme, ThemeProvider, createStyles } from '@material-ui/core/styles';
 
+
+
+const items = [
+  { name: 'home', label: 'Home' },
+  { name: 'billing', label: 'Billing' },
+  { name: 'settings', label: 'Settings' },
+]
 
 const theme = createMuiTheme({
 
@@ -93,6 +100,7 @@ function Home() {
   const [timeseries,setTimeseries] = useState([]);
   
    const [timeseriesMode, setTimeseriesMode] = useState(true)
+   const [daysC,setDaysC] = useState('Month');
   
 
 const [logMode, setLogMode] = useState(false);
@@ -183,7 +191,10 @@ useEffect(() => {
 
 const fdata = data.filter(d => d.confirmed > 0);
 const kdata = fdata.filter(d => d.state !== "Total");
-const gdata = kdata.sort((a, b) => (b.confirmed - a.confirmed));
+const kgdata = kdata.sort((a, b) => (b.deaths - a.deaths));
+const kggdata = kgdata.sort((a, b) => (b.recovered - a.recovered));
+
+const gdata = kggdata.sort((a, b) => (b.confirmed - a.confirmed));
 const filtTest=testData.filter((v,i,a)=> a.findIndex(t=>(t.state===v.state && t.totaltested>0))===i);
 
 let merged = [];
@@ -238,7 +249,11 @@ const handleChange = e => {
     setLogMode(e.target.checked);
   };
 
-
+  const handleTime = e => {
+    // console.log(e.target.value);
+    setDaysC(e.target.value);
+  };
+  
 // console.log(JSON.stringify(timeseries["TT"])
 // console.log(districtWiseData);
 const classes = useStyles();
@@ -246,14 +261,14 @@ const classes = useStyles();
 // console.log(logMode);
 // console.log(districtWiseData)
   return (
-
-
+<>
+    {/* <CssBaseline /> */}
 <ThemeProvider theme={theme}>
     
     <div className={classes.root}>
     <Grid container spacing={1}>
-    <Grid item xs={12}>
-    <AppBar position="static">
+    {/* <Grid item xs={0}> */}
+    {/* <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
@@ -264,15 +279,18 @@ const classes = useStyles();
           
         </Toolbar>
       </AppBar>
-</Grid>
-<Grid item xs={12}>
+</Grid> */}
+
+<Grid item xs={12} >
 <Paper className={classes.paper}>
 <div className="box">
       <Today data={data} />
       </div>
       </Paper>
       </Grid>
-      <Grid item xs={12}>
+ 
+       <Grid item xs={12} sm={6}>
+       
       <Paper className={classes.paper}>
        
          {/* <input type="radio" name="case" value="totalconfirmed" defaultChecked onChange={handleChange}/>
@@ -295,24 +313,34 @@ const classes = useStyles();
      
 </RadioGroup>
 
-</Paper>
 
-      </Grid>
-       <Grid item xs={12}>
         {fetched && <Dchart timeseries={timeseries[activeStateCode]}
                 totdata={timeseries}
                 casetype={value}
 
-               
+               daysC ={daysC}
                 mode={timeseriesMode}
                 logMode={logMode} />}
+
+                          <RadioGroup row aria-label="daysC" name="daysC"  value={daysC} onClick={handleTime}>
+        
+        <FormControlLabel value="Inf" control={<Radio />} label="Start" />
+        <FormControlLabel value="Month" control={<Radio />} label="4 weeks" />
+        <FormControlLabel value="Fortnight" control={<Radio />} label="2 weeks" />
+      
+         
+    </RadioGroup>
+                </Paper>
+
                 </Grid>
-                <Grid item xs={12} sm={10}>
+
+                <Grid item xs={12} sm={6}>
                 <Paper className={classes.paper}>
       {fetched && <Tables  rows={merged}
             districtWiseData={districtWiseData}
             totaldata={timeseries}
       />}
+  
 </Paper>
     </Grid>
     {/* <Grid item xs={12} sm={6}>
@@ -320,6 +348,7 @@ const classes = useStyles();
     </Grid>
     </div>
     </ThemeProvider>
+    </>
   )
 }
 

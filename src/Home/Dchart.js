@@ -1,4 +1,4 @@
-import React, {  useState, useEffect, useRef,useContext } from "react";
+import React, {  useState, useEffect, useRef,useContext,useCallback } from "react";
 
 // // import * as d3 from 'd3';
 // import { select, nest,selectAll,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
@@ -8,15 +8,15 @@ import { select, nest,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBott
   scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10, selectAll, zoom,
   zoomTransform} from 'd3';
 import {event as currentEvent} from 'd3';
-import { tooltipContext } from "./useTooltip";
-// import moment from 'moment';
-import {TableContext} from './TableContext';
-// import {sliceTimeseriesFromEnd} from './common-functions';
-import {useResizeObserver} from './hooks';
-import {STATE_CODES} from './constants'
-// import {useWindowSize} from './common-functions';
-// import {formatNumber} from './common-functions';
 
+// import moment from 'moment';
+import {TableContext} from '../TableContext';
+// import {sliceTimeseriesFromEnd} from './common-functions';
+import {useResizeObserver} from '../Common/hooks';
+import {STATE_CODES} from '../Common/constants'
+// import {useWindowSize} from './common-functions';
+import {formatNumber,formatDate,sliceTimeseriesFromEnd} from '../Common/common-functions';
+import {format} from 'date-fns';
 // import * from 'd3';
 
 
@@ -37,12 +37,26 @@ const Dchart = (props) => {
   const [timeSeriesData, setTimeSeriesData] = useState([]);
   const [totdata,setTotdata]=useState([]);
   const [lastDaysCount,setLastDaysCount]=useState(14);
-  const conts = useContext(tooltipContext);
+ 
+  const [timeseries, setTimeseries] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [daysC,setDaysC] = useState([])
    // const [allData,setallData]=useState([]);
   // const [as,setAs]=useState(["TT"]);
 // console.log(conts.tooltip)
 //  console.log(activeStateCode);
 const context = useContext(TableContext);
+var lineOpacity = "0.25";
+var lineOpacityHover = "0.85";
+var otherLinesOpacityHover = "0.1";
+var lineStroke = "1.5px";
+var lineStrokeHover = "2.5px";
+
+var circleOpacity = "0.85";
+var circleOpacityOnLineHover = "0.25";
+var circleRadius = 3;
+var circleRadiusHover = 6;
+var duration = 250;
 
   const svgRef = useRef();
   // const svgRef2 = useRef();
@@ -53,15 +67,40 @@ const context = useContext(TableContext);
   // useEffect(() => {
   //   setTimeSeriesData(timeseries.slice(timeseries.length - 20));
   // }, [timeseries]);
+  console.log(props.totdata)
   useEffect(() => {
-    const todat = props.totdata;
+    const totdat = props.totdata;
+    const todat = totdat
     setTotdata(todat);
 
   }, [props.totdata])
 
+  // const transformTimeSeries = useCallback(
+  //   (totdata) => {
+  //     if (timeseries.length > 1) {
+  //       const slicedTimeseries = sliceTimeseriesFromEnd(
+  //         timeseries,
+  //         14
+  //       );
+  //       setIndex(slicedTimeseries.length - 1);
+  //       setTimeseries(slicedTimeseries);
+  //     }
+  //   },
+  //   [14]
+  // );
+  // console.log(timeseries)
+
+
 const as = context.statecodes!==[]? context.statecodes: ["TT"];
 
  const gh = [];
+//  const daysC= props.DaysC;
+useEffect(() => {
+  setDaysC(props.daysC);
+}, [props.daysC]);
+
+
+const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infinity;
 // const tc = (totdata,i)=> {for i in }
   for (var i = 0; i < as.length; i++)
 {
@@ -73,7 +112,7 @@ const as = context.statecodes!==[]? context.statecodes: ["TT"];
             return r.concat( tv[k]);
         }, []);
     retf =resul.map(o=>({...o, state: as[i]}))
-    gh[i] = retf;
+    gh[i] = retf.slice(-daysCount);
 
  }
 //  const ry =[];
@@ -110,6 +149,9 @@ const as = context.statecodes!==[]? context.statecodes: ["TT"];
     setChartType(props.type);
   }, [props.type]);
 
+
+
+
 //console.log(timeseries)
   useEffect(() => {
 
@@ -119,6 +161,7 @@ const as = context.statecodes!==[]? context.statecodes: ["TT"];
        d[radiostate]=+d[radiostate];
 
         d.date= new Date(d.date);
+       
         });
 
          // console.log(allData);
@@ -127,13 +170,12 @@ const as = context.statecodes!==[]? context.statecodes: ["TT"];
             const xValue = (d) => d.date;
             const xAxisLabel ='Time';
 
-            const yValue = (d) => d[radiostate];
-            const yAxisLabel= (radiostate==='totalconfirmed')?'Total Cases'
-                                            :radiostate==='totalactive'?'Active Cases'
-                                            :radiostate==='totalrecovered'?'Total Recovered'
-                                            :radiostate==='totaldeceased'?'Total Deaths'
+            const yValue = (d) => (d[radiostate]);
+            const yAxisLabel= (radiostate==='totalconfirmed')?'Cases'
+                                            :radiostate==='totalactive'?'Active'
+                                            :radiostate==='totalrecovered'?'Recovered'
+                                            :radiostate==='totaldeceased'?'Deaths'
                                             :'Daily cases';
-
 
 
 // const delaunay = Delaunay.from( allData, d => d.date, d => d[radiostate] )
@@ -148,7 +190,7 @@ const drawChart = () => {
 
 
               if (!dimensions) return;
-              const margin = {top: 40, right: 30, bottom: 65, left: 55};
+              const margin = {top: 40, right: 30, bottom: 65, left: 105};
                          const w = width - margin.left - margin.right;
                          const h = height - margin.top - margin.bottom;
 
@@ -156,11 +198,13 @@ const drawChart = () => {
 
 const svgk = select(svgRef.current).attr("width",width).attr("height",height)
 
-const svg= svgk.append("svg:svg").attr("width",width).attr("height",height);
+const svg = svgk.append("g")
+.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-          const g =  svg.append("svg:g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+            
 
             const yscale = logMode === true ?
             scaleSymlog().domain([1,max(allData,yValue)]).range([h,1]).nice() :
@@ -188,22 +232,199 @@ if (currentZoomState) {
           return STATE_CODES[d.state];
         })
         .entries(allData)
-// console.log(dataNest)
+
+  // console.log(dataNest)
 var color = scaleOrdinal(schemeCategory10);
 
 
+
+const xTicks = 6;
+const xAxis = axisBottom()
+    .scale(xscale)
+    .tickPadding(15)
+    .ticks(xTicks)
+    // .tickValues((xscale.domain().filter(function(d, i) {return !(i % 2)})))
+    .tickSize(-h);
+// console.log((xscale.domain().filter(function(d, i) {return (i % 2)})));
+
+  const yTicks = 4;
+  const yAxis = axisLeft()
+    .scale(yscale)
+    .ticks(yTicks,"~s")
+    .tickPadding(15)
+    .tickSize(-w);
+
+        svg.append('g')
+        .attr("transform", "translate(0, " + h  +")").call(xAxis)
+        .append("text")
+      .attr("transform",
+            "translate(" + (w/2) + " ," +
+                           (h + margin.top + 20) + ")")
+      .style("text-anchor", "middle")
+      .style("fill", "red")
+      .text(xAxisLabel);
+
+      svg.append('g').call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "3em")
+      .style("text-anchor", "middle")
+      .style("fill", "red")
+      .text(yAxisLabel);
+
+
 var legendSpace = width/dataNest.length;
-g.append('g')
+
+let lines = svg.append("g")
+lines.append('g')
 .selectAll("dot")
-.data(allData)
+.data(dataNest)
 .enter()
-.append("svg:circle")
+.append("g")
+// .style("fill", (d, i) => color(i))
+.style("fill", d=>color(d.key))
+.append("g")
+.on("mouseover", function(d) {
+ select(this)
+    .style("cursor", "pointer")
+    // .append("rect")
+    // .attr("x",d => xscale(xValue(d)) - 45)
+    // .attr("y",d => yscale(yValue(d)) - 45)
+    // .attr("width",10)
+    // .attr("height",10)
+    // .attr("fill","red")
+    .append("text")
+    .attr("class", "textb")
+    .style("font-size", "1.2em")
+    // .text("<br/>"+`${d[radiostate]}`)
+    .text(`${d.key}`)
+    
+    .attr("x", 45)
+    .attr("y", 65);
+})
+.on("mouseout", function(d) {
+ select(this)
+    .style("cursor", "none")
+    .transition()
+    .duration(duration)
+    .selectAll(".textb")
+    .remove();
+})
+.selectAll("circle")
+.data(d => d.values)
+.enter()
+// .append("g")
+
+// .on("mouseover", function(d) {
+//  select(this)
+//     .style("cursor", "pointer")
+//     .append("rect")
+//     .attr("class", "textback")
+//     .attr("x",d => xscale(xValue(d)) - 45)
+//     .attr("y",d => yscale(yValue(d)) - 10)
+//     .attr("width",10)
+//     .attr("height",10)
+//     .style("fill","red")
+//     .style("opacity", 0.4)
+//     // .append("text")
+//     // .attr("class", "text")
+//     // // .text("<br/>"+`${d[radiostate]}`)
+//     // .text(`${format(d.date, 'dd MMMM')}`+":"+`${d[radiostate]}`)
+//     // .attr("x", d => xscale(xValue(d)) - 45)
+//     // .attr("y", d => yscale(yValue(d)) - 10);
+// })
+// .on("mouseout", function(d) {
+//  select(this)
+//     .style("cursor", "none")
+//     .transition()
+//     .duration(duration)
+//     .selectAll(".textback")
+//     .remove();
+// })
+
+
+.append("g")
+.on("mouseover", function(d) {
+ select(this)
+    .style("cursor", "pointer")
+    // .append("rect")
+    // .attr("x",d => xscale(xValue(d)) - 45)
+    // .attr("y",d => yscale(yValue(d)) - 45)
+    // .attr("width",10)
+    // .attr("height",10)
+    // .attr("fill","red")
+    .append("text")
+    .attr("class", "text")
+    .style("font-size", "1.2em")
+    // .text("<br/>"+`${d[radiostate]}`)
+    .text(`${d[radiostate]}`+ " " + `${yAxisLabel}`+" "+"on"+" "+`${format(d.date, 'dd MMMM')}`)
+    
+    .attr("x", 45)
+    .attr("y", 85);
+})
+.on("mouseout", function(d) {
+ select(this)
+    .style("cursor", "none")
+    .transition()
+    .duration(duration)
+    .selectAll(".text")
+    .remove();
+})
+
+.append("circle")
         .attr("cx",function (d) { return xscale(xValue(d)); } )
         .attr("cy",function (d) { return yscale(1+yValue(d)); })
-        .attr("r",1)
-        .attr("fill","red")
-        .append("svg:title")
-        .text(function (d) { return (yValue(d)); })
+        .attr("r",circleRadius)
+        .style("opacity", circleOpacity)
+       .on("mouseover", function(d) {
+          select(this)
+            .transition()
+            .duration(duration)
+            .attr("r", circleRadiusHover);
+        })
+        .on("mouseout", function(d) {
+          select(this)
+            .transition()
+            .duration(duration)
+            .attr("r", circleRadius);
+        });
+// .append("circle")
+//         .attr("cx",function (d) { return xscale(xValue(d)); } )
+//         .attr("cy",function (d) { return yscale(1+yValue(d)); })
+//         .attr("r",circleRadius)
+//         .attr("fill","red")
+//         .on("mouseover", function(d) {
+//           select(this)
+//             .transition()
+//             .duration(duration)
+//             .attr("r", circleRadiusHover);
+//         })
+//         .on("mouseout", function(d) {
+//           select(this)
+//             .transition()
+//             .duration(duration)
+//             .attr("r", circleRadius);
+//         });
+//         lines
+//         .on("mouseover", function(d) {
+//           d3.select(this)
+//             .style("cursor", "pointer")
+//             .append("text")
+//             .attr("class", "text")
+//             .text(`${d.price}`)
+//             .attr("x", d => xScale(d.date) + 5)
+//             .attr("y", d => yScale(d.price) - 10);
+//         })
+//         .on("mouseout", function(d) {
+//           d3.select(this)
+//             .style("cursor", "none")
+//             .transition()
+//             .duration(duration)
+//             .selectAll(".text")
+//             .remove();
+//         })       
 
 
       //  g.append('g') 
@@ -212,10 +433,26 @@ g.append('g')
       //   .attr("x",)
 
 dataNest.forEach(function(d, i)  {
-  g.append("path").attr("d",myline(d.values))
+  lines.append("path").attr("d",myline(d.values))
   .attr("stroke",d.color=()=>color(d.key))
-  .attr("stroke-width",2)
+  .attr("stroke-width",lineStroke)
   .attr("fill","none")
+  .on("mouseover", function(d) {
+    selectAll(".line").style("opacity", otherLinesOpacityHover);
+   
+    select(this)
+      .style("opacity", lineOpacityHover)
+      .style("stroke-width", lineStrokeHover)
+      .style("cursor", "pointer");
+  })
+  .on("mouseout", function(d) {
+    selectAll(".line").style("opacity", lineOpacity);
+ 
+    select(this)
+      .style("stroke-width", lineStroke)
+      .style("cursor", "none");
+  })
+
   // .on("mouseenter",(d,i)=>
   // {
   //   g.selectAll(".tooltip")
@@ -234,8 +471,8 @@ dataNest.forEach(function(d, i)  {
   //  .attr('x', w-20)
   //  .attr('dx', '.5em')
   //  .attr('y', yscale(d.values[d.values.length-1].totalconfirmed)); 
-
-  g.append("text")                                    // *******
+lines
+  .append("text")                                    // *******
       // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
       // .attr("y", (margin.top/2)- 25)         // *******
       .attr("x", (i%4)*w/3.5) // spacing // ****
@@ -266,57 +503,24 @@ dataNest.forEach(function(d, i)  {
 
 // console.log(yscale);
 
-const xTicks = 6;
-const xAxis = axisBottom()
-    .scale(xscale)
-    .tickPadding(15)
-    .ticks(xTicks)
-    // .tickValues((xscale.domain().filter(function(d, i) {return !(i % 2)})))
-    .tickSize(-h);
-// console.log((xscale.domain().filter(function(d, i) {return (i % 2)})));
-
-  const yTicks = 4;
-  const yAxis = axisLeft()
-    .scale(yscale)
-    .ticks(yTicks,"~s")
-    .tickPadding(15)
-    .tickSize(-w);
-
-        g.append('g')
-        .attr("transform", "translate(0, " + h  +")").call(xAxis);
-        g.append("text")
-      .attr("transform",
-            "translate(" + (w/2) + " ," +
-                           (h + margin.top + 20) + ")")
-      .style("text-anchor", "middle")
-      .text(xAxisLabel);
-
-      g.append('g').call(yAxis);
-
-      g.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text(yAxisLabel);
 
 
-console.log(dataNest)
+
+
 
  
-    //   const zoomBehavior = zoom()
-    //   .scaleExtent([0.5, 5])
-    //   .translateExtent([
-    //     [0, 0],
-    //     [w, h]
-    //   ])
-    //   .on("zoom", () => {
-    //     const zoomState = zoomTransform(svg.node());
-    //     setCurrentZoomState(zoomState);
-    //   });
+      const zoomBehavior = zoom()
+      .scaleExtent([0.5, 5])
+      .translateExtent([
+        [0, 0],
+        [w, h]
+      ])
+      .on("zoom", () => {
+        const zoomState = zoomTransform(svg.node());
+        setCurrentZoomState(zoomState);
+      });
 
-    // svg.call(zoomBehavior);
+    lines.call(zoomBehavior);
 
 // const linechart = g
 //         .append('g')

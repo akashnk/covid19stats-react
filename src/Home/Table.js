@@ -9,7 +9,7 @@ import { SearchState,
 import Paper from '@material-ui/core/Paper';
 import {
   Grid,
-  Table,
+  VirtualTable,
   Toolbar,
   SearchPanel,
   TableHeaderRow,
@@ -19,8 +19,8 @@ import {
   TableFixedColumns,
 } from '@devexpress/dx-react-grid-material-ui';
 
-import {pop} from './constants';
-import {TableContext} from "./TableContext";
+import {pop} from '../Common/constants';
+import {TableContext} from "../TableContext";
 
 import Tablecollapsed from "./Tablecollapsed";
 
@@ -34,6 +34,29 @@ const Tables = (props) => {
     const [districts,setDistrictWiseData]=useState(props.districtWiseData);
     const [searchValue, setSearchState] = useState([]);
     const [expandedRowIds, setExpandedRowIds] = useState([]);
+
+
+    rows.forEach((d,i)=> {
+      d.confirmed= +d.confirmed
+      d.active= +d.active
+      d.recovered= +d.recovered
+      d.deaths=+d.deaths
+      d.totaltested= +d.totaltested
+      d.deltadeaths=+d.deltadeaths
+     
+      });
+
+      const comparedeath = (a, b) => {
+        const priorityA = a.deaths;
+        const priorityB = b.deaths;
+        if (priorityA === priorityB) {
+          return 0;
+        }
+        return (priorityA < priorityB) ? -1 : 1;
+      };
+      const [integratedSortingColumnExtensions] = useState([
+        { columnName: 'deaths', compare: comparedeath  },
+      ]);
 
   const [columns] = useState([
     
@@ -80,9 +103,9 @@ const Tables = (props) => {
   title: "Recvrd",
   getCellValue:  (row,rowInfo) =>  {
   return(  <div>
- <span>  {row.recovered}</span>
+ <span>  {parseInt(row.recovered)}</span>
  <br/>
- <span style={{color: row.deltarecovered > 0 ? "green": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltarecovered}]</span>
+ <span style={{color: row.deltarecovered > 0 ? "green": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {(row.deltarecovered).toString()}]</span>
   </div>)}
 },
 
@@ -96,7 +119,7 @@ title: "Total Tested"
 name: "positive",
 title: "Positive rate",
 getCellValue: (row) => {
-  return( ((row.positive/row.totaltested)*100).toFixed(2))
+  return(parseFloat( ((row.positive/row.totaltested)*100).toFixed(2)))
 }
 // width: 80
 },
@@ -104,7 +127,7 @@ getCellValue: (row) => {
 name: "tests",
 title: "Tests/ million",
 getCellValue: (row) => {
-  return((row.totaltested/pop[row.statecode]*1000000).toFixed(0))
+  return(parseFloat((row.totaltested/pop[row.statecode]*1000000).toFixed(0)))
 }
 // width: 80
 }
@@ -128,8 +151,8 @@ getCellValue: (row) => {
      { columnName: TableSelection.COLUMN_TYPE, wordWrapEnabled: true },
       {columnName: 'state', wordWrapEnabled: true},
      { columnName: 'confirmed', wordWrapEnabled: true },
-    { columnName: 'deaths', wordWrapEnabled: true },
-    { columnName: 'active', wordWrapEnabled: true },
+    { columnName: 'deaths'},
+    { columnName: 'active'},
     { columnName: 'recovered', wordWrapEnabled: true },
     { columnName: 'totaltested',wordWrapEnabled: true },
     { columnName: 'positive',wordWrapEnabled: true},
@@ -157,7 +180,10 @@ getCellValue: (row) => {
     </div>
   );
  
-
+  const [sorting, setSorting] = useState([{ columnName: 'confirmed', direction: 'desc' }]);
+  const [sortingStateColumnExtensions] = useState([
+    { columnName: 'recovered', sortingEnabled: true },
+  ]);
  
 
  useEffect(()=>{
@@ -190,14 +216,16 @@ getCellValue: (row) => {
           onSelectionChange={setSelection}
         />
          <SortingState
-          defaultSorting={[{ columnName: 'confirmed', direction: 'desc' }]}
+           sorting={sorting}
+           onSortingChange={setSorting}
+           columnExtensions={sortingStateColumnExtensions}
         />
-        <IntegratedSorting />
+        <IntegratedSorting columnExtensions={integratedSortingColumnExtensions}/>
         <RowDetailState
           expandedRowIds={expandedRowIds}
           onExpandedRowIdsChange={setExpandedRowIds}
         />
-        <Table  columnExtensions={tableColumnExtensions}/>
+        <VirtualTable  columnExtensions={tableColumnExtensions}/>
        
         <TableColumnResizing
           columnWidths={columnWidths}

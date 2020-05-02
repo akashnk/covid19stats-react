@@ -1,3 +1,5 @@
+
+
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -6,22 +8,19 @@ import {
   
 } from "react-router-dom";
 
-import Home from './home';
-import About from './about';
+import Home from './Home/home';
 import Faq from './faq';
-import WithNavigation from './navigation';
+import World from './World';
+
+import Layout from './Layout'
 
 function App() {
   return (
     <Router>
-      <div>
-  
-        <WithNavigation />
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
+     <Layout >
         <Switch>
-          <Route path="/about">
-            <About />
+          <Route path="/world">
+            <World />
           </Route>
           <Route path="/faq">
             <Faq />
@@ -30,9 +29,11 @@ function App() {
             <Home />
           </Route>
         </Switch>
-      </div>
+      </Layout>
     </Router>
   );
 }
 
+
 export default App;
+
