@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
 import Worldtable from './worldtable';
+import Update from './Update';
 export default function World() {
     const [datax, setDatax] = useState([]);
     const [dataw, setDataw] = useState([]);
@@ -46,6 +47,7 @@ console.log(dataw)
     return (
 
         <>
+        {fetched &&  <Update dataw={dataw}/>}
        {fetched &&  <Worldtable rows={datax}/>}
         </>
     );
