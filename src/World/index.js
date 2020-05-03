@@ -68,16 +68,13 @@ export default function World() {
     const [dataw, setDataw] = useState([]);
   const [fetched,setFetched] = useState(false);
 
-
-
-const [value,setCase] =useState('confirmed');
-
-const [daysC,setDaysC] = useState('Month');
-
-
-const [logMode, setLogMode] = useState(false);
+  const [value,setCase] =useState('confirmed');
   const apiURL1 = 'https://disease.sh/v2/countries';
   const apiURL2 = 'https://disease.sh/v2/all';
+  const [daysC,setDaysC] = useState('Month');
+  
+
+  const [logMode, setLogMode] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -85,7 +82,8 @@ const [logMode, setLogMode] = useState(false);
         datad,
         dataw
 
-  
+    //    {data: statesDailyResponse},
+    //   {data: stateTestData}
      ] =
      await Promise.all([
       axios.get(apiURL1),
@@ -98,7 +96,7 @@ const [logMode, setLogMode] = useState(false);
        setDatax(datad.data);
        setDataw(dataw.data);
 
-       
+      
        setFetched(true);
 
     } catch (err) {
@@ -111,7 +109,10 @@ const [logMode, setLogMode] = useState(false);
          fetchData();
        }
      }, [fetched]);
-     
+
+
+
+
 console.log(datax);
 const handleChange = e => {
     // console.log(e.target.value);
