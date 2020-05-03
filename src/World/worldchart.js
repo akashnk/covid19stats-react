@@ -390,6 +390,17 @@ else{
   
   
   var legendSpace = width/dataNest.length;
+
+  if(is_touch_enabled())
+  {
+      var MOUSEOVER = "touchstart"
+      var MOUSEOUT = "touchend"
+  }
+  else
+  {
+    var MOUSEOVER = "mouseover"
+    var MOUSEOUT = "mouseout"
+  }
   
   let lines = svg.append("g")
   lines.append('g')
@@ -400,7 +411,7 @@ else{
   // .style("fill", (d, i) => color(i))
   .style("fill", d=>color(d.key))
   .append("g")
-  .on("mouseover", function(d) {
+  .on(MOUSEOVER, function(d) {
    select(this)
       .style("cursor", "pointer")
       // .append("rect")
@@ -418,7 +429,7 @@ else{
       .attr("x", 45)
       .attr("y", 65);
   })
-  .on("mouseout", function(d) {
+  .on(MOUSEOUT, function(d) {
    select(this)
       .style("cursor", "none")
       .transition()
@@ -460,7 +471,7 @@ else{
   
   
   .append("g")
-  .on("mouseover", function(d) {
+  .on(MOUSEOVER, function(d) {
    select(this)
       .style("cursor", "pointer")
       // .append("rect")
@@ -478,7 +489,7 @@ else{
       .attr("x", 45)
       .attr("y", 85);
   })
-  .on("mouseout", function(d) {
+  .on(MOUSEOUT, function(d) {
    select(this)
       .style("cursor", "none")
       .transition()
@@ -492,13 +503,13 @@ else{
           .attr("cy",function (d) { return yscale(1+yValue(d)); })
           .attr("r",circleRadius)
           .style("opacity", circleOpacity)
-         .on("mouseover", function(d) {
+         .on(MOUSEOVER, function(d) {
             select(this)
               .transition()
               .duration(duration)
               .attr("r", circleRadiusHover);
           })
-          .on("mouseout", function(d) {
+          .on(MOUSEOUT, function(d) {
             select(this)
               .transition()
               .duration(duration)
