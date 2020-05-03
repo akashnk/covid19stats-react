@@ -68,6 +68,14 @@ export default function World() {
     const [dataw, setDataw] = useState([]);
   const [fetched,setFetched] = useState(false);
 
+
+
+const [value,setCase] =useState('confirmed');
+
+const [daysC,setDaysC] = useState('Month');
+
+
+const [logMode, setLogMode] = useState(false);
   const apiURL1 = 'https://disease.sh/v2/countries';
   const apiURL2 = 'https://disease.sh/v2/all';
 
@@ -103,6 +111,7 @@ export default function World() {
          fetchData();
        }
      }, [fetched]);
+     
 console.log(datax);
 const handleChange = e => {
     // console.log(e.target.value);
