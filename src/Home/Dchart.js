@@ -6,7 +6,7 @@ import React, {  useState, useEffect, useRef,useContext,useCallback } from "reac
 // import {Delaunay} from 'd3-delaunay';
 import { select, nest,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
   scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10, selectAll, zoom,
-  zoomTransform} from 'd3';
+  zoomTransform,mouse,bisect} from 'd3';
 import {event as currentEvent} from 'd3';
 
 // import moment from 'moment';
@@ -196,11 +196,14 @@ const drawChart = () => {
 
 
 
+// const svgk = select(svgRef.current).attr("width",width).attr("height",height)
+
+// const svg = svgk.append("g")
+// .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 const svgk = select(svgRef.current).attr("width",width).attr("height",height)
 
-const svg = svgk.append("g")
-.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+var svg= svgk.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
 
@@ -277,44 +280,44 @@ const xAxis = axisBottom()
 
 var legendSpace = width/dataNest.length;
 
-let lines = svg.append("g")
-lines.append('g')
-.selectAll("dot")
-.data(dataNest)
-.enter()
-.append("g")
-// .style("fill", (d, i) => color(i))
-.style("fill", d=>color(d.key))
-.append("g")
-.on("mouseover", function(d) {
- select(this)
-    .style("cursor", "pointer")
-    // .append("rect")
-    // .attr("x",d => xscale(xValue(d)) - 45)
-    // .attr("y",d => yscale(yValue(d)) - 45)
-    // .attr("width",10)
-    // .attr("height",10)
-    // .attr("fill","red")
-    .append("text")
-    .attr("class", "textb")
-    .style("font-size", "1.2em")
-    // .text("<br/>"+`${d[radiostate]}`)
-    .text(`${d.key}`)
+// let metric = svg.append("g")
+// metric.append('g')
+// let metric=svg.selectAll("dot")
+// .data(dataNest)
+// .enter()
+// .append("g")
+// // .style("fill", (d, i) => color(i))
+// .style("fill", d=>color(d.key))
+// .append("g")
+// // .on("mouseover", function(d) {
+// //  select(this)
+// //     .style("cursor", "pointer")
+// //     // .append("rect")
+// //     // .attr("x",d => xscale(xValue(d)) - 45)
+// //     // .attr("y",d => yscale(yValue(d)) - 45)
+// //     // .attr("width",10)
+// //     // .attr("height",10)
+// //     // .attr("fill","red")
+// //     .append("text")
+// //     .attr("class", "textb")
+// //     .style("font-size", "1.2em")
+// //     // .text("<br/>"+`${d[radiostate]}`)
+// //     .text(`${d.key}`)
     
-    .attr("x", 45)
-    .attr("y", 65);
-})
-.on("mouseout", function(d) {
- select(this)
-    .style("cursor", "none")
-    .transition()
-    .duration(duration)
-    .selectAll(".textb")
-    .remove();
-})
-.selectAll("circle")
-.data(d => d.values)
-.enter()
+// //     .attr("x", 45)
+// //     .attr("y", 65);
+// // })
+// // .on("mouseout", function(d) {
+// //  select(this)
+// //     .style("cursor", "none")
+// //     .transition()
+// //     .duration(duration)
+// //     .selectAll(".textb")
+// //     .remove();
+// // })
+// .selectAll("circle")
+// .data(d => d.values)
+// .enter()
 // .append("g")
 
 // .on("mouseover", function(d) {
@@ -345,51 +348,51 @@ lines.append('g')
 // })
 
 
-.append("g")
-.on("mouseover", function(d) {
- select(this)
-    .style("cursor", "pointer")
-    // .append("rect")
-    // .attr("x",d => xscale(xValue(d)) - 45)
-    // .attr("y",d => yscale(yValue(d)) - 45)
-    // .attr("width",10)
-    // .attr("height",10)
-    // .attr("fill","red")
-    .append("text")
-    .attr("class", "text")
-    .style("font-size", "1.2em")
-    // .text("<br/>"+`${d[radiostate]}`)
-    .text(`${d[radiostate]}`+ " " + `${yAxisLabel}`+" "+"on"+" "+`${format(d.date, 'dd MMMM')}`)
+// .append("g")
+// // .on("mouseover", function(d) {
+// //  select(this)
+// //     .style("cursor", "pointer")
+// //     // .append("rect")
+// //     // .attr("x",d => xscale(xValue(d)) - 45)
+// //     // .attr("y",d => yscale(yValue(d)) - 45)
+// //     // .attr("width",10)
+// //     // .attr("height",10)
+// //     // .attr("fill","red")
+// //     .append("text")
+// //     .attr("class", "text")
+// //     .style("font-size", "1.2em")
+// //     // .text("<br/>"+`${d[radiostate]}`)
+// //     .text(`${d[radiostate]}`+ " " + `${yAxisLabel}`+" "+"on"+" "+`${format(d.date, 'dd MMMM')}`)
     
-    .attr("x", 45)
-    .attr("y", 85);
-})
-.on("mouseout", function(d) {
- select(this)
-    .style("cursor", "none")
-    .transition()
-    .duration(duration)
-    .selectAll(".text")
-    .remove();
-})
+// //     .attr("x", 45)
+// //     .attr("y", 85);
+// // })
+// // .on("mouseout", function(d) {
+// //  select(this)
+// //     .style("cursor", "none")
+// //     .transition()
+// //     .duration(duration)
+// //     .selectAll(".text")
+// //     .remove();
+// // })
 
-.append("circle")
-        .attr("cx",function (d) { return xscale(xValue(d)); } )
-        .attr("cy",function (d) { return yscale(1+yValue(d)); })
-        .attr("r",circleRadius)
-        .style("opacity", circleOpacity)
-       .on("mouseover", function(d) {
-          select(this)
-            .transition()
-            .duration(duration)
-            .attr("r", circleRadiusHover);
-        })
-        .on("mouseout", function(d) {
-          select(this)
-            .transition()
-            .duration(duration)
-            .attr("r", circleRadius);
-        });
+// .append("circle")
+//         .attr("cx",function (d) { return xscale(xValue(d)); } )
+//         .attr("cy",function (d) { return yscale(1+yValue(d)); })
+//         .attr("r",circleRadius)
+//         .style("opacity", circleOpacity)
+      //  .on("mouseover", function(d) {
+      //     select(this)
+      //       .transition()
+      //       .duration(duration)
+      //       .attr("r", circleRadiusHover);
+      //   })
+      //   .on("mouseout", function(d) {
+      //     select(this)
+      //       .transition()
+      //       .duration(duration)
+      //       .attr("r", circleRadius);
+      //   });
 // .append("circle")
 //         .attr("cx",function (d) { return xscale(xValue(d)); } )
 //         .attr("cy",function (d) { return yscale(1+yValue(d)); })
@@ -431,27 +434,34 @@ lines.append('g')
       //   .append("svg:title")
       //   .text(function(d) { return yValue(d); });
       //   .attr("x",)
+      let metric=svg.selectAll(".metric")
+      .data(dataNest)
+      .enter().append("g")
+      .attr("class","metric")
+
+
+
 
 dataNest.forEach(function(d, i)  {
-  lines.append("path").attr("d",myline(d.values))
+  metric.append("path").attr('class', 'line').attr("d",myline(d.values))
   .attr("stroke",d.color=()=>color(d.key))
   .attr("stroke-width",lineStroke)
   .attr("fill","none")
-  .on("mouseover", function(d) {
-    selectAll(".line").style("opacity", otherLinesOpacityHover);
+  // .on("mouseover", function(d) {
+  //   selectAll(".line").style("opacity", otherLinesOpacityHover);
    
-    select(this)
-      .style("opacity", lineOpacityHover)
-      .style("stroke-width", lineStrokeHover)
-      .style("cursor", "pointer");
-  })
-  .on("mouseout", function(d) {
-    selectAll(".line").style("opacity", lineOpacity);
+  //   select(this)
+  //     .style("opacity", lineOpacityHover)
+  //     .style("stroke-width", lineStrokeHover)
+  //     .style("cursor", "pointer");
+  // })
+  // .on("mouseout", function(d) {
+  //   selectAll(".line").style("opacity", lineOpacity);
  
-    select(this)
-      .style("stroke-width", lineStroke)
-      .style("cursor", "none");
-  })
+  //   select(this)
+  //     .style("stroke-width", lineStroke)
+  //     .style("cursor", "none");
+  // })
 
   // .on("mouseenter",(d,i)=>
   // {
@@ -471,7 +481,7 @@ dataNest.forEach(function(d, i)  {
   //  .attr('x', w-20)
   //  .attr('dx', '.5em')
   //  .attr('y', yscale(d.values[d.values.length-1].totalconfirmed)); 
-lines
+metric
   .append("text")                                    // *******
       // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
       // .attr("y", (margin.top/2)- 25)         // *******
@@ -488,7 +498,100 @@ lines
     
 });
 
-// dataNest.forEach(function(d,i){
+metric
+// .style("fill", "#FFF")
+// .style("stroke", function(d) { return color(d.key); })
+.selectAll("circlesd")
+.data(function(d){ return d.values })
+  .enter()
+  .append("circle")
+  .attr("r", 3)
+  .style("fill", "#FFF")
+.style("stroke", function(d) { return color(d.key); })
+  .style("stroke-width", 2)
+  .attr("cx",d => xscale(d.date))
+  .attr("cy",d => yscale(d[radiostate]))
+
+var points = svg.selectAll('.points')
+  .data(dataNest)
+  .enter()
+  .append('g')
+  .attr('class', 'points')
+  .append('text');
+
+
+
+  
+
+  const pointss = svg.selectAll('.pointss')
+  .data(dataNest)
+  .enter()
+  .append('g')
+  .attr('class', 'pointss')
+  .append('text');
+
+
+
+
+  const focus = svg.append('g')
+  .attr('class', 'focus')
+  .style('display', 'none');
+
+focus.append('line')
+  .attr('class', 'x-hover-line hover-line')
+  .attr('y1' , 0)
+  .attr('y2', h);
+
+  svgk.append('rect')
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+  .attr("class", "overlay")
+  .attr("width", w)
+  .attr("height", h)
+  .attr('fill', 'none')
+  .on("mouseover", mouseover)
+  .on("mouseout", mouseout)
+  .on("mousemove", mousemove);
+
+
+  var timeScales = dataNest[0].values.map(function(key) { return xscale(key.date); });
+  console.log(timeScales);
+
+  function mouseover() {
+    focus.style("display", null);
+   selectAll('.points text').style("display", null);
+  }
+  function mouseout() {
+    focus.style("display", "none");
+    selectAll('.points text').style("display", "none");
+  }
+  function mousemove() {
+    var i = bisect(timeScales, mouse(this)[0], 1);
+    console.log(i)
+    var di = allData[i-1];
+    focus.attr("transform", "translate(" + xscale(di.date) + ",0)");
+
+    selectAll('.pointss text')
+        
+    .attr("x", d => xscale(d.values[i-1].date) - 45)
+      .attr("y", d => yscale(d.values[i-1][radiostate] - 10))
+    .text(d => d.values[i-1][radiostate])
+    .style("fill","black")
+
+      selectAll('.points text')
+      .attr('x',20)
+      .attr('y',60)
+      .text(`${format(di.date, 'dd MMMM')}`)
+      .style("fill","black")
+
+     
+    // selectAll('.points text')
+    //   .attr('x', function(d) { return xscale(di.date) + 15; })
+    //   .attr('y', function(d) { return yscale(d.values[i-1].radiostate); })
+    //   .text(function(d) { return d.values[i-1].radiostate; })
+    //   .style('fill', function(d) { return color(d.key); });
+  }
+  console.log(dataNest)
+// dataNest.forEach(function(d,i)
 //   console.log(d)
 //     g.append("circle") // Uses the enter().append() method
 //         .attr("class", "dot") // Assign a class for styling
@@ -498,17 +601,159 @@ lines
 //         .attr("r", 5);
   
 //   });
+// let mouseOver = svg
+//   .append('g')
+// 	  .attr('class', 'mouse-over-effects');
+
+// mouseOver
+//   .append('path')
+// 	  .attr('class', 'mouse-line')
+// 		.style('stroke', 'black')
+// 		.style('stroke-width', '1px')
+// 		.style('opacity', '0');
+
+
+// // console.log(yscale);
 
 
 
-// console.log(yscale);
+
+// const lines = document.getElementsByClassName('line');
+// console.log(lines)
+
+// const mousePerLines = mouseOver
+// .selectAll('.mouse-per-line')
+//   .data(dataNest)
+//   .enter()
+//   .append('g')
+//     .attr('class', 'mouse-per-lines')
+
+//     mousePerLines.append("text")
+//     .attr('transform', 'translate(10, 13)')
+
+// const mousePerLine = mouseOver
+//   .selectAll('.mouse-per-line')
+// 	  .data(dataNest)
+// 		.enter()
+// 		.append('g')
+// 			.attr('class', 'mouse-per-line');
+
+// // mousePerLine
+
+// //   .append('circle')
+// //     .attr('r', 5)
+// //     .style('stroke', d => color(d.key))
+// //     .style('fill', d => color(d.key))
+// //     .style('stroke-width', '1px')
+// //     .style('opacity', '0');
 
 
+//     mousePerLine.append("rect")
+//     .attr("width", 50)
+//     .attr("height", 50)
+//     .style("stroke", function(d) {
+//       return color(d.key);
+//     })
+//     .style("fill", function(d) {
+//       return color(d.key);
+//     })
+//     .style("stroke-width", "1px")
+//     .style("opacity", "0")
 
-
-
-
+//     mousePerLine.append("text")
+//     .attr('transform', 'translate(30, 43)')
+  
  
+  
+//     // .style('opacity', '1');
+
+
+
+
+
+//     mouseOver
+//   .append('rect')
+//     .attr('width', w)
+//     .attr('height', h)
+//     .attr('fill', 'none')
+//     .attr('pointer-events', 'all')
+//     .on('mouseout', function() {
+//       select('.mouse-line')
+//         .style('opacity', '0');
+//       selectAll('.mouse-per-line rect')
+//         .style('opacity', '0');
+//         selectAll('.mouse-per-lines text')
+//         .style('opacity', '0');
+//     })
+//     .on('mouseover', function() {
+//       select('.mouse-line')
+//         .style('opacity', '1');
+//       selectAll('.mouse-per-line rect')
+//         .style('opacity', '1');
+//       selectAll('.mouse-per-lines text')
+//         .style('opacity', '1');
+//     })
+//     .on('mousemove', function() {
+//      let moused = mouse(this);
+     
+//       select('.mouse-line')
+//         .attr('d', function() {
+//           let d = 'M' + moused[0] + ',' + h;
+//           d += ' ' + moused[0] + ',' + 0;
+//           return d;
+//         });
+     
+//       console.log(moused)
+//       selectAll('.mouse-per-line')
+      
+//       .attr('transform', (d, i) => {
+        
+        
+//         const xDate  = xscale.invert(moused[0]);
+        
+        
+//         const bisect = bisector(d => d.date).right;
+//         const idx    = bisect(d.values, xDate);
+       
+//         let start  = 0;
+//         let finish = lines[i].getTotalLength();
+//         let target = null;
+//         let position = null;
+  
+//         while (true) {
+//           target   = Math.floor((start + finish) / 2);
+         
+//          position = lines[i].getPointAtLength(target);
+//           if ((target === finish || target === start) && position.x !== moused[0]) {
+//             break;
+//           }
+//           if (position.x > moused[0]) {
+//             finish = target;
+//           } else if (position.x < moused[0]) {
+//             start = target;
+//           } else {
+//             break;
+//           }
+//         }
+  
+//         // console.log(yscale.invert(position.y).toFixed(0))
+//           select(this)
+//             .select('text')
+//             .style("display", null)
+//             // .attr("class", "text")
+//             // .style("font-size", "1.2em")
+//             // .attr("fill","black")
+//               // .attr("fill",function(d){
+//               //   return color(d.key)
+//               // })
+//               .text(yscale.invert(position.y).toFixed(0))
+  
+//         return 'translate(' + moused[0] + ',' + position.y +')';
+//   })
+  
+// });
+ 
+
       const zoomBehavior = zoom()
       .scaleExtent([0.5, 5])
       .translateExtent([
@@ -520,7 +765,7 @@ lines
         setCurrentZoomState(zoomState);
       });
 
-    lines.call(zoomBehavior);
+    metric.call(zoomBehavior);
 
 // const linechart = g
 //         .append('g')
