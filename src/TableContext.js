@@ -8,12 +8,15 @@ const TableProvider = ({children}) => {
  
   // const [location, setLocation] = useState(["Mars"]);
   const [statecodes,setStatecodes] = useState(["TT"]);
+  const [countrycodes, setCountrycodes] = useState(["World"]);
 
   return (
     <TableContext.Provider
       value={{
       statecodes: statecodes,
-      setStatecodes: setStatecodes
+      setStatecodes: setStatecodes,
+      countrycodes: countrycodes,
+      setCountrycodes: setCountrycodes
      }}
     >
     {children}

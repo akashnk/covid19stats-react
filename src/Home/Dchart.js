@@ -150,7 +150,7 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
   }, [props.type]);
 
 
-
+console.log(allData);
 
 //console.log(timeseries)
   useEffect(() => {
@@ -582,7 +582,7 @@ lines
 
      <div className="svg-parent" ref={wrapperRef} >
      <svg ref={svgRef} />
-     <div className="tooltip"></div>
+     
       </div>
 
 

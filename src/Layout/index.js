@@ -86,7 +86,7 @@ function Layout(props) {
             Predictions
           </MenuItem>
           <MenuItem >
-            Analytics
+            Statistics
           </MenuItem>
           <MenuItem >
             About

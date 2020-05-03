@@ -289,7 +289,7 @@ const classes = useStyles();
       </Paper>
       </Grid>
  
-       <Grid item xs={12} sm={6}>
+       <Grid item xs={12} sm={12} md={6}>
        
       <Paper className={classes.paper}>
        
@@ -334,7 +334,7 @@ const classes = useStyles();
 
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={12} md={6}>
                 <Paper className={classes.paper}>
       {fetched && <Tables  rows={merged}
             districtWiseData={districtWiseData}

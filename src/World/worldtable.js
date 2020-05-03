@@ -176,7 +176,20 @@ title: "Tests/ million"
 //     { columnName: 'recovered', sortingEnabled: true },
 //   ]);
  
+useEffect(()=>{
+    if (selection.length > 0) {
+        
 
+        const statec = rows.map(d => d.country);
+        const selstate = selection.map(d=>statec[d]);
+  
+  
+    context.setCountrycodes(selstate);}
+    else {
+      context.setCountrycodes(["World"]);
+    }
+},[selection,rows])
+console.log(context.countrycodes)
 //  useEffect(()=>{
 //     if (selection.length > 0) {
         
