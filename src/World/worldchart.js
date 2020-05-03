@@ -254,7 +254,19 @@ console.log(o)
   
   
   
-  
+   
+function is_touch_enabled() { 
+    return ( 'ontouchstart' in window ) ||  
+           ( navigator.maxTouchPoints > 0 ) ||  
+           ( navigator.msMaxTouchPoints > 0 ); 
+} 
+
+if(is_touch_enabled()){
+    console.log("hi")
+}
+else{
+    console.log("bye")
+}
   //console.log(timeseries)
     useEffect(() => {
   
