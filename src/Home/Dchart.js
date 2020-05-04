@@ -1,50 +1,34 @@
 import React, {  useState, useEffect, useRef,useContext,useCallback } from "react";
 
-// // import * as d3 from 'd3';
-// import { select, nest,selectAll,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
-// scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10,bisector,mouse,pos,voronoi,merge,map} from 'd3';
-// import {Delaunay} from 'd3-delaunay';
-import { select, nest,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
-  scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10, selectAll, zoom,
+import { select, nest,line,curveCardinal,extent,axisLeft,max,axisBottom,scaleLinear,
+  scaleTime,scaleSymlog,scaleOrdinal,schemeCategory10, selectAll, zoom,
   zoomTransform,mouse,bisect} from 'd3';
-import {event as currentEvent} from 'd3';
 
-// import moment from 'moment';
+
+
 import {TableContext} from '../TableContext';
-// import {sliceTimeseriesFromEnd} from './common-functions';
+
 import {useResizeObserver} from '../Common/hooks';
 import {STATE_CODES} from '../Common/constants'
-// import {useWindowSize} from './common-functions';
-import {formatNumber,formatDate,sliceTimeseriesFromEnd} from '../Common/common-functions';
+
 import {format} from 'date-fns';
-// import * from 'd3';
+
 
 
 const Dchart = (props) => {
-  // const [lastDaysCount, setLastDaysCount] = useState(
-  //   window.innerWidth > 512 ? Infinity : 30
-  // );
-  // const [activeStateCode,setActiveStateCode] = useState(props.activeStateCode);
-//   const [timeseries, setTimeseries] = useState([]);
-// // const [allData,setallData]=useState([]);
-//   const [datapoint, setDatapoint] = useState({});
-//   const [index, setIndex] = useState(0);
+ 
   const [radiostate,setRadiostate] = useState([]);
   const [mode, setMode] = useState(props.mode);
   const [logMode, setLogMode] = useState([]);
   const [chartType, setChartType] = useState(props.casetype);
   const [moving, setMoving] = useState(false);
-  const [timeSeriesData, setTimeSeriesData] = useState([]);
+ 
   const [totdata,setTotdata]=useState([]);
   const [lastDaysCount,setLastDaysCount]=useState(14);
- 
-  const [timeseries, setTimeseries] = useState([]);
-  const [index, setIndex] = useState(0);
+  const [currentZoomState, setCurrentZoomState] = useState();
+
   const [daysC,setDaysC] = useState([])
-   // const [allData,setallData]=useState([]);
-  // const [as,setAs]=useState(["TT"]);
-// console.log(conts.tooltip)
-//  console.log(activeStateCode);
+ 
 const context = useContext(TableContext);
 var lineOpacity = "0.25";
 var lineOpacityHover = "0.85";
@@ -64,10 +48,7 @@ var duration = 250;
 
   const wrapperRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
-  // useEffect(() => {
-  //   setTimeSeriesData(timeseries.slice(timeseries.length - 20));
-  // }, [timeseries]);
-  console.log(props.totdata)
+
   useEffect(() => {
     const totdat = props.totdata;
     const todat = totdat
@@ -122,7 +103,7 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
  const allData = Object.keys(gh).reduce(function (r, k) {
          return r.concat( gh[k]);
      }, []);
-     const [currentZoomState, setCurrentZoomState] = useState();
+     
 
      useEffect(()=>
    setLastDaysCount(props.timeMode)
@@ -150,7 +131,7 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
   }, [props.type]);
 
 
-console.log(allData);
+
 
 //console.log(timeseries)
   useEffect(() => {
@@ -213,17 +194,21 @@ var svg= svgk.append("g").attr("transform", "translate(" + margin.left + "," + m
             scaleSymlog().domain([1,max(allData,yValue)]).range([h,1]).nice() :
             scaleLinear().domain(extent(allData,yValue)).range([h,0]).nice();
 
+         
+            
 
             const xscale =  scaleTime()
               .domain(extent(allData,xValue))
               .range([0,w])
               .nice();
 
+              if (currentZoomState) {
+                const newYScale = currentZoomState.rescaleY(yscale);
+                const newXScale = currentZoomState.rescaleX(xscale);
+                yscale.domain(newYScale.domain());
+                xscale.domain(newXScale.domain());
+              }
 // console.log(timeseries)
-if (currentZoomState) {
-  const newXScale = currentZoomState.rescaleX(xscale);
-  xscale.domain(newXScale.domain());
-}
 
 
           const myline = line()
@@ -278,7 +263,7 @@ const xAxis = axisBottom()
       .text(yAxisLabel);
 
 
-var legendSpace = width/dataNest.length;
+// var legendSpace = width/dataNest.length;
 
 // let metric = svg.append("g")
 // metric.append('g')
@@ -433,8 +418,19 @@ var legendSpace = width/dataNest.length;
       //  g.append('g') 
       //   .append("svg:title")
       //   .text(function(d) { return yValue(d); });
+
+
+      var clip = svg.append("defs").append("svg:clipPath")
+    .attr("id", "clip")
+    .append("svg:rect")
+    .attr("id", "clip-rect")
+    .attr("x", "0")
+    .attr("y", "0")
+    .attr('width', w)
+    .attr('height', h);
       //   .attr("x",)
-      let metric=svg.selectAll(".metric")
+      let mer = svg.append("g").attr("clip-path", "url(#clip)")
+      let metric=mer.selectAll(".metric")
       .data(dataNest)
       .enter().append("g")
       .attr("class","metric")
@@ -593,10 +589,16 @@ focus.append('line')
   function mouseover() {
     focus.style("display", null);
    selectAll('.points text').style("display", null);
+   selectAll('.pointss rect').style("display", null);
+    selectAll('.pointss text').style("display", null);
+    selectAll('.pointsk text').style("display", null);
   }
   function mouseout() {
     focus.style("display", "none");
     selectAll('.points text').style("display", "none");
+    selectAll('.pointss rect').style("display", "none");
+    selectAll('.pointss text').style("display", "none");
+    selectAll('.pointsk text').style("display", "none");
   }
   function mousemove() {
     var i = bisect(timeScales, mouse(this)[0], 1);
@@ -810,17 +812,19 @@ focus.append('line')
  
 
       const zoomBehavior = zoom()
-      .scaleExtent([0.5, 5])
+      .scaleExtent([1, Infinity])
+      .extent([[0,0],[w,h]])
       .translateExtent([
         [0, 0],
         [w, h]
       ])
       .on("zoom", () => {
-        const zoomState = zoomTransform(svg.node());
+        const zoomState = zoomTransform(svgRef.current);
+        console.log(zoomState)
         setCurrentZoomState(zoomState);
       });
 
-    metric.call(zoomBehavior);
+    svgk.call(zoomBehavior);
 
 // const linechart = g
 //         .append('g')

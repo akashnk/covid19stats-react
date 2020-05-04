@@ -11,7 +11,7 @@ import {
 import Home from './Home/home';
 import Faq from './faq';
 import World from './World';
-
+import Statistics from './Statistics';
 import Layout from './Layout'
 
 function App() {
@@ -24,6 +24,9 @@ function App() {
           </Route>
           <Route path="/faq">
             <Faq />
+          </Route>
+          <Route path="/statistics">
+            <Statistics />
           </Route>
           <Route path="/">
             <Home />

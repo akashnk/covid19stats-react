@@ -15,8 +15,7 @@ import "../App.css";
 
 // import Utils from "./Utils";
 import {
-  formatDate,
-  formatDateAbsolute,
+
   preprocessTimeseries,
   parseStateTimeseries,
 } from '../Common/common-functions';
@@ -29,12 +28,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+
 import { createMuiTheme, ThemeProvider, createStyles } from '@material-ui/core/styles';
 
 
