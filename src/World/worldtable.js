@@ -189,7 +189,7 @@ useEffect(()=>{
       context.setCountrycodes(["World"]);
     }
 },[selection,rows])
-console.log(context.countrycodes)
+// console.log(context.countrycodes)
 //  useEffect(()=>{
 //     if (selection.length > 0) {
         
@@ -203,7 +203,7 @@ console.log(context.countrycodes)
 //       context.setStatecodes(["TT"]);
 //     }
 // },[selection,rows])
-console.log(rows);
+// console.log(rows);
   return (
     <Paper>
       <Grid

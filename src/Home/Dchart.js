@@ -190,7 +190,7 @@ const drawChart = () => {
 
 
               if (!dimensions) return;
-              const margin = {top: 40, right: 30, bottom: 65, left: 105};
+              const margin = {top: 40, right: 60, bottom: 65, left: 65};
                          const w = width - margin.left - margin.right;
                          const h = height - margin.top - margin.bottom;
 
@@ -523,13 +523,47 @@ var points = svg.selectAll('.points')
 
   
 
+  
+
+//   const rects = svg.selectAll('.rects')
+//   .data(dataNest)
+//   .enter()
+//  .append('g')
+//   .attr('class', 'rects')
+//   .append('rect');
+
   const pointss = svg.selectAll('.pointss')
   .data(dataNest)
   .enter()
   .append('g')
   .attr('class', 'pointss')
+
+  pointss
+  .append('rect')
+
+  pointss
   .append('text');
 
+  const pointsk = svg.selectAll('.pointsk')
+  .data(dataNest)
+  .enter()
+  .append('g')
+  .attr('class', 'pointsk')
+  .append('text')
+
+
+
+  //     mousePerLine.append("rect")
+//     .attr("width", 50)
+//     .attr("height", 50)
+//     .style("stroke", function(d) {
+//       return color(d.key);
+//     })
+//     .style("fill", function(d) {
+//       return color(d.key);
+//     })
+//     .style("stroke-width", "1px")
+//     .style("opacity", "0")
 
 
 
@@ -554,7 +588,7 @@ focus.append('line')
 
 
   var timeScales = dataNest[0].values.map(function(key) { return xscale(key.date); });
-  console.log(timeScales);
+  
 
   function mouseover() {
     focus.style("display", null);
@@ -566,22 +600,43 @@ focus.append('line')
   }
   function mousemove() {
     var i = bisect(timeScales, mouse(this)[0], 1);
-    console.log(i)
+    
     var di = allData[i-1];
     focus.attr("transform", "translate(" + xscale(di.date) + ",0)");
 
     selectAll('.pointss text')
         
-    .attr("x", d => xscale(d.values[i-1].date) - 45)
-      .attr("y", d => yscale(d.values[i-1][radiostate] - 10))
-    .text(d => d.values[i-1][radiostate])
+    .attr("x", d => xscale(d.values[i-1].date) + 33)
+      .attr("y", d => yscale(d.values[i-1][radiostate])+13)
+    .text(d => d.values[i-1][radiostate] )
     .style("fill","black")
+    .attr("font-weight",function(d,i) {return i*100+100;})
+
+    selectAll('.pointsk text')
+        
+    .attr("x", d => xscale(d.values[i-1].date)- 48)
+      .attr("y", d => yscale(d.values[i-1][radiostate])+13)
+    .text(d => d.key )
+    .style("fill","black")
+    .attr("font-weight",function(d,i) {return i*100+100;})
+
+    selectAll('.pointss rect')
+      .attr("width", 130)
+          .attr("height", 20)
+          .style("fill","white")
+          .style("stroke-width", "1px")
+          .style("stroke", d => color(d.key))
+           .style("opacity", "0.89")
+          .attr("x", d => xscale(d.values[i-1].date) -50)
+      .attr("y", d => yscale(d.values[i-1][radiostate] )-1)
 
       selectAll('.points text')
       .attr('x',20)
-      .attr('y',60)
-      .text(`${format(di.date, 'dd MMMM')}`)
+      .attr('y',66)
+      .text(`${yAxisLabel}`+' '+'on'+' '+`${format(di.date, 'dd MMMM')}`)
       .style("fill","black")
+
+      
 
      
     // selectAll('.points text')
@@ -590,7 +645,7 @@ focus.append('line')
     //   .text(function(d) { return d.values[i-1].radiostate; })
     //   .style('fill', function(d) { return color(d.key); });
   }
-  console.log(dataNest)
+
 // dataNest.forEach(function(d,i)
 //   console.log(d)
 //     g.append("circle") // Uses the enter().append() method

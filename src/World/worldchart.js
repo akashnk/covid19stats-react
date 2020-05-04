@@ -6,7 +6,7 @@ import React, {  useState, useEffect, useRef,useContext,useCallback } from "reac
 // import {Delaunay} from 'd3-delaunay';
 import { select, nest,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
   scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10, selectAll, zoom,
-  zoomTransform} from 'd3';
+  zoomTransform,bisect,mouse} from 'd3';
 import {event as currentEvent} from 'd3';
 import axios from "axios";
 
@@ -42,7 +42,8 @@ const Worldchart = (props) => {
     const [worldd,setWorldd] = useState([]);
     const [fetched,setFetched] =useState(false);
     const [index, setIndex] = useState(0);
-    const [daysC,setDaysC] = useState([])
+    const [daysC,setDaysC] = useState([]);
+    const [oo,setD] =useState([]);
      // const [allData,setallData]=useState([]);
     // const [as,setAs]=useState(["TT"]);
   // console.log(conts.tooltip)
@@ -69,14 +70,14 @@ const Worldchart = (props) => {
     // useEffect(() => {
     //   setTimeSeriesData(timeseries.slice(timeseries.length - 20));
     // }, [timeseries]);
-   
+
     useEffect(() => {
       const totdat = props.totdata;
       const todat = totdat
       setTotdata(todat);
   
     }, [props.totdata])
-  
+    console.log(totdata)
     // const transformTimeSeries = useCallback(
     //   (totdata) => {
     //     if (timeseries.length > 1) {
@@ -101,7 +102,7 @@ const Worldchart = (props) => {
     setDaysC(props.daysC);
   }, [props.daysC]);
   
-  const api1 = 'https://pomber.github.io/covid19/timeseries.json'
+//   const api1 = 'https://pomber.github.io/covid19/timeseries.json'
 //   const api2 = 'https://raw.githubusercontent.com/datasets/covid-19/master/data/worldwide-aggregated.csv'
 // //   const api2 = 'https://disease.sh/v2/historical?lastdays=15'
 //   const api3 = 'https://disease.sh/v2/historical?lastdays=60'
@@ -113,102 +114,108 @@ const Worldchart = (props) => {
 
   const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infinity;
   
-  const fetchData = async () => {
-    try {
-      const [
-        countryd
+//   const fetchData = async () => {
+//     try {
+//       const [
+//         countryd
 
-     ] =
-     await Promise.all([
-      axios.get(api1)
+//      ] =
+//      await Promise.all([
+//       axios.get(api1)
       
-    //   axios.get(apiURL2),
+//     //   axios.get(apiURL2),
    
-   ]);
-      // world data
-      setCountryd(countryd.data);
+//    ]);
+//       // world data
+//       setCountryd(countryd.data);
    
      
        
 
     
        
-       setFetched(true);
+//        setFetched(true);
 
 
 
-    } catch (err) {
-       console.log(err);
-     }
-   };
+//     } catch (err) {
+//        console.log(err);
+//      }
+//    };
   
-    useEffect(() => {
-       if (fetched === false) {
-         fetchData();
+//     useEffect(() => {
+//        if (fetched === false) {
+//          fetchData();
          
-       }
-     }, [fetched]);
+//        }
+//      }, [fetched]);
 
    
 
 
-     if (countryd){
+//      useEffect(()=>{
      
-        var countryArr = Object.keys(countryd).map(i => i);
-        var worldChart = [];
-        countryArr.forEach((country) => {
-            let countryData = countryd[country];
-            countryData.forEach((dailyData, index) => {
-                if (worldChart[index] === undefined) {
-                    var worldStats = { date: dailyData.date, confirmed: dailyData.confirmed, recovered: dailyData.recovered, deaths: dailyData.deaths };
-                    worldChart.push(worldStats);
-                } else {
-                    worldChart[index].confirmed += dailyData.confirmed;
-                    worldChart[index].recovered += dailyData.recovered;
-                    worldChart[index].deaths += dailyData.deaths;
-                }
-            });
-          });
-        }
+//         var countryArr = Object.keys(countryd).map(i => i);
+//         var worldChart = [];
+//         countryArr.forEach((country) => {
+//             let countryData = countryd[country];
+//             countryData.forEach((dailyData, index) => {
+//                 if (worldChart[index] === undefined) {
+//                     var worldStats = { date: dailyData.date, confirmed: dailyData.confirmed, recovered: dailyData.recovered, deaths: dailyData.deaths };
+//                     worldChart.push(worldStats);
+//                 } else {
+//                     worldChart[index].confirmed += dailyData.confirmed;
+//                     worldChart[index].recovered += dailyData.recovered;
+//                     worldChart[index].deaths += dailyData.deaths;
+//                 }
+//             });
+//           });
+        
    
-          countryd["World"] = worldChart;
-
-const o = countryd
-// delete Object.assign(o, {["USA"]: o["US"]})["US"]
+//           countryd["World"] = worldChart;
+//     },[countryd])
 
 
-function ObjKeyRename2(src, map) {
-    var dst = {};
-    // src --> dst
-    for(var key in src){
-        if(key in map)
-            // rename key
-            dst[map[key]] = src[key];
-        else
-            // same key
-            dst[key] = src[key];
-    }
-    // clear src
-    for(var key in src){
-        delete src[key];
-    }
-    // dst --> src
-    for(var key in dst){
-        src[key] = dst[key];
-    }
-}
+// // delete Object.assign(o, {["USA"]: o["US"]})["US"]
 
-ObjKeyRename2(o, {"US":"USA"});
-ObjKeyRename2(o, {"United Kingdom":"UK"});
-ObjKeyRename2(o, {"United Arab Emirates":"UAE"});
-console.log(o)
+
+// function ObjKeyRename2(src, map) {
+//     var dst = {};
+//     // src --> dst
+//     for(var key in src){
+//         if(key in map)
+//             // rename key
+//             dst[map[key]] = src[key];
+//         else
+//             // same key
+//             dst[key] = src[key];
+//     }
+//     // clear src
+//     for(var key in src){
+//         delete src[key];
+//     }
+//     // dst --> src
+//     for(var key in dst){
+//         src[key] = dst[key];
+//     }
+// }
+
+// useEffect(() => {
+//     const o = countryd
+// ObjKeyRename2(o, {"US":"USA"});
+// ObjKeyRename2(o, {"United Kingdom":"UK"});
+// ObjKeyRename2(o, {"United Arab Emirates":"UAE"});
+//     setD(o);
+// },[countryd]);
+
+
 
     for (var i = 0; i < as.length; i++)
   {
       var tv = [];
       var resul=[];
       var retf=[];
-      tv[as[i]]=o[as[i]];
+      tv[as[i]]=totdata[as[i]];
       resul = Object.keys(tv).reduce(function (r, k) {
               return r.concat( tv[k]);
           }, []);
@@ -252,24 +259,26 @@ console.log(o)
       setChartType(props.type);
     }, [props.type]);
   
-  
+    useEffect(() => {
+        setChartType(props.type);
+      }, [props.type]);
   
    
-function is_touch_enabled() { 
-    return ( 'ontouchstart' in window ) ||  
-           ( navigator.maxTouchPoints > 0 ) ||  
-           ( navigator.msMaxTouchPoints > 0 ); 
-} 
+// function is_touch_enabled() { 
+//     return ( 'ontouchstart' in window ) ||  
+//            ( navigator.maxTouchPoints > 0 ) ||  
+//            ( navigator.msMaxTouchPoints > 0 ); 
+// } 
 
-if(is_touch_enabled()){
-    console.log("hi")
-}
-else{
-    console.log("bye")
-}
+// if(is_touch_enabled()){
+//     console.log("hi")
+// }
+// else{
+//     console.log("bye")
+// }
   //console.log(timeseries)
-    useEffect(() => {
   
+  useEffect(() => {
     allData.forEach((d,i)=> {
    // console.log(tv['TN'].totalconfirmed);
   
@@ -310,10 +319,10 @@ else{
   
   
   
-  const svgk = select(svgRef.current).attr("width",width).attr("height",height)
-  
-  const svg = svgk.append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+ 
+const svgk = select(svgRef.current).attr("width",width).attr("height",height)
+
+var svg= svgk.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   
   
   
@@ -391,247 +400,222 @@ else{
   
   var legendSpace = width/dataNest.length;
 
-  if(is_touch_enabled())
-  {
-      var MOUSEOVER = "touchstart"
-      var MOUSEOUT = "touchend"
-  }
-  else
-  {
-    var MOUSEOVER = "mouseover"
-    var MOUSEOUT = "mouseout"
-  }
-  
-  let lines = svg.append("g")
-  lines.append('g')
-  .selectAll("dot")
-  .data(dataNest)
-  .enter()
-  .append("g")
-  // .style("fill", (d, i) => color(i))
-  .style("fill", d=>color(d.key))
-  .append("g")
-  .on(MOUSEOVER, function(d) {
-   select(this)
-      .style("cursor", "pointer")
-      // .append("rect")
-      // .attr("x",d => xscale(xValue(d)) - 45)
-      // .attr("y",d => yscale(yValue(d)) - 45)
-      // .attr("width",10)
-      // .attr("height",10)
-      // .attr("fill","red")
-      .append("text")
-      .attr("class", "textb")
-      .style("font-size", "1.2em")
-      // .text("<br/>"+`${d[radiostate]}`)
-      .text(`${d.key}`)
-      
-      .attr("x", 45)
-      .attr("y", 65);
-  })
-  .on(MOUSEOUT, function(d) {
-   select(this)
-      .style("cursor", "none")
-      .transition()
-      .duration(duration)
-      .selectAll(".textb")
-      .remove();
-  })
-  .selectAll("circle")
-  .data(d => d.values)
-  .enter()
-  // .append("g")
-  
+      //   .attr("x",)
+      let metric=svg.selectAll(".metric")
+      .data(dataNest)
+      .enter().append("g")
+      .attr("class","metric")
+
+
+
+
+dataNest.forEach(function(d, i)  {
+  metric.append("path").attr('class', 'line').attr("d",myline(d.values))
+  .attr("stroke",d.color=()=>color(d.key))
+  .attr("stroke-width",lineStroke)
+  .attr("fill","none")
   // .on("mouseover", function(d) {
-  //  select(this)
-  //     .style("cursor", "pointer")
-  //     .append("rect")
-  //     .attr("class", "textback")
-  //     .attr("x",d => xscale(xValue(d)) - 45)
-  //     .attr("y",d => yscale(yValue(d)) - 10)
-  //     .attr("width",10)
-  //     .attr("height",10)
-  //     .style("fill","red")
-  //     .style("opacity", 0.4)
-  //     // .append("text")
-  //     // .attr("class", "text")
-  //     // // .text("<br/>"+`${d[radiostate]}`)
-  //     // .text(`${format(d.date, 'dd MMMM')}`+":"+`${d[radiostate]}`)
-  //     // .attr("x", d => xscale(xValue(d)) - 45)
-  //     // .attr("y", d => yscale(yValue(d)) - 10);
+  //   selectAll(".line").style("opacity", otherLinesOpacityHover);
+   
+  //   select(this)
+  //     .style("opacity", lineOpacityHover)
+  //     .style("stroke-width", lineStrokeHover)
+  //     .style("cursor", "pointer");
   // })
   // .on("mouseout", function(d) {
-  //  select(this)
-  //     .style("cursor", "none")
-  //     .transition()
-  //     .duration(duration)
-  //     .selectAll(".textback")
-  //     .remove();
+  //   selectAll(".line").style("opacity", lineOpacity);
+ 
+  //   select(this)
+  //     .style("stroke-width", lineStroke)
+  //     .style("cursor", "none");
   // })
-  
-  
-  .append("g")
-  .on(MOUSEOVER, function(d) {
-   select(this)
-      .style("cursor", "pointer")
-      // .append("rect")
-      // .attr("x",d => xscale(xValue(d)) - 45)
-      // .attr("y",d => yscale(yValue(d)) - 45)
-      // .attr("width",10)
-      // .attr("height",10)
-      // .attr("fill","red")
-      .append("text")
-      .attr("class", "text")
-      .style("font-size", "1.2em")
-      // .text("<br/>"+`${d[radiostate]}`)
-      .text(`${d[radiostate]}`+ " " + `${yAxisLabel}`+" "+"on"+" "+`${format(d.date, 'dd MMMM')}`)
-      
-      .attr("x", 45)
-      .attr("y", 85);
-  })
-  .on(MOUSEOUT, function(d) {
-   select(this)
-      .style("cursor", "none")
-      .transition()
-      .duration(duration)
-      .selectAll(".text")
-      .remove();
-  })
-  
-  .append("circle")
-          .attr("cx",function (d) { return xscale(xValue(d)); } )
-          .attr("cy",function (d) { return yscale(1+yValue(d)); })
-          .attr("r",circleRadius)
-          .style("opacity", circleOpacity)
-         .on(MOUSEOVER, function(d) {
-            select(this)
-              .transition()
-              .duration(duration)
-              .attr("r", circleRadiusHover);
-          })
-          .on(MOUSEOUT, function(d) {
-            select(this)
-              .transition()
-              .duration(duration)
-              .attr("r", circleRadius);
-          });
-  // .append("circle")
-  //         .attr("cx",function (d) { return xscale(xValue(d)); } )
-  //         .attr("cy",function (d) { return yscale(1+yValue(d)); })
-  //         .attr("r",circleRadius)
-  //         .attr("fill","red")
-  //         .on("mouseover", function(d) {
-  //           select(this)
-  //             .transition()
-  //             .duration(duration)
-  //             .attr("r", circleRadiusHover);
-  //         })
-  //         .on("mouseout", function(d) {
-  //           select(this)
-  //             .transition()
-  //             .duration(duration)
-  //             .attr("r", circleRadius);
-  //         });
-  //         lines
-  //         .on("mouseover", function(d) {
-  //           d3.select(this)
-  //             .style("cursor", "pointer")
-  //             .append("text")
-  //             .attr("class", "text")
-  //             .text(`${d.price}`)
-  //             .attr("x", d => xScale(d.date) + 5)
-  //             .attr("y", d => yScale(d.price) - 10);
-  //         })
-  //         .on("mouseout", function(d) {
-  //           d3.select(this)
-  //             .style("cursor", "none")
-  //             .transition()
-  //             .duration(duration)
-  //             .selectAll(".text")
-  //             .remove();
-  //         })       
-  
-  
-        //  g.append('g') 
-        //   .append("svg:title")
-        //   .text(function(d) { return yValue(d); });
-        //   .attr("x",)
-  
-  dataNest.forEach(function(d, i)  {
-    lines.append("path").attr("d",myline(d.values))
-    .attr("stroke",d.color=()=>color(d.key))
-    .attr("stroke-width",lineStroke)
-    .attr("fill","none")
-    .on("mouseover", function(d) {
-      selectAll(".line").style("opacity", otherLinesOpacityHover);
-     
-      select(this)
-        .style("opacity", lineOpacityHover)
-        .style("stroke-width", lineStrokeHover)
-        .style("cursor", "pointer");
-    })
-    .on("mouseout", function(d) {
-      selectAll(".line").style("opacity", lineOpacity);
-   
-      select(this)
-        .style("stroke-width", lineStroke)
-        .style("cursor", "none");
-    })
-  
-    // .on("mouseenter",(d,i)=>
-    // {
-    //   g.selectAll(".tooltip")
-    //   .data(dataNest)
-    //   .join("text")
-    //   .attr("class","tooltip")
-    //   .text(d.value)
-    //   .attr("x",d.key)
-    //   .attr("y",d.values)
-    // })
-   
-    // g.append("text")
-    //  .html(d.key)
-    //  .attr('fill', d.color)   
-    //  .attr('alignment-baseline', 'middle')
-    //  .attr('x', w-20)
-    //  .attr('dx', '.5em')
-    //  .attr('y', yscale(d.values[d.values.length-1].totalconfirmed)); 
-  lines
-    .append("text")                                    // *******
-        // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
-        // .attr("y", (margin.top/2)- 25)         // *******
-        .attr("x", (i%4)*w/3.5) // spacing // ****
-        .attr("y", Math.floor(i/4)*20-3)
-        .attr("class", "legend")    // style the legend   // *******
-        .style("fill", function() { // dynamic colours    // *******
-            return d.color = color(d.key); })             // *******
-        .text(d.key)
-  
-      
-  
-  
-      
-  });
-  
-  // dataNest.forEach(function(d,i){
-  //   console.log(d)
-  //     g.append("circle") // Uses the enter().append() method
-  //         .attr("class", "dot") // Assign a class for styling
-  //         .attr('fill', color.range()[i])
-  //         .attr("cx", function(d, i) { return xscale(d.key) })
-  //         .attr("cy", function(d) { console.log(d); return yscale(d.values) })//this is not working
-  //         .attr("r", 5);
+
+  // .on("mouseenter",(d,i)=>
+  // {
+  //   g.selectAll(".tooltip")
+  //   .data(dataNest)
+  //   .join("text")
+  //   .attr("class","tooltip")
+  //   .text(d.value)
+  //   .attr("x",d.key)
+  //   .attr("y",d.values)
+  // })
+ 
+  // g.append("text")
+  //  .html(d.key)
+  //  .attr('fill', d.color)   
+  //  .attr('alignment-baseline', 'middle')
+  //  .attr('x', w-20)
+  //  .attr('dx', '.5em')
+  //  .attr('y', yscale(d.values[d.values.length-1].totalconfirmed)); 
+metric
+  .append("text")                                    // *******
+      // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
+      // .attr("y", (margin.top/2)- 25)         // *******
+      .attr("x", (i%4)*w/3.5) // spacing // ****
+      .attr("y", Math.floor(i/4)*20-3)
+      .attr("class", "legend")    // style the legend   // *******
+      .style("fill", function() { // dynamic colours    // *******
+          return d.color = color(d.key); })             // *******
+      .text(d.key)
+
     
-  //   });
+
+
+    
+});
+
+metric
+// .style("fill", "#FFF")
+// .style("stroke", function(d) { return color(d.key); })
+.selectAll("circlesd")
+.data(function(d){ return d.values })
+  .enter()
+  .append("circle")
+  .attr("r", 3)
+  .style("fill", "#FFF")
+.style("stroke", function(d) { return color(d.key); })
+  .style("stroke-width", 2)
+  .attr("cx",d => xscale(d.date))
+  .attr("cy",d => yscale(d[radiostate]))
+
+var points = svg.selectAll('.points')
+  .data(dataNest)
+  .enter()
+  .append('g')
+  .attr('class', 'points')
+  .append('text');
+
+
+
   
+
   
+
+//   const rects = svg.selectAll('.rects')
+//   .data(dataNest)
+//   .enter()
+//  .append('g')
+//   .attr('class', 'rects')
+//   .append('rect');
+
+  const pointss = svg.selectAll('.pointss')
+  .data(dataNest)
+  .enter()
+  .append('g')
+  .attr('class', 'pointss')
+
+  pointss
+  .append('rect')
+
+  pointss
+  .append('text');
+
+  const pointsk = svg.selectAll('.pointsk')
+  .data(dataNest)
+  .enter()
+  .append('g')
+  .attr('class', 'pointsk')
+  .append('text')
+
+
+
+  //     mousePerLine.append("rect")
+//     .attr("width", 50)
+//     .attr("height", 50)
+//     .style("stroke", function(d) {
+//       return color(d.key);
+//     })
+//     .style("fill", function(d) {
+//       return color(d.key);
+//     })
+//     .style("stroke-width", "1px")
+//     .style("opacity", "0")
+
+
+
+  const focus = svg.append('g')
+  .attr('class', 'focus')
+  .style('display', 'none');
+
+focus.append('line')
+  .attr('class', 'x-hover-line hover-line')
+  .attr('y1' , 0)
+  .attr('y2', h);
+
+//   console.log(dataNest[0].values)
+  if(dataNest){
+ 
+  }
+  svgk.append('rect')
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+  .attr("class", "overlay")
+  .attr("width", w)
+  .attr("height", h)
+  .attr('fill', 'none')
+  .on("mouseover", mouseover)
+  .on("mouseout", mouseout)
+  .on("mousemove", mousemove);
+
+
+  var timeScales = dataNest[0].values.map(function(key) { return xscale(key.date); });
   
-  // console.log(yscale);
-  
-  
-  
-  
-  
+
+  function mouseover() {
+    focus.style("display", null);
+   selectAll('.points text').style("display", null);
+  }
+  function mouseout() {
+    focus.style("display", "none");
+    selectAll('.points text').style("display", "none");
+  }
+  function mousemove() {
+    var i = bisect(timeScales, mouse(this)[0], 1);
+    
+    var di = allData[i-1];
+    focus.attr("transform", "translate(" + xscale(di.date) + ",0)");
+
+    selectAll('.pointss text')
+        
+    .attr("x", d => xscale(d.values[i-1].date) + 33)
+      .attr("y", d => yscale(d.values[i-1][radiostate])+13)
+    .text(d => d.values[i-1][radiostate] )
+    .style("fill","black")
+    .attr("font-weight",function(d,i) {return i*100+100;})
+
+    selectAll('.pointsk text')
+        
+    .attr("x", d => xscale(d.values[i-1].date)- 48)
+      .attr("y", d => yscale(d.values[i-1][radiostate])+13)
+    .text(d => d.key )
+    .style("fill","black")
+    .attr("font-weight",function(d,i) {return i*100+100;})
+
+    selectAll('.pointss rect')
+      .attr("width", 130)
+          .attr("height", 20)
+          .style("fill","white")
+          .style("stroke-width", "1px")
+          .style("stroke", d => color(d.key))
+           .style("opacity", "0.89")
+          .attr("x", d => xscale(d.values[i-1].date) -50)
+      .attr("y", d => yscale(d.values[i-1][radiostate] )-1)
+
+      selectAll('.points text')
+      .attr('x',20)
+      .attr('y',66)
+      .text(`${yAxisLabel}`+' '+'on'+' '+`${format(di.date, 'dd MMMM')}`)
+      .style("fill","black")
+
+      
+
+     
+    // selectAll('.points text')
+    //   .attr('x', function(d) { return xscale(di.date) + 15; })
+    //   .attr('y', function(d) { return yscale(d.values[i-1].radiostate); })
+    //   .text(function(d) { return d.values[i-1].radiostate; })
+    //   .style('fill', function(d) { return color(d.key); });
+  }
   
    
         const zoomBehavior = zoom()
@@ -645,7 +629,7 @@ else{
           setCurrentZoomState(zoomState);
         });
   
-      lines.call(zoomBehavior);
+    //   lines.call(zoomBehavior);
   
   // const linechart = g
   //         .append('g')
