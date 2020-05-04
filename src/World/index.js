@@ -66,11 +66,14 @@ title: {
 export default function World() {
     const [datax, setDatax] = useState([]);
     const [dataw, setDataw] = useState([]);
+    const [datap, setDatap] = useState([]);
+    const [countryd,setcountry] = useState([]);
   const [fetched,setFetched] = useState(false);
 
   const [value,setCase] =useState('confirmed');
   const apiURL1 = 'https://disease.sh/v2/countries';
   const apiURL2 = 'https://disease.sh/v2/all';
+  const apiURL3 = 'https://pomber.github.io/covid19/timeseries.json'
   const [daysC,setDaysC] = useState('Month');
   
 
@@ -80,7 +83,8 @@ export default function World() {
     try {
       const [
         datad,
-        dataw
+        dataw,
+        datap,
 
     //    {data: statesDailyResponse},
     //   {data: stateTestData}
@@ -88,6 +92,7 @@ export default function World() {
      await Promise.all([
       axios.get(apiURL1),
       axios.get(apiURL2),
+      axios.get(apiURL3),
     //   axios.get(apiURL2),
    
    ]);
@@ -95,6 +100,7 @@ export default function World() {
      
        setDatax(datad.data);
        setDataw(dataw.data);
+       setDatap(datap.data);
 
       
        setFetched(true);
@@ -112,8 +118,62 @@ export default function World() {
 
 
 
+     useEffect(()=>{
+      setcountry(datap)
+    },[datap])
+      var countryArr = Object.keys(countryd).map(i => i);
+      var worldChart = [];
+      countryArr.forEach((country) => {
+          let countryData = countryd[country];
+          countryData.forEach((dailyData, index) => {
+              if (worldChart[index] === undefined) {
+                  var worldStats = { date: dailyData.date, confirmed: dailyData.confirmed, recovered: dailyData.recovered, deaths: dailyData.deaths };
+                  worldChart.push(worldStats);
+              } else {
+                  worldChart[index].confirmed += dailyData.confirmed;
+                  worldChart[index].recovered += dailyData.recovered;
+                  worldChart[index].deaths += dailyData.deaths;
+              }
+          });
+        });
+      
+ 
+        countryd["World"] = worldChart;
+        
+ 
 
-console.log(datax);
+
+
+  function ObjKeyRename2(src, map) {
+    var dst = {};
+    // src --> dst
+    for(var key in src){
+        if(key in map)
+            // rename key
+            dst[map[key]] = src[key];
+        else
+            // same key
+            dst[key] = src[key];
+    }
+    // clear src
+    for(var key in src){
+        delete src[key];
+    }
+    // dst --> src
+    for(var key in dst){
+        src[key] = dst[key];
+    }
+}
+
+
+    const o = countryd
+ObjKeyRename2(o, {"US":"USA"});
+ObjKeyRename2(o, {"United Kingdom":"UK"});
+ObjKeyRename2(o, {"United Arab Emirates":"UAE"});
+
+
+
+// console.log(datax);
 const handleChange = e => {
     // console.log(e.target.value);
     setCase(e.target.value);
@@ -155,7 +215,8 @@ const handleChange = e => {
     
         {fetched && <Worldchart dataw={datax} casetype={value}
 
-daysC ={daysC}
+daysC ={daysC} 
+totdata={o}
 
  logMode={logMode} />}
    <RadioGroup row aria-label="daysC" name="daysC"  value={daysC} onClick={handleTime}>

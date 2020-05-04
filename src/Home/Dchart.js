@@ -6,7 +6,7 @@ import React, {  useState, useEffect, useRef,useContext,useCallback } from "reac
 // import {Delaunay} from 'd3-delaunay';
 import { select, nest,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
   scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10, selectAll, zoom,
-  zoomTransform} from 'd3';
+  zoomTransform,bisect,mouse} from 'd3';
 import {event as currentEvent} from 'd3';
 
 // import moment from 'moment';
@@ -190,7 +190,7 @@ const drawChart = () => {
 
 
               if (!dimensions) return;
-              const margin = {top: 40, right: 30, bottom: 65, left: 105};
+              const margin = {top: 40, right: 60, bottom: 65, left: 65};
                          const w = width - margin.left - margin.right;
                          const h = height - margin.top - margin.bottom;
 
@@ -488,7 +488,155 @@ lines
     
 });
 
-// dataNest.forEach(function(d,i){
+metric
+// .style("fill", "#FFF")
+// .style("stroke", function(d) { return color(d.key); })
+.selectAll("circlesd")
+.data(function(d){ return d.values })
+  .enter()
+  .append("circle")
+  .attr("r", 3)
+  .style("fill", "#FFF")
+.style("stroke", function(d) { return color(d.key); })
+  .style("stroke-width", 2)
+  .attr("cx",d => xscale(d.date))
+  .attr("cy",d => yscale(d[radiostate]))
+
+var points = svg.selectAll('.points')
+  .data(dataNest)
+  .enter()
+  .append('g')
+  .attr('class', 'points')
+  .append('text');
+
+
+
+  
+
+  
+
+//   const rects = svg.selectAll('.rects')
+//   .data(dataNest)
+//   .enter()
+//  .append('g')
+//   .attr('class', 'rects')
+//   .append('rect');
+
+  const pointss = svg.selectAll('.pointss')
+  .data(dataNest)
+  .enter()
+  .append('g')
+  .attr('class', 'pointss')
+
+  pointss
+  .append('rect')
+
+  pointss
+  .append('text');
+
+  const pointsk = svg.selectAll('.pointsk')
+  .data(dataNest)
+  .enter()
+  .append('g')
+  .attr('class', 'pointsk')
+  .append('text')
+
+
+
+  //     mousePerLine.append("rect")
+//     .attr("width", 50)
+//     .attr("height", 50)
+//     .style("stroke", function(d) {
+//       return color(d.key);
+//     })
+//     .style("fill", function(d) {
+//       return color(d.key);
+//     })
+//     .style("stroke-width", "1px")
+//     .style("opacity", "0")
+
+
+
+  const focus = svg.append('g')
+  .attr('class', 'focus')
+  .style('display', 'none');
+
+focus.append('line')
+  .attr('class', 'x-hover-line hover-line')
+  .attr('y1' , 0)
+  .attr('y2', h);
+
+  svgk.append('rect')
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+  .attr("class", "overlay")
+  .attr("width", w)
+  .attr("height", h)
+  .attr('fill', 'none')
+  .on("mouseover", mouseover)
+  .on("mouseout", mouseout)
+  .on("mousemove", mousemove);
+
+
+  var timeScales = dataNest[0].values.map(function(key) { return xscale(key.date); });
+  
+
+  function mouseover() {
+    focus.style("display", null);
+   selectAll('.points text').style("display", null);
+  }
+  function mouseout() {
+    focus.style("display", "none");
+    selectAll('.points text').style("display", "none");
+  }
+  function mousemove() {
+    var i = bisect(timeScales, mouse(this)[0], 1);
+    
+    var di = allData[i-1];
+    focus.attr("transform", "translate(" + xscale(di.date) + ",0)");
+
+    selectAll('.pointss text')
+        
+    .attr("x", d => xscale(d.values[i-1].date) + 33)
+      .attr("y", d => yscale(d.values[i-1][radiostate])+13)
+    .text(d => d.values[i-1][radiostate] )
+    .style("fill","black")
+    .attr("font-weight",function(d,i) {return i*100+100;})
+
+    selectAll('.pointsk text')
+        
+    .attr("x", d => xscale(d.values[i-1].date)- 48)
+      .attr("y", d => yscale(d.values[i-1][radiostate])+13)
+    .text(d => d.key )
+    .style("fill","black")
+    .attr("font-weight",function(d,i) {return i*100+100;})
+
+    selectAll('.pointss rect')
+      .attr("width", 130)
+          .attr("height", 20)
+          .style("fill","white")
+          .style("stroke-width", "1px")
+          .style("stroke", d => color(d.key))
+           .style("opacity", "0.89")
+          .attr("x", d => xscale(d.values[i-1].date) -50)
+      .attr("y", d => yscale(d.values[i-1][radiostate] )-1)
+
+      selectAll('.points text')
+      .attr('x',20)
+      .attr('y',66)
+      .text(`${yAxisLabel}`+' '+'on'+' '+`${format(di.date, 'dd MMMM')}`)
+      .style("fill","black")
+
+      
+
+     
+    // selectAll('.points text')
+    //   .attr('x', function(d) { return xscale(di.date) + 15; })
+    //   .attr('y', function(d) { return yscale(d.values[i-1].radiostate); })
+    //   .text(function(d) { return d.values[i-1].radiostate; })
+    //   .style('fill', function(d) { return color(d.key); });
+  }
+
+// dataNest.forEach(function(d,i)
 //   console.log(d)
 //     g.append("circle") // Uses the enter().append() method
 //         .attr("class", "dot") // Assign a class for styling
