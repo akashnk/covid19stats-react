@@ -9,7 +9,7 @@ import { SearchState,
 import Paper from '@material-ui/core/Paper';
 import {
   Grid,
-  VirtualTable,
+  Table,
   Toolbar,
   SearchPanel,
   TableHeaderRow,
@@ -225,7 +225,7 @@ getCellValue: (row) => {
           expandedRowIds={expandedRowIds}
           onExpandedRowIdsChange={setExpandedRowIds}
         />
-        <VirtualTable  columnExtensions={tableColumnExtensions}/>
+        <Table  columnExtensions={tableColumnExtensions}/>
        
         <TableColumnResizing
           columnWidths={columnWidths}
