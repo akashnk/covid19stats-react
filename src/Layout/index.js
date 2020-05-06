@@ -82,8 +82,8 @@ function Layout(props) {
           <MenuItem component={Link} to="/world">
             World
           </MenuItem>
-          <MenuItem component={Link} to="/Faq">
-            Predictions
+          <MenuItem component={Link} to="/zones">
+            Zones
           </MenuItem>
           <MenuItem component={Link} to="/statistics">
             Statistics

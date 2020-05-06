@@ -813,7 +813,7 @@ focus.append('line')
 
       const zoomBehavior = zoom()
       .scaleExtent([1, Infinity])
-      .extent([[0,0],[w,h]])
+      .extent([[0,0],[w-50,h]])
       .translateExtent([
         [0, 0],
         [w, h]
