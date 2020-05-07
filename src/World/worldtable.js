@@ -5,17 +5,17 @@ import { SearchState,
   SortingState,
   IntegratedFiltering,
   IntegratedSorting,
-  RowDetailState, } from '@devexpress/dx-react-grid';
+  PagingState,
+  IntegratedPaging, } from '@devexpress/dx-react-grid';
 import Paper from '@material-ui/core/Paper';
 import {
   Grid,
-  VirtualTable,
+  PagingPanel,
+  Table,
   Toolbar,
   SearchPanel,
   TableHeaderRow,
-  TableColumnResizing,
   TableSelection,
-  TableRowDetail,
   TableFixedColumns,
 } from '@devexpress/dx-react-grid-material-ui';
 
@@ -213,6 +213,11 @@ useEffect(()=>{
        <SearchState value={searchValue}
           onValueChange={setSearchState} />
           <IntegratedFiltering/>
+          <PagingState
+          defaultCurrentPage={0}
+          pageSize={10}
+        />
+        <IntegratedPaging />
           <Toolbar />
         <SearchPanel />
         <SelectionState
@@ -226,14 +231,14 @@ useEffect(()=>{
         />
         <IntegratedSorting />
         
-        <VirtualTable  />
+        <Table  />
        
         {/* <TableColumnResizing
           columnWidths={columnWidths}
           onColumnWidthsChange={setColumnWidths}
         /> */}
         <TableHeaderRow showSortingControls />
-      
+        <PagingPanel />
         
         <TableSelection />
  

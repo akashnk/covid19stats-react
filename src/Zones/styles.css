@@ -1,14 +1,14 @@
-html {
+/* html {
   font-family: system-ui, sans-serif;
   font-size: 1.25rem;
 }
 
-body {
+/* body {
   margin: 0;
   padding: 0 1.5rem;
-}
+} */
 
 svg {
   display: inline-block;
   vertical-align: middle;
-} 
+}  

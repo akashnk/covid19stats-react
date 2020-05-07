@@ -313,7 +313,7 @@ const Worldchart = (props) => {
   
   
                 if (!dimensions) return;
-                const margin = {top: 40, right: 30, bottom: 65, left: 105};
+                const margin = {top: 40, right: 50, bottom: 65, left: 65};
                            const w = width - margin.left - margin.right;
                            const h = height - margin.top - margin.bottom;
   
@@ -577,7 +577,7 @@ focus.append('line')
 
     selectAll('.pointss text')
         
-    .attr("x", d => xscale(d.values[i-1].date) + 33)
+    .attr("x", d => xscale(d.values[i-1].date) + 28)
       .attr("y", d => yscale(d.values[i-1][radiostate])+13)
     .text(d => d.values[i-1][radiostate] )
     .style("fill","black")
@@ -592,13 +592,13 @@ focus.append('line')
     .attr("font-weight",function(d,i) {return i*100+100;})
 
     selectAll('.pointss rect')
-      .attr("width", 130)
+      .attr("width", 137)
           .attr("height", 20)
           .style("fill","white")
           .style("stroke-width", "1px")
           .style("stroke", d => color(d.key))
            .style("opacity", "0.89")
-          .attr("x", d => xscale(d.values[i-1].date) -50)
+          .attr("x", d => xscale(d.values[i-1].date) -48)
       .attr("y", d => yscale(d.values[i-1][radiostate] )-1)
 
       selectAll('.points text')

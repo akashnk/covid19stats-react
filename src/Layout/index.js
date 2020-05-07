@@ -19,6 +19,8 @@ const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    margin: "1px",
+        padding: "1px"
     // display: 'flex',
   },
   drawer: {

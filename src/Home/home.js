@@ -44,7 +44,7 @@ const items = [
 const theme = createMuiTheme({
 
     typography: {
-      "fontSize": 12.5,
+      "fontSize": 12,
       variantMapping: {
         
         h1: 'h3',
@@ -73,10 +73,10 @@ const styles = createStyles({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   paper: {
-    padding: theme.spacing(0.2),
+    padding: theme.spacing(0.1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
@@ -232,24 +232,13 @@ const classes = useStyles();
 <ThemeProvider theme={theme}>
     
     <div className={classes.root}>
-    <Grid container spacing={1}>
-    {/* <Grid item xs={0}> */}
-    {/* <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="subtitle1" className={classes.title}>
-            Covid 19 Interactive Dashboard
-          </Typography>
-          
-        </Toolbar>
-      </AppBar>
-</Grid> */}
+     <Grid container spacing={1}> 
+ 
+
 
 <Grid item xs={12} >
 <Paper className={classes.paper}>
-<div className="box">
+<div >
       <Today data={data} />
       </div>
       </Paper>
@@ -309,9 +298,7 @@ const classes = useStyles();
   
 </Paper>
     </Grid>
-    {/* <Grid item xs={12} sm={6}>
-    <Paper className={classes.paper}>{fetched && <Racechart timeseries={timeseries} />} </Paper></Grid> */}
-    </Grid>
+    </Grid> 
     </div>
     </ThemeProvider>
     </>

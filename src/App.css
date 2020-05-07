@@ -1,4 +1,4 @@
-.center {
+/* .center {
   text-align: center;
   
 }
@@ -38,28 +38,29 @@
   }
   to {
     transform: rotate(360deg);
-  }
-} */
+  } */
+/* } */ 
 .box div {
    display: inline-block;
      flex-direction: row;
     justify-content: space-between;
     align-self: center;
     width: 5em;
+}
 
 /*     padding:1px; */
-    text-align:center;
+    /* text-align:center;
     color:#000000;
     font-family: arial, sans-serif;
 
-  }
+  } */
     .orange {
       background-color: rgb(228, 113, 67);
        }
     .green {background-color: rgb(29, 202, 23);}
     .gray {background-color: gray;}
     .red {background-color:#db0b2e;
-    }
+    } 
 
 
 
@@ -82,10 +83,10 @@
       overflow: auto;
       table-layout: fixed; 
     }
-    .dx-command-select {  
+    /* .dx-command-select {  
       width: 10px!important;  
       min-width: 10px!important;  
-  }  
+  }   */
 
   div.tooltip {	
     position: absolute;			
@@ -251,11 +252,11 @@ table th.sort-desc::before {
   border-top: 5px solid #22543d;
 }
 */
-.App {
+/* .App {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-}
+  padding: 2px;
+} */
 /* Add a black background color to the top navigation */
 .topnav {
   background-color: #333;
@@ -263,7 +264,7 @@ table th.sort-desc::before {
    padding: 0.1em; 
   /* height: 1em; */
 }
-.badge {
+/* .badge {
   background-color: #9ae6b4;
   color: #22543d;
   margin-right: 4px;
@@ -272,8 +273,8 @@ table th.sort-desc::before {
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
-}
-input {
+} */
+/* input {
   padding: 8px;
   margin-bottom: 20px;
   margin-top: 20px;
@@ -283,7 +284,7 @@ input {
   border-radius: 5px;
   border: 1px solid #ddd;
   box-shadow: none;
-}
+} */
 
 /* .line-path {
   fill: maroon;
