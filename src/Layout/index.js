@@ -12,6 +12,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { MenuList, MenuItem } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import {Link} from 'react-router-dom';
 
 const drawerWidth = 200;
@@ -32,12 +33,16 @@ const useStyles = makeStyles((theme) => ({
     //   marginLeft: drawerWidth,
     // },
     zIndex: theme.zIndex.drawer + 1,
+    alignItems: 'center',
   },
   menuButton: {
     marginRight: theme.spacing(2),
     [theme.breakpoints.up('sm')]: {
       display: 'none',
     },
+  },
+  Button: {
+    marginLeft: theme.spacing(2)
   },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
@@ -115,7 +120,11 @@ function Layout(props) {
           <Typography variant="h6" align="center" noWrap>
             Covid19 Interactive
           </Typography>
+          <div style={{marginLeft:"auto", marginRight:0 }}>
+          <Button className={classes.Button} color="inherit">Maps</Button>
+          </div>
         </Toolbar>
+        
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
