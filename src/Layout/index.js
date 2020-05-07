@@ -113,7 +113,7 @@ function Layout(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" align="center" noWrap>
-            Covid 19 Interactive Dashboard
+            Covid19 Interactive
           </Typography>
         </Toolbar>
       </AppBar>

@@ -1,5 +1,8 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
+import axios from 'axios';
 import ReactTooltip from "react-tooltip";
+
+
 import "./styles.css";
 
 // import {Stage} from './Stage';
@@ -54,6 +57,7 @@ import {
     Graticule,
   } from "react-simple-maps"
   import { scaleLinear,scaleOrdinal } from "d3-scale"
+import { STATES_C } from '../Common/constants';
   
   const wrapperStyles = {
     width: "100%",
@@ -62,10 +66,16 @@ import {
   }
   
 
- const datax = require("./zones.json")
- const data =datax.zones
+ 
+  
+  function Zone(props) {
+    const [content, setTooltipContent] = useState("");
+    
  const INDIA_TOPO_JSON = require('./indiatop.json');
 
+ const districtWiseData =props.districtWiseData;
+
+ 
  
 
   const minValue = 5 // based on the data array above
@@ -82,15 +92,50 @@ import {
     .domain(['#D21C1C','#E98305','#2B7336'])
     .range(['#2B7336','#D21C1C','#E98305']);
 
-
-  
-  function Zone() {
-    const [content, setTooltipContent] = useState("");
-
     
+  
+    const datax = require("./zones.json");
+
+    var dist= Object.keys(districtWiseData).reduce(function (r, k) {
+        return r.concat( districtWiseData[k])
+    }, []);
+    var dataa = []
+    
+    function objk(hs) { 
+            for (var x=0;x<33;x++){
+                 var distl = [];
+                 var statel =[];
+                 distl = dist[x].districtData;
+                 statel = dist[x].statecode;
+                 var ks=[]
+                for (var y=0; y < Object.keys(distl).length;y++){
+                    var g = [];
+                     g = Object.values(distl)[y];
+                    g.district = Object.keys(distl)[y]
+                    g.state=STATES_C[statel]
+                    dataa.push(g)
+                    
+                }
+                 
+            } 
+            
+            // .reduce(function (r, k) {
+            //     return r.concat( k);
+            // }, []);
+            return dataa}
+
+            var c =objk(dist);
+
+  const data = datax.zones
+   
+    
+
+ 
+ 
       return (
         <>
         <h3>Red, Orange and Green zones of India</h3>
+        <div>
         <div style={wrapperStyles}>
           <ComposableMap
             projection="geoMercator"
@@ -114,6 +159,8 @@ import {
           geographies.map((geo,i) =>
           {
           const country = data.find(d => d.district === geo.properties.district)
+          const countrycon = c.find(d => d.district === geo.properties.district)
+          
           
           return (
               
@@ -122,10 +169,15 @@ import {
               geography={geo}
               projection={projection}
               onMouseEnter={() => {
-                const { district, st_nm } = geo.properties;
-                const zone = country.zone;
+                const {district,st_nm}  = geo.properties;
                 
-                setTooltipContent(`${district} (${st_nm}) : ${zone}`);
+           
+                const zone = country.zone;
+             
+                const conf = countrycon ? countrycon.confirmed : 0
+                const actv = countrycon ? countrycon.active : 0
+                // setTooltipContent(`${district} (${st_nm}) :` <br> `${zone} ${conf} ${actv} `);
+                setTooltipContent(<span>{district} ({st_nm})<br/>Confirmed: {conf} <br/> Active: {actv} <br/> Zone: {zone} </span>)
               }}
               onMouseLeave={() => {
                 setTooltipContent("");
@@ -160,6 +212,10 @@ import {
          
         </div>
         <div> <ReactTooltip multiline={true}>{content}</ReactTooltip></div>
+        </div>
+        {/* <div>
+            <Tabledistrict districts={c}/>
+        </div> */}
         </>
       )
     }

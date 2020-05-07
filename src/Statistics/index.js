@@ -30,7 +30,7 @@ export default function Statistics() {
         <>
         <FormControl className={classes.formControl}>
         <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-          Age
+          Charts
         </InputLabel>
         <Select
           labelId="demo-simple-select-placeholder-label-label"
@@ -43,7 +43,7 @@ export default function Statistics() {
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={10}>Daily cases vs Total cases</MenuItem>
           <MenuItem value={20}>Twenty</MenuItem>
           <MenuItem value={30}>Thirty</MenuItem>
         </Select>

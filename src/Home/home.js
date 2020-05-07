@@ -205,36 +205,6 @@ let merged = [];
 
 
 
-// console.log(gdata.map((, i) => Object.assign({}, item, filtTest[i]));
-// const ddata= [...gdata,...filtTest,]
-// let set = new Set();
-// let unionArray = ddata.filter(item => {
-//   if (!set.has(item.state)) {
-//     set.add(item.state);
-//     return true;
-//   }
-//   return false;
-// }, set);
-
-// function mergeArrayObjects(arr1,arr2){
-//   return arr1.map((item,i)=>{
-//      if(item.state === arr2[i].state){
-//          //merging two objects
-//        return Object.assign({},item,arr2[i])
-//      }
-//   })
-// }
-// useEffect(()=>{
-// setTimeMode(mergeArrayObjects(gdata,filtTest));
-// }
-// ,[gdata,filtTest])
-
-
-
-// console.log(merged);
-// console.log(testData)
-// arrayv.push(j)
-
 
 const handleChange = e => {
    // console.log(e.target.value);
