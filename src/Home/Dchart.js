@@ -812,8 +812,8 @@ focus.append('line')
  
 
       const zoomBehavior = zoom()
-      .scaleExtent([1, Infinity])
-      .extent([[0,0],[w-50,h]])
+      .scaleExtent([1, 5])
+      .extent([[0,0],[w,h]])
       .translateExtent([
         [0, 0],
         [w, h]
@@ -824,7 +824,7 @@ focus.append('line')
         setCurrentZoomState(zoomState);
       });
 
-    svgk.call(zoomBehavior);
+    svgk.call(zoomBehavior).on("wheel.zoom", null);
 
 // const linechart = g
 //         .append('g')

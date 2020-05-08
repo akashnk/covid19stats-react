@@ -213,13 +213,7 @@ useEffect(()=>{
        <SearchState value={searchValue}
           onValueChange={setSearchState} />
           <IntegratedFiltering/>
-          <PagingState
-          defaultCurrentPage={0}
-          pageSize={10}
-        />
-        <IntegratedPaging />
-          <Toolbar />
-        <SearchPanel />
+        
         <SelectionState
           selection={selection}
           onSelectionChange={setSelection}
@@ -230,6 +224,13 @@ useEffect(()=>{
           
         />
         <IntegratedSorting />
+        <PagingState
+          defaultCurrentPage={0}
+          pageSize={10}
+        />
+        <IntegratedPaging />
+          <Toolbar />
+        <SearchPanel />
         
         <Table  />
        

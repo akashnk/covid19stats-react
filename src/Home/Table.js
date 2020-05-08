@@ -58,9 +58,11 @@ const Tables = (props) => {
         }
         return (priorityA < priorityB) ? -1 : 1;
       };
-      const [integratedSortingColumnExtensions] = useState([
-        { columnName: 'deaths', compare: comparedeath  },
-      ]);
+      // const [integratedSortingColumnExtensions] = useState([
+      //   { columnName: 'deaths', compare: comparedeath  },
+      // ]);
+
+   
 
   const [columns] = useState([
     
@@ -88,7 +90,7 @@ const Tables = (props) => {
                   title: "Deaths",
                   getCellValue: (row,rowInfo) =>  {
                   return(  <div>
-                 <span>  {row.deaths}</span>
+                 <span>  {parseFloat(row.deaths)}</span>
                  <br/>
                  <span style={{color: row.deltadeaths > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltadeaths}]</span>
                   </div>)}
@@ -107,7 +109,7 @@ const Tables = (props) => {
   title: "Recvrd",
   getCellValue:  (row,rowInfo) =>  {
   return(  <div>
- <span>  {parseInt(row.recovered)}</span>
+ <span>  {parseFloat(row.recovered)}</span>
  <br/>
  <span style={{color: row.deltarecovered > 0 ? "green": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {(row.deltarecovered).toString()}]</span>
   </div>)}
@@ -116,9 +118,11 @@ const Tables = (props) => {
 {
 name: "totaltested",
 title: "Total Tested"
+,
+getCellValue: (row) => { return +row.totaltested || 0
 // width: 80
 },
-
+},
 {
 name: "positive",
 title: "Positive rate",
@@ -185,9 +189,11 @@ getCellValue: (row) => {
   );
  
   const [sorting, setSorting] = useState([{ columnName: 'confirmed', direction: 'desc' }]);
-  const [sortingStateColumnExtensions] = useState([
-    { columnName: 'recovered', sortingEnabled: true },
-  ]);
+  // const [sortingStateColumnExtensions] = useState([
+  //   { columnName: 'recovered', sortingEnabled: true },
+  //   { columnName: 'deaths', sortingEnabled: true },
+  //   { columnName: 'totaltested', sortingEnabled: true },
+  // ]);
  
 
  useEffect(()=>{
@@ -203,6 +209,7 @@ getCellValue: (row) => {
       context.setStatecodes(["TT"]);
     }
 },[selection,rows])
+console.log(rows)
 
   return (
     <Paper>
@@ -213,27 +220,33 @@ getCellValue: (row) => {
        <SearchState value={searchValue}
           onValueChange={setSearchState} />
           <IntegratedFiltering/>
-          <PagingState
-          defaultCurrentPage={0}
-          pageSize={10}
-        />
-        <IntegratedPaging />
-          <Toolbar />
-        <SearchPanel />
+       
+      
         <SelectionState
           selection={selection}
           onSelectionChange={setSelection}
         />
-         <SortingState
-           sorting={sorting}
-           onSortingChange={setSorting}
-           columnExtensions={sortingStateColumnExtensions}
-        />
-        <IntegratedSorting columnExtensions={integratedSortingColumnExtensions}/>
+         
+     
+          <Toolbar />
+        <SearchPanel />
         <RowDetailState
           expandedRowIds={expandedRowIds}
           onExpandedRowIdsChange={setExpandedRowIds}
         />
+        <SortingState
+           sorting={sorting}
+           onSortingChange={setSorting}
+          
+        />
+        <IntegratedSorting />
+        {/* <IntegratedSorting columnExtensions={integratedSortingColumnExtensions}/> */}
+        <PagingState
+          defaultCurrentPage={0}
+          pageSize={10}
+        />
+           <IntegratedPaging />
+
         <Table  columnExtensions={tableColumnExtensions}/>
        
         <TableColumnResizing
@@ -242,7 +255,7 @@ getCellValue: (row) => {
         />
         <TableHeaderRow showSortingControls />
       
-        <PagingPanel />
+      
         <TableSelection />
  
         <TableRowDetail
@@ -250,6 +263,7 @@ getCellValue: (row) => {
         /> 
                <TableFixedColumns
           leftColumns={leftColumns}/>
+            <PagingPanel />
       </Grid>
     </Paper>
   );

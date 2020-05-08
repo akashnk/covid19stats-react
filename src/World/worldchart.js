@@ -77,7 +77,7 @@ const Worldchart = (props) => {
       setTotdata(todat);
   
     }, [props.totdata])
-    console.log(totdata)
+    
     // const transformTimeSeries = useCallback(
     //   (totdata) => {
     //     if (timeseries.length > 1) {
@@ -329,19 +329,23 @@ var svg= svgk.append("g").attr("transform", "translate(" + margin.left + "," + m
   
               
   
-              const yscale = logMode === true ?
-              scaleSymlog().domain([1,max(allData,yValue)]).range([h,1]).nice() :
-              scaleLinear().domain(extent(allData,yValue)).range([h,0]).nice();
-  
-  
-              const xscale =  scaleTime()
-                .domain(extent(allData,xValue))
-                .range([0,w])
-                .nice();
+const yscale = logMode === true ?
+scaleSymlog().domain([1,max(allData,yValue)]).range([h,1]).nice() :
+scaleLinear().domain(extent(allData,yValue)).range([h,0]).nice();
+
+
+
+
+const xscale =  scaleTime()
+  .domain(extent(allData,xValue))
+  .range([0,w])
+  .nice();
   
   // console.log(timeseries)
   if (currentZoomState) {
+    const newYScale = currentZoomState.rescaleY(yscale);
     const newXScale = currentZoomState.rescaleX(xscale);
+    yscale.domain(newYScale.domain());
     xscale.domain(newXScale.domain());
   }
   
@@ -398,13 +402,21 @@ var svg= svgk.append("g").attr("transform", "translate(" + margin.left + "," + m
         .text(yAxisLabel);
   
   
-  var legendSpace = width/dataNest.length;
-
-      //   .attr("x",)
-      let metric=svg.selectAll(".metric")
-      .data(dataNest)
-      .enter().append("g")
-      .attr("class","metric")
+        var clip = svg.append("defs").append("svg:clipPath")
+        .attr("id", "clip")
+        .append("svg:rect")
+        .attr("id", "clip-rect")
+        .attr("x", "0")
+        .attr("y", "0")
+        .attr('width', w)
+        .attr('height', h);
+          //   .attr("x",)
+          let mer = svg.append("g").attr("clip-path", "url(#clip)")
+          let metric=mer.selectAll(".metric")
+          .data(dataNest)
+          .enter().append("g")
+          .attr("class","metric")
+    
 
 
 
@@ -618,16 +630,20 @@ focus.append('line')
   }
   
    
-        const zoomBehavior = zoom()
-        .scaleExtent([0.5, 5])
-        .translateExtent([
-          [0, 0],
-          [w, h]
-        ])
-        .on("zoom", () => {
-          const zoomState = zoomTransform(svg.node());
-          setCurrentZoomState(zoomState);
-        });
+  const zoomBehavior = zoom()
+  .scaleExtent([1, 5])
+  .extent([[0,0],[w,h]])
+  .translateExtent([
+    [0, 0],
+    [w, h]
+  ])
+  .on("zoom", () => {
+    const zoomState = zoomTransform(svgRef.current);
+   
+    setCurrentZoomState(zoomState);
+  });
+
+svgk.call(zoomBehavior).on("wheel.zoom", null);
   
     //   lines.call(zoomBehavior);
   

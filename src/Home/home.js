@@ -187,10 +187,10 @@ useEffect(() => {
 
 const fdata = data.filter(d => d.confirmed > 0);
 const kdata = fdata.filter(d => d.state !== "Total");
-const kgdata = kdata.sort((a, b) => (b.deaths - a.deaths));
-const kggdata = kgdata.sort((a, b) => (b.recovered - a.recovered));
+// const kgdata = kdata.sort((a, b) => (b.deaths - a.deaths));
+// const kggdata = kgdata.sort((a, b) => (b.recovered - a.recovered));
 
-const gdata = kggdata.sort((a, b) => (b.confirmed - a.confirmed));
+const gdata = kdata.sort((a, b) => (b.confirmed - a.confirmed));
 const filtTest=testData.filter((v,i,a)=> a.findIndex(t=>(t.state===v.state && t.totaltested>0))===i);
 
 let merged = [];
@@ -202,8 +202,6 @@ let merged = [];
    ...(filtTest.find((itmInner) => itmInner.state === gdata[i].state))}
   );
 };
-
-
 
 
 const handleChange = e => {

@@ -8,9 +8,11 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import CloseIcon from '@material-ui/icons/Close';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
 import { MenuList, MenuItem } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import {Link} from 'react-router-dom';
@@ -34,8 +36,7 @@ const useStyles = makeStyles((theme) => ({
     //   width: `calc(100% - ${drawerWidth}px)`,
     //   marginLeft: drawerWidth,
     // },
-    zIndex: theme.zIndex.drawer + 1,
-    alignItems: 'center',
+    zIndex: theme.zIndex.drawer + 1
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -74,28 +75,45 @@ function Layout(props) {
     setMobileOpen(!mobileOpen);
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(false);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(false);
+  };
+
   const drawer = (
-    <div>
+    <div onClose={handleClose}
+    onClick={handleClick}>
         <Hidden xsDown implementation="css">
       <div className={classes.toolbar} />
       </Hidden>
       {/* hello
 
       <Divider /> */}
-      <MenuList>
-          <MenuItem component={Link} to="/">
+      <MenuList        
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        onClick={handleClick}
+ >
+          <MenuItem onClick={handleClose} component={Link} to="/">
             Home
           </MenuItem>
-          <MenuItem component={Link} to="/world">
+          <MenuItem component={Link} to="/world" onClick={handleClose}>
             World
           </MenuItem>
-          <MenuItem component={Link} to="/zones">
+          <MenuItem onClick={handleClose} component={Link} to="/zones">
             Zones
           </MenuItem>
-          <MenuItem component={Link} to="/statistics">
+          <MenuItem onClick={handleClose} component={Link} to="/statistics">
             Statistics
           </MenuItem>
-          <MenuItem >
+          <MenuItem onClick={handleClose}  >
             About
           </MenuItem>
       </MenuList>
@@ -134,6 +152,7 @@ function Layout(props) {
           <Drawer
             container={container}
             variant="temporary"
+            onClick={handleDrawerToggle}
             // anchor={theme.direction === 'rtl' ? 'right' : 'left'}
             open={mobileOpen}
             onClose={handleDrawerToggle}
@@ -144,6 +163,9 @@ function Layout(props) {
               keepMounted: true, // Better open performance on mobile.
             }}
           >
+                <IconButton onClick={handleDrawerToggle} className={classes.closeMenuButton}>
+              <CloseIcon/>
+            </IconButton>
             {drawer}
           </Drawer>
         </Hidden>
