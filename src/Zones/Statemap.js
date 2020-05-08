@@ -69,7 +69,7 @@ if (props.maped !== 20) {
             //   rotate: [-20.0, -52.0, 0],
             
             
-              scale: 1200
+              scale: 1000
             }}
             // width={980}
             // height={651}
