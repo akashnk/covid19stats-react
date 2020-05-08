@@ -138,7 +138,7 @@ const Today= (props) => {
       {deltas
         ? deltas.active > 0
           ? <h6> New+ {deltas.active}</h6>
-         : '+0'
+         : <h6>+0</h6>
         : ''}
       
     </th>
