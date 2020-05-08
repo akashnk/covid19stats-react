@@ -367,8 +367,8 @@ text {
   left: 0;
 }*/
 .svg-parent:not(.legend) {
-   height: 40vh; 
-   width: 100%;
+   height: 50vh; 
+   width: 95%;
    /* max-width: 960px; */
    svgRef {
      height: 100%;

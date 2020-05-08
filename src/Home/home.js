@@ -279,10 +279,10 @@ const classes = useStyles();
         control={<Switch checked={logMode} onChange={handleChangelog} />}
         label={<Typography styles={styles.formControlLabel}>Logarithmic</Typography>}
       />
-       <FormControlLabel
+       {/* <FormControlLabel
         control={<Switch checked={panMode} onChange={handleChangepan} />}
         label={<Typography styles={styles.formControlLabel}>Zoom</Typography>}
-      />
+      /> */}
      
 </RadioGroup>
 

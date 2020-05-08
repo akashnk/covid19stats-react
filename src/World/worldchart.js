@@ -715,12 +715,12 @@ svgk.call(zoomBehavior).on("wheel.zoom", null);
   
     return (
   
-  
+  <> <a>Select Countries from table to compare. Click on graph for numbers. </a>
        <div className="svg-parent" ref={wrapperRef} >
        <svg ref={svgRef} />
        
         </div>
-  
+  </>
   
           );
   }

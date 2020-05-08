@@ -597,12 +597,13 @@ if (radiostate!== 'dailytotal'){
 
   return (
 
-
+     <div>
+       <a>Select States from table to compare. Click on graph for details. </a>
      <div className="svg-parent" ref={wrapperRef} >
      <svg ref={svgRef} />
      
       </div>
-
+</div>
 
         );
 }
