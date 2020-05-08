@@ -42,7 +42,7 @@ const Update= (props) => {
     //     };
     //     parseData();
     //   }, [data]);
-console.log(dataw)
+
     return(
       <>
       <div>
