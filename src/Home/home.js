@@ -239,13 +239,10 @@ const classes = useStyles();
  
 
 
-<Grid item xs={12} sm={6} >
-<Paper className={classes.paper}>
 <div >
       <Today data={data} tested={totalTests['totalsamplestested']} />
       </div>
-      </Paper>
-      </Grid>
+     
  
        <Grid item xs={12} sm={12} md={6}>
        
@@ -270,7 +267,7 @@ const classes = useStyles();
       />
        <FormControlLabel
         control={<Switch checked={panMode} onChange={handleChangepan} />}
-        label={<Typography styles={styles.formControlLabel}>Pan & Zoom</Typography>}
+        label={<Typography styles={styles.formControlLabel}>Zoom</Typography>}
       />
      
 </RadioGroup>

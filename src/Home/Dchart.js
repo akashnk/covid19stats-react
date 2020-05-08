@@ -479,7 +479,8 @@ focus.append('line')
 
       if (props.panMode === true){
     svgk.call(zoomBehavior)
-    }
+    } else {
+      svgk.on('.zoomBehaviour', null)}
 // const linechart = g
 //         .append('g')
 //         .attr('class','linechart');
