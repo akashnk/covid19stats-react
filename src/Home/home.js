@@ -100,6 +100,7 @@ function Home() {
   
 
 const [logMode, setLogMode] = useState(false);
+const [panMode, setpanMode] = useState(false);
  const [activeStateCode, setActiveStateCode] = useState('TT');
  const [value,setCase] =useState('totalconfirmed');
   const [testData, setTestData] = useState([]);
@@ -212,6 +213,10 @@ const handleChange = e => {
     // console.log(e.target.value);
     setLogMode(e.target.checked);
   };
+  const handleChangepan = e => {
+    // console.log(e.target.value);
+    setpanMode(e.target.checked);
+  };
 
   const handleTime = e => {
     // console.log(e.target.value);
@@ -222,7 +227,7 @@ const handleChange = e => {
 // console.log(districtWiseData);
 const classes = useStyles();
 
-// console.log(logMode);
+ console.log(panMode);
 // console.log(districtWiseData)
   return (
 <>
@@ -263,6 +268,10 @@ const classes = useStyles();
         control={<Switch checked={logMode} onChange={handleChangelog} />}
         label={<Typography styles={styles.formControlLabel}>Logarithmic</Typography>}
       />
+       <FormControlLabel
+        control={<Switch checked={panMode} onChange={handleChangepan} />}
+        label={<Typography styles={styles.formControlLabel}>Pan & Zoom</Typography>}
+      />
      
 </RadioGroup>
 
@@ -273,7 +282,8 @@ const classes = useStyles();
 
                daysC ={daysC}
                 mode={timeseriesMode}
-                logMode={logMode} />}
+                logMode={logMode}  panMode={panMode}/>
+                }
 
                           <RadioGroup row aria-label="daysC" name="daysC"  value={daysC} onClick={handleTime}>
         

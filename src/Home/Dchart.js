@@ -824,8 +824,9 @@ focus.append('line')
         setCurrentZoomState(zoomState);
       });
 
-    svgk.call(zoomBehavior).on("wheel.zoom", null);
-
+      if (props.panMode === true){
+    svgk.call(zoomBehavior)
+    }
 // const linechart = g
 //         .append('g')
 //         .attr('class','linechart');

@@ -209,7 +209,7 @@ getCellValue: (row) => {
       context.setStatecodes(["TT"]);
     }
 },[selection,rows])
-console.log(rows)
+
 
   return (
     <Paper>
