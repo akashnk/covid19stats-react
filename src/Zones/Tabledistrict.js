@@ -14,6 +14,8 @@ import {
   SearchPanel,
   Table,
   TableHeaderRow,
+  TableColumnResizing,
+  TableFixedColumns,
 } from '@devexpress/dx-react-grid-material-ui';
 import { STATES_C } from '../Common/constants';
 
@@ -93,9 +95,14 @@ title:"Recovered",
       
   ]);
    const [tableColumnExtensions] = useState([
-    { columnName: 'district', width: 200 }
+    { columnName: 'district', wordWrapEnabled: true }
    ])
+   const [leftColumns] = useState(['district']);
 
+  //  const [columnWidths, setColumnWidths] = useState([
+
+  //  {columnName: 'district', width: 100},
+  // ])
   return (
     <Paper>
       <Grid
@@ -115,7 +122,14 @@ title:"Recovered",
         />
         <IntegratedSorting />
         <Table columnExtensions={tableColumnExtensions}/>
+        {/* <TableColumnResizing
+          columnWidths={columnWidths}
+          onColumnWidthsChange={setColumnWidths}
+        /> */}
         <TableHeaderRow showSortingControls />
+
+        <TableFixedColumns
+          leftColumns={leftColumns}/>
         <PagingPanel />
         <Toolbar />
         <SearchPanel />
