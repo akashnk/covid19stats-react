@@ -5,6 +5,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import axios from 'axios';
 // import NativeSelect from '@material-ui/core/NativeSelect';
 import Zone from './zone';
@@ -31,6 +34,7 @@ export default function Zones() {
     const [maped, setMaped] = React.useState(10);
     const [fetched,setFetched] = useState(false);
     
+    const [chooseC,setChooseC] = useState('Mapchart');
     
 
    
@@ -88,7 +92,10 @@ console.log(filtTest)
       setMaped(event.target.value);
     };
          
-  
+    const handleRadio = e => {
+      // console.log(e.target.value);
+      setChooseC(e.target.value);
+    };
     return(
         <>
         <FormControl className={classes.formControl}>
@@ -110,12 +117,23 @@ console.log(filtTest)
         </Select>
         <FormHelperText>Hover & zoom on region for details</FormHelperText>
       </FormControl>
-      {(maped===10) ? (
+
+
+      {(maped===10) ?
+      (<RadioGroup row aria-label="choose" name="choose"  value={chooseC} onClick={handleRadio}>
+        
+        <FormControlLabel value="Mapchart" control={<Radio />} label="Map zones" />
+        <FormControlLabel value="DistrictTable" control={<Radio />} label="District Table" /></RadioGroup>) : (<div>Darker colors represents greater number</div>) }
+       
+      
+         
+    
+      {(maped===10 && chooseC==="Mapchart") ? (
         <div>
       {fetched  && <Zone districtWiseData={districtWiseData} maped={maped}/>}
-      
-      {fetched && <Tabledistrict districtWiseData={districtWiseData}/>}
-      </div> ) : (maped===20) ? <div>{fetched && <Statemap statedata={stateData} maped={maped}/>}</div> :<div>{fetched && <Statemap statedata={filtTest} maped={maped}/>}</div>}
+     
+      </div> ) : (maped===10 && chooseC==="DistrictTable") ?  (<div>
+      {fetched && <Tabledistrict districtWiseData={districtWiseData}/>}</div>) : (maped===20) ? <div>{fetched && <Statemap statedata={stateData} maped={maped}/>}</div> :<div>{fetched && <Statemap statedata={filtTest} maped={maped}/>}</div>}
         </>
     )
 }
