@@ -654,7 +654,6 @@ focus.append('line')
     setCurrentZoomState(zoomState);
   });
 
-svgk.call(zoomBehavior).on("wheel.zoom", null);
   
     //   lines.call(zoomBehavior);
   
