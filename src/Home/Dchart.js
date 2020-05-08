@@ -171,7 +171,7 @@ const drawChart = () => {
 
 
               if (!dimensions) return;
-              const margin = {top: 40, right: 60, bottom: 65, left: 65};
+              const margin = {top: 40, right: 60, bottom: 55, left: 65};
                          const w = width - margin.left - margin.right;
                          const h = height - margin.top - margin.bottom;
 
@@ -259,7 +259,7 @@ const xAxis = axisBottom()
       .attr("x",0 - (height / 2))
       .attr("dy", "3em")
       .style("text-anchor", "middle")
-      .style("fill", "red")
+      .style("fill", "black")
       .text(yAxisLabel);
 
 

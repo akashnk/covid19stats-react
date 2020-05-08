@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-
+import { spacing } from '@material-ui/system';
 // import CssBaseline from '@material-ui/core/CssBaseline';
 import Tables from "./Table";
 
@@ -45,6 +45,19 @@ const theme = createMuiTheme({
 
     typography: {
       "fontSize": 12,
+      "lineHeight":10,
+      fontFamily: [
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
       variantMapping: {
         
         h1: 'h3',
@@ -246,7 +259,7 @@ const classes = useStyles();
  
        <Grid item xs={12} sm={12} md={6}>
        
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} >
        
          {/* <input type="radio" name="case" value="totalconfirmed" defaultChecked onChange={handleChange}/>
          <label>Confirmed</label>
