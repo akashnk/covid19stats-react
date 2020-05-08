@@ -12,7 +12,7 @@ import {
 const INDIA_TOPO_JSON = require('./india_statestopo');
 const wrapperStyles = {
     width: "100%",
-    maxWidth: 980,
+    maxWidth: 1080,
     margin: "0 auto",
   }
 const Statemap = (props) => {
@@ -69,13 +69,13 @@ if (props.maped !== 20) {
             //   rotate: [-20.0, -52.0, 0],
             
             
-              scale: 1000
+              scale: 1200
             }}
             // width={980}
             // height={651}
             style={{
               width: "100%",
-              height: "100%",
+              height: "120%",
             }}
             >
             <ZoomableGroup data-tip="" center={[80, 23]} >
