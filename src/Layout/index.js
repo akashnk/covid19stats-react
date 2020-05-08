@@ -110,9 +110,9 @@ function Layout(props) {
           <MenuItem onClick={handleClose} component={Link} to="/zones">
             Zones
           </MenuItem>
-          <MenuItem onClick={handleClose} component={Link} to="/statistics">
+          {/* <MenuItem onClick={handleClose} component={Link} to="/statistics">
             Statistics
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem onClick={handleClose}  >
             About
           </MenuItem>

@@ -270,10 +270,11 @@ const classes = useStyles();
          <input type="radio" name="case" value="dailyconfirmed" onChange={handleChange}/>  <label>Daily cases</label> */}
          
          <RadioGroup row aria-label="case" name="case" value={value} onChange={handleChange}>
-         <FormControlLabel value="totalconfirmed" control={<Radio />} label="Confirmed" />
+         <FormControlLabel value="totalconfirmed" control={<Radio />} label="Cases" />
     <FormControlLabel value="totaldeceased" control={<Radio />} label="Deaths" />
     <FormControlLabel value="totalrecovered" control={<Radio />} label="Recovered" />
-    <FormControlLabel value="dailyconfirmed" control={<Radio />} label="Daily cases" />
+    <FormControlLabel value="dailyconfirmed" control={<Radio />} label="Daily" />
+    <FormControlLabel value="dailytotal" control={<Radio />} label="Daily/Total" />
     <FormControlLabel
         control={<Switch checked={logMode} onChange={handleChangelog} />}
         label={<Typography styles={styles.formControlLabel}>Logarithmic</Typography>}

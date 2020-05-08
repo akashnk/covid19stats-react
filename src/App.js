@@ -11,7 +11,7 @@ import {
 import Home from './Home/home';
 import Faq from './faq';
 import World from './World';
-import Statistics from './Statistics';
+// import Statistics from './Statistics';
 import Zones from './Zones';
 import Layout from './Layout'
 
@@ -26,9 +26,9 @@ function App() {
           <Route path="/faq">
             <Faq />
           </Route>
-          <Route path="/statistics">
+          {/* <Route path="/statistics">
             <Statistics />
-          </Route>
+          </Route> */}
           <Route path="/zones">
             <Zones />
           </Route>

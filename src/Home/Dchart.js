@@ -2,7 +2,7 @@ import React, {  useState, useEffect, useRef,useContext } from "react";
 
 import { select, nest,line,curveCardinal,extent,axisLeft,max,axisBottom,scaleLinear,
   scaleTime,scaleSymlog,scaleOrdinal,schemeCategory10, selectAll, zoom,
-  zoomTransform,mouse,bisect} from 'd3';
+  zoomTransform,mouse,bisect,interpolate} from 'd3';
 
 
 
@@ -104,8 +104,8 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
  const allData = Object.keys(gh).reduce(function (r, k) {
          return r.concat( gh[k]);
      }, []);
-     
 
+   
      useEffect(()=>
    setLastDaysCount(props.timeMode)
  ,[props.timeMode])
@@ -136,8 +136,24 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
     setpanMode(props.panMode);
   }, [props.panMode]);
 
+ 
+  
+ 
 //console.log(timeseries)
   useEffect(() => {
+
+    // const movingAvg = function (data, neighbors) {
+    //   return data.map((val, idx, arr) => {
+    //     let start = Math.max(0, idx - neighbors), end = idx + neighbors
+    //     let subset = arr.slice(start, end + 1)
+    //     let sum = subset.reduce((a,b) => a + b)
+    //     return sum / subset.length
+    //   })
+    // }
+     
+// var nmk = allData['dailyconfirmed']
+// var njk = movingAvg(nmk,3)
+// console.log()
 
   allData.forEach((d,i)=> {
  // console.log(tv['TN'].totalconfirmed);
@@ -151,14 +167,19 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
          // console.log(allData);
 
 
-            const xValue = (d) => d.date;
-            const xAxisLabel ='Time';
+            const xValue = (d) => {if (radiostate==='dailytotal') {
+              return d.totalconfirmed
+            } else{ return (d.date)}};
+            const xAxisLabel = radiostate !=='dailytotal' ?'Time':'Total cases';
 
-            const yValue = (d) => (d[radiostate]);
+            const yValue = (d) => {if (radiostate==='dailytotal') {
+              return d.dailyconfirmed
+            } else{return (d[radiostate])}};
             const yAxisLabel= (radiostate==='totalconfirmed')?'Cases'
                                             :radiostate==='totalactive'?'Active'
                                             :radiostate==='totalrecovered'?'Recovered'
                                             :radiostate==='totaldeceased'?'Deaths'
+                                            :radiostate==='dailytotal'?'Daily avg'
                                             :'Daily cases';
 
 
@@ -174,7 +195,7 @@ const drawChart = () => {
 
 
               if (!dimensions) return;
-              const margin = {top: 40, right: 60, bottom: 55, left: 65};
+              const margin = {top: 40, right: 70, bottom: 65, left: 55};
                          const w = width - margin.left - margin.right;
                          const h = height - margin.top - margin.bottom;
 
@@ -200,10 +221,8 @@ var svg= svgk.append("g").attr("transform", "translate(" + margin.left + "," + m
          
             
 
-            const xscale =  scaleTime()
-              .domain(extent(allData,xValue))
-              .range([0,w])
-              .nice();
+            const xscale =  radiostate !== 'dailytotal' ? scaleTime().domain(extent(allData,xValue)).range([0,w]).nice() :
+                                                      scaleLinear().domain(extent(allData,xValue)).range([0,w]).nice();
 
               if (currentZoomState) {
                 const newYScale = currentZoomState.rescaleY(yscale);
@@ -213,11 +232,11 @@ var svg= svgk.append("g").attr("transform", "translate(" + margin.left + "," + m
               }
 // console.log(timeseries)
 
+var m = 0;
+          const myline = radiostate !=='dailytotal' ? line().x(function(d) {return xscale(xValue(d))}).y(d => yscale(1+yValue(d))).curve(curveCardinal) :
+          line().x((d) => xscale(xValue(d))).y(d => yscale(1+yValue(d))).curve(curveCardinal)
 
-          const myline = line()
-            .x(d => xscale(xValue(d)))
-            .y(d => yscale(1+yValue(d))).curve(curveCardinal)
-
+          console.log(m)
         var dataNest = nest()
         .key(function(d){
           return STATE_CODES[d.state];
@@ -226,6 +245,8 @@ var svg= svgk.append("g").attr("transform", "translate(" + margin.left + "," + m
 
   // console.log(dataNest)
 var color = scaleOrdinal(schemeCategory10);
+
+console.log(yValue(allData))
 
 
 
@@ -247,21 +268,31 @@ const xAxis = axisBottom()
 
         svg.append('g')
         .attr("transform", "translate(0, " + h  +")").call(xAxis)
-        .append("text")
-      .attr("transform",
-            "translate(" + (w/2) + " ," +
-                           (h + margin.top + 20) + ")")
-      .style("text-anchor", "middle")
-      .style("fill", "red")
+
+      //   svg
+      //   .append("text").attr("transform", "translate(" + ((width/2) + margin.left) + " ," + (height + margin.top + margin.bottom) + ")")
+      // .style("text-anchor", "middle")
+      // .attr("dx", "3em")
+      // .style("fill", "red")
+      // .text(xAxisLabel);
+
+      svg
+      .append("text")
+      .attr("y", height - margin.bottom)
+      .attr("x", width/3 )
+      .style("fill", "black" )
       .text(xAxisLabel);
 
+
       svg.append('g').call(yAxis)
+
+      svg
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "3em")
-      .style("text-anchor", "middle")
+      
+      .attr("y", 0-margin.left+13 )
+      .attr("x",margin.bottom-height/1.8 )
+      
       .style("fill", "black")
       .text(yAxisLabel);
 
@@ -293,15 +324,24 @@ dataNest.forEach(function(d, i)  {
   .attr("stroke-width",lineStroke)
   .attr("fill","none")
  
-metric
+
+
+
+    
+
+
+    
+});
+dataNest.forEach(function(d, i)  {
+  svg
+
   .append("text")                                    // *******
-      // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
-      // .attr("y", (margin.top/2)- 25)         // *******
       .attr("x", (i%4)*w/3.5) // spacing // ****
       .attr("y", Math.floor(i/4)*20-3)
+   
       .attr("class", "legend")    // style the legend   // *******
-      .style("fill", function() { // dynamic colours    // *******
-          return d.color = color(d.key); })             // *******
+      .style("fill", d.color=()=>color(d.key))   
+     
       .text(d.key)
 
     
@@ -317,10 +357,11 @@ metric
 .data(function(d){ return d.values })
   .enter()
   .append("circle")
-  .attr("r", 3)
+  .attr("r", 2)
   .style("fill", "#FFF")
+  .style("fill-opacity",0.7)
 .style("stroke", function(d) { return color(d.key); })
-  .style("stroke-width", 2)
+  .style("stroke-width", 1)
   .attr("cx",d => xscale(d.date))
   .attr("cy",d => yscale(d[radiostate]))
 
@@ -387,7 +428,7 @@ focus.append('line')
   .attr('class', 'x-hover-line hover-line')
   .attr('y1' , 0)
   .attr('y2', h);
-
+if (radiostate!== 'dailytotal'){
   svgk.append('rect')
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
   .attr("class", "overlay")
@@ -396,7 +437,15 @@ focus.append('line')
   .attr('fill', 'none')
   .on("mouseover", mouseover)
   .on("mouseout", mouseout)
-  .on("mousemove", mousemove);
+  .on("mousemove", mousemove)
+} else {
+  svgk.append('rect')
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+  .attr("class", "overlay")
+  .attr("width", w)
+  .attr("height", h)
+  .attr('fill', 'none')
+}
 
 
   var timeScales = dataNest[0].values.map(function(key) { return xscale(key.date); });

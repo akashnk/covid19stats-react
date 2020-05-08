@@ -313,7 +313,7 @@ const Worldchart = (props) => {
   
   
                 if (!dimensions) return;
-                const margin = {top: 40, right: 50, bottom: 65, left: 65};
+                const margin = {top: 40, right: 70, bottom: 65, left: 55};
                            const w = width - margin.left - margin.right;
                            const h = height - margin.top - margin.bottom;
   
@@ -383,22 +383,26 @@ const xscale =  scaleTime()
   
           svg.append('g')
           .attr("transform", "translate(0, " + h  +")").call(xAxis)
-          .append("text")
-        .attr("transform",
-              "translate(" + (w/2) + " ," +
-                             (h + margin.top + 20) + ")")
-        .style("text-anchor", "middle")
-        .style("fill", "red")
+       
+
+        svg
+        .append("text")
+        .attr("y", height - margin.bottom)
+        .attr("x", width/3 )
+        .style("fill", "black" )
         .text(xAxisLabel);
   
+  
         svg.append('g').call(yAxis)
+  
+        svg
         .append("text")
         .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left)
-        .attr("x",0 - (height / 2))
-        .attr("dy", "3em")
-        .style("text-anchor", "middle")
-        .style("fill", "red")
+        
+        .attr("y", 0-margin.left+13 )
+        .attr("x",margin.bottom-height/1.8 )
+        
+        .style("fill", "black")
         .text(yAxisLabel);
   
   
@@ -459,17 +463,6 @@ dataNest.forEach(function(d, i)  {
   //  .attr('alignment-baseline', 'middle')
   //  .attr('x', w-20)
   //  .attr('dx', '.5em')
-  //  .attr('y', yscale(d.values[d.values.length-1].totalconfirmed)); 
-metric
-  .append("text")                                    // *******
-      // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
-      // .attr("y", (margin.top/2)- 25)         // *******
-      .attr("x", (i%4)*w/3.5) // spacing // ****
-      .attr("y", Math.floor(i/4)*20-3)
-      .attr("class", "legend")    // style the legend   // *******
-      .style("fill", function() { // dynamic colours    // *******
-          return d.color = color(d.key); })             // *******
-      .text(d.key)
 
     
 
@@ -477,6 +470,23 @@ metric
     
 });
 
+dataNest.forEach(function(d, i)  {
+  svg
+
+  .append("text")                                    // *******
+      .attr("x", (i%4)*w/3.5) // spacing // ****
+      .attr("y", Math.floor(i/4)*20-3)
+   
+      .attr("class", "legend")    // style the legend   // *******
+      .style("fill", d.color=()=>color(d.key))   
+     
+      .text(d.key)
+
+    
+
+
+    
+});
 metric
 // .style("fill", "#FFF")
 // .style("stroke", function(d) { return color(d.key); })
@@ -484,10 +494,11 @@ metric
 .data(function(d){ return d.values })
   .enter()
   .append("circle")
-  .attr("r", 3)
+  .attr("r", 2)
   .style("fill", "#FFF")
+  .style("fill-opacity",0.7)
 .style("stroke", function(d) { return color(d.key); })
-  .style("stroke-width", 2)
+  .style("stroke-width", 1)
   .attr("cx",d => xscale(d.date))
   .attr("cy",d => yscale(d[radiostate]))
 
