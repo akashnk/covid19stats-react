@@ -1,0 +1,3 @@
+/*
+  cache-control: max-age=450
+ cache-control: stale-while-revalidate=180
