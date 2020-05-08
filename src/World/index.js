@@ -79,6 +79,10 @@ export default function World() {
 
   const [logMode, setLogMode] = useState(false);
 
+  useEffect(() => {
+    document.title = "Covid 19 Interactive Dashboard -World "
+ }, []);
+
   const fetchData = async () => {
     try {
       const [

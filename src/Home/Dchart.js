@@ -22,6 +22,7 @@ const Dchart = (props) => {
   const [logMode, setLogMode] = useState([]);
   const [chartType, setChartType] = useState(props.casetype);
   // const [moving, setMoving] = useState(false);
+  const [panMode, setpanMode] = useState([]);
  
   const [totdata,setTotdata]=useState([]);
   const [lastDaysCount,setLastDaysCount]=useState(14);
@@ -131,7 +132,9 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
   }, [props.type]);
 
 
-
+  useEffect(() => {
+    setpanMode(props.panMode);
+  }, [props.panMode]);
 
 //console.log(timeseries)
   useEffect(() => {
@@ -477,10 +480,17 @@ focus.append('line')
         setCurrentZoomState(zoomState);
       });
 
-      if (props.panMode === true){
-    svgk.call(zoomBehavior)
+      if (panMode === true){
+    svgk.call(zoomBehavior).on("wheel.zoom", null)
     } else {
-      svgk.on('.zoomBehaviour', null)}
+      svgk.on('.zoomBehaviour', null);
+      svgk.on("mousedown.zoom", null);
+      svgk.on("mousemove.zoom", null);
+      svgk.on("dblclick.zoom", null);
+      svgk.on("touchstart.zoom", null);
+      svgk.on("wheel.zoom", null);
+      svgk.on("mousewheel.zoom", null);
+      svgk.on("MozMousePixelScroll.zoom", null);}
 // const linechart = g
 //         .append('g')
 //         .attr('class','linechart');

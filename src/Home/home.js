@@ -129,7 +129,7 @@ const [panMode, setpanMode] = useState(false);
 // console.log(context.statecodes);
 
 useEffect(() => {
-   document.title = "Covid 19 Interactive Dashboard"
+   document.title = "Covid 19 Interactive Dashboard -India "
 }, []);
 
    const fetchData = async () => {
