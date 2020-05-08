@@ -264,7 +264,8 @@ const xAxis = axisBottom()
     .scale(yscale)
     .ticks(yTicks,"~s")
     .tickPadding(15)
-    .tickSize(-w);
+    .tickSize(-w)
+    
 
         svg.append('g')
         .attr("transform", "translate(0, " + h  +")").call(xAxis)

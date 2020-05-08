@@ -144,7 +144,7 @@ export default function World() {
  
         countryd["World"] = worldChart;
         
- 
+
 
 
 
@@ -174,8 +174,9 @@ export default function World() {
 ObjKeyRename2(o, {"US":"USA"});
 ObjKeyRename2(o, {"United Kingdom":"UK"});
 ObjKeyRename2(o, {"United Arab Emirates":"UAE"});
-
-
+ObjKeyRename2(o, {"Korea, South":"S. Korea"});
+ObjKeyRename2(o, {"Taiwan*":"Taiwan"});
+console.log(o)
 
 // console.log(datax);
 const handleChange = e => {
