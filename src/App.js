@@ -14,6 +14,7 @@ import World from './World';
 // import Statistics from './Statistics';
 import Zones from './Zones';
 import Layout from './Layout'
+import About from './about';
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
           </Route>
           <Route path="/faq">
             <Faq />
+          </Route>
+          <Route path="/about">
+            <About />
           </Route>
           {/* <Route path="/statistics">
             <Statistics />

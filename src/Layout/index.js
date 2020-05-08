@@ -113,7 +113,7 @@ function Layout(props) {
           {/* <MenuItem onClick={handleClose} component={Link} to="/statistics">
             Statistics
           </MenuItem> */}
-          <MenuItem onClick={handleClose}  >
+          <MenuItem onClick={handleClose} component={Link} to="/about"  >
             About
           </MenuItem>
       </MenuList>

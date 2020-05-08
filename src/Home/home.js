@@ -197,7 +197,7 @@ useEffect(() => {
 //    var j = [];
 // st = Object.values(STATES)[i];
 // j = testData.find(d => d.state === st);
-console.log(totalTests)
+
 
 const fdata = data.filter(d => d.confirmed > 0);
 const kdata = fdata.filter(d => d.state !== "Total");

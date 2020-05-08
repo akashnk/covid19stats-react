@@ -1,22 +1,17 @@
-import React, {  useState, useEffect, useRef,useContext,useCallback } from "react";
+import React, {  useState, useEffect, useRef,useContext } from "react";
 
-// // import * as d3 from 'd3';
-// import { select, nest,selectAll,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
-// scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10,bisector,mouse,pos,voronoi,merge,map} from 'd3';
-// import {Delaunay} from 'd3-delaunay';
-import { select, nest,line,curveCardinal,curveBasis,extent,axisLeft,max,axisBottom,scaleLinear,
-  scaleTime ,curveMonotoneX,scaleLog,scaleSymlog,ascending,scaleOrdinal,schemeCategory10, selectAll, zoom,
+
+import { select, nest,line,curveCardinal,extent,axisLeft,max,axisBottom,scaleLinear,
+  scaleTime ,scaleSymlog,scaleOrdinal,schemeCategory10, selectAll, zoom,
   zoomTransform,bisect,mouse} from 'd3';
-import {event as currentEvent} from 'd3';
-import axios from "axios";
 
 // import moment from 'moment';
 import {TableContext} from '../TableContext';
 // import {sliceTimeseriesFromEnd} from './common-functions';
 import {useResizeObserver} from '../Common/hooks';
-import {STATE_CODES} from '../Common/constants'
+
 // import {useWindowSize} from './common-functions';
-import {formatNumber,formatDate,sliceTimeseriesFromEnd} from '../Common/common-functions';
+// import {formatNumber,formatDate,sliceTimeseriesFromEnd} from '../Common/common-functions';
 import {format} from 'date-fns';
 
 
@@ -33,33 +28,30 @@ const Worldchart = (props) => {
     const [mode, setMode] = useState(props.mode);
     const [logMode, setLogMode] = useState([]);
     const [chartType, setChartType] = useState(props.casetype);
-    const [moving, setMoving] = useState(false);
+   
     const [timeSeriesData, setTimeSeriesData] = useState([]);
     const [totdata,setTotdata]=useState([]);
     const [lastDaysCount,setLastDaysCount]=useState(14);
    
-    const [countryd,setCountryd] = useState([]);
-    const [worldd,setWorldd] = useState([]);
-    const [fetched,setFetched] =useState(false);
-    const [index, setIndex] = useState(0);
+    // const [countryd,setCountryd] = useState([]);
+    // const [worldd,setWorldd] = useState([]);
+    // const [fetched,setFetched] =useState(false);
+    // const [index, setIndex] = useState(0);
     const [daysC,setDaysC] = useState([]);
-    const [oo,setD] =useState([]);
-     // const [allData,setallData]=useState([]);
-    // const [as,setAs]=useState(["TT"]);
-  // console.log(conts.tooltip)
+
   //  console.log(activeStateCode);
   const context = useContext(TableContext);
-  var lineOpacity = "0.25";
-  var lineOpacityHover = "0.85";
-  var otherLinesOpacityHover = "0.1";
+  // var lineOpacity = "0.25";
+  // var lineOpacityHover = "0.85";
+  // var otherLinesOpacityHover = "0.1";
   var lineStroke = "1.5px";
-  var lineStrokeHover = "2.5px";
+  // var lineStrokeHover = "2.5px";
   
-  var circleOpacity = "0.85";
-  var circleOpacityOnLineHover = "0.25";
-  var circleRadius = 3;
-  var circleRadiusHover = 6;
-  var duration = 250;
+  // var circleOpacity = "0.85";
+  // var circleOpacityOnLineHover = "0.25";
+  // var circleRadius = 3;
+  // var circleRadiusHover = 6;
+  // var duration = 250;
   
     const svgRef = useRef();
     // const svgRef2 = useRef();
