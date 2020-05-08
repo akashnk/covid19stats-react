@@ -126,7 +126,7 @@ function Layout(props) {
   return (
     <div className={classes.root}>
       {/* <CssBaseline /> */}
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar style={{ background: '#3887BE' }} position="fixed" className={classes.appBar} >
         <Toolbar>
           <IconButton
             color="inherit"
@@ -141,7 +141,7 @@ function Layout(props) {
             Covid19 Interactive
           </Typography>
           <div style={{marginLeft:"auto", marginRight:0 }}>
-          <Button className={classes.Button} color="inherit">Maps</Button>
+          <Button className={classes.Button} color="inherit" component={Link} to="/zones">Maps</Button>
           </div>
         </Toolbar>
         

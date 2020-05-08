@@ -184,7 +184,7 @@ useEffect(() => {
 //    var j = [];
 // st = Object.values(STATES)[i];
 // j = testData.find(d => d.state === st);
-
+console.log(totalTests)
 
 const fdata = data.filter(d => d.confirmed > 0);
 const kdata = fdata.filter(d => d.state !== "Total");
@@ -227,7 +227,7 @@ const handleChange = e => {
 // console.log(districtWiseData);
 const classes = useStyles();
 
- console.log(panMode);
+ 
 // console.log(districtWiseData)
   return (
 <>
@@ -239,10 +239,10 @@ const classes = useStyles();
  
 
 
-<Grid item xs={12} >
+<Grid item xs={12} sm={6} >
 <Paper className={classes.paper}>
 <div >
-      <Today data={data} />
+      <Today data={data} tested={totalTests['totalsamplestested']} />
       </div>
       </Paper>
       </Grid>

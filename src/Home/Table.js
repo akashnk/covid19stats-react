@@ -243,7 +243,7 @@ getCellValue: (row) => {
         {/* <IntegratedSorting columnExtensions={integratedSortingColumnExtensions}/> */}
         <PagingState
           defaultCurrentPage={0}
-          pageSize={10}
+          pageSize={9}
         />
            <IntegratedPaging />
 

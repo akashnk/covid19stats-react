@@ -1,4 +1,4 @@
-import React, {  useState, useEffect, useRef,useContext,useCallback } from "react";
+import React, {  useState, useEffect, useRef,useContext } from "react";
 
 import { select, nest,line,curveCardinal,extent,axisLeft,max,axisBottom,scaleLinear,
   scaleTime,scaleSymlog,scaleOrdinal,schemeCategory10, selectAll, zoom,
@@ -21,7 +21,7 @@ const Dchart = (props) => {
   const [mode, setMode] = useState(props.mode);
   const [logMode, setLogMode] = useState([]);
   const [chartType, setChartType] = useState(props.casetype);
-  const [moving, setMoving] = useState(false);
+  // const [moving, setMoving] = useState(false);
  
   const [totdata,setTotdata]=useState([]);
   const [lastDaysCount,setLastDaysCount]=useState(14);
@@ -30,17 +30,17 @@ const Dchart = (props) => {
   const [daysC,setDaysC] = useState([])
  
 const context = useContext(TableContext);
-var lineOpacity = "0.25";
-var lineOpacityHover = "0.85";
-var otherLinesOpacityHover = "0.1";
+// var lineOpacity = "0.25";
+// var lineOpacityHover = "0.85";
+// var otherLinesOpacityHover = "0.1";
 var lineStroke = "1.5px";
-var lineStrokeHover = "2.5px";
+// var lineStrokeHover = "2.5px";
 
-var circleOpacity = "0.85";
-var circleOpacityOnLineHover = "0.25";
-var circleRadius = 3;
-var circleRadiusHover = 6;
-var duration = 250;
+// var circleOpacity = "0.85";
+// var circleOpacityOnLineHover = "0.25";
+// var circleRadius = 3;
+// var circleRadiusHover = 6;
+// var duration = 250;
 
   const svgRef = useRef();
   // const svgRef2 = useRef();
@@ -263,161 +263,7 @@ const xAxis = axisBottom()
       .text(yAxisLabel);
 
 
-// var legendSpace = width/dataNest.length;
 
-// let metric = svg.append("g")
-// metric.append('g')
-// let metric=svg.selectAll("dot")
-// .data(dataNest)
-// .enter()
-// .append("g")
-// // .style("fill", (d, i) => color(i))
-// .style("fill", d=>color(d.key))
-// .append("g")
-// // .on("mouseover", function(d) {
-// //  select(this)
-// //     .style("cursor", "pointer")
-// //     // .append("rect")
-// //     // .attr("x",d => xscale(xValue(d)) - 45)
-// //     // .attr("y",d => yscale(yValue(d)) - 45)
-// //     // .attr("width",10)
-// //     // .attr("height",10)
-// //     // .attr("fill","red")
-// //     .append("text")
-// //     .attr("class", "textb")
-// //     .style("font-size", "1.2em")
-// //     // .text("<br/>"+`${d[radiostate]}`)
-// //     .text(`${d.key}`)
-    
-// //     .attr("x", 45)
-// //     .attr("y", 65);
-// // })
-// // .on("mouseout", function(d) {
-// //  select(this)
-// //     .style("cursor", "none")
-// //     .transition()
-// //     .duration(duration)
-// //     .selectAll(".textb")
-// //     .remove();
-// // })
-// .selectAll("circle")
-// .data(d => d.values)
-// .enter()
-// .append("g")
-
-// .on("mouseover", function(d) {
-//  select(this)
-//     .style("cursor", "pointer")
-//     .append("rect")
-//     .attr("class", "textback")
-//     .attr("x",d => xscale(xValue(d)) - 45)
-//     .attr("y",d => yscale(yValue(d)) - 10)
-//     .attr("width",10)
-//     .attr("height",10)
-//     .style("fill","red")
-//     .style("opacity", 0.4)
-//     // .append("text")
-//     // .attr("class", "text")
-//     // // .text("<br/>"+`${d[radiostate]}`)
-//     // .text(`${format(d.date, 'dd MMMM')}`+":"+`${d[radiostate]}`)
-//     // .attr("x", d => xscale(xValue(d)) - 45)
-//     // .attr("y", d => yscale(yValue(d)) - 10);
-// })
-// .on("mouseout", function(d) {
-//  select(this)
-//     .style("cursor", "none")
-//     .transition()
-//     .duration(duration)
-//     .selectAll(".textback")
-//     .remove();
-// })
-
-
-// .append("g")
-// // .on("mouseover", function(d) {
-// //  select(this)
-// //     .style("cursor", "pointer")
-// //     // .append("rect")
-// //     // .attr("x",d => xscale(xValue(d)) - 45)
-// //     // .attr("y",d => yscale(yValue(d)) - 45)
-// //     // .attr("width",10)
-// //     // .attr("height",10)
-// //     // .attr("fill","red")
-// //     .append("text")
-// //     .attr("class", "text")
-// //     .style("font-size", "1.2em")
-// //     // .text("<br/>"+`${d[radiostate]}`)
-// //     .text(`${d[radiostate]}`+ " " + `${yAxisLabel}`+" "+"on"+" "+`${format(d.date, 'dd MMMM')}`)
-    
-// //     .attr("x", 45)
-// //     .attr("y", 85);
-// // })
-// // .on("mouseout", function(d) {
-// //  select(this)
-// //     .style("cursor", "none")
-// //     .transition()
-// //     .duration(duration)
-// //     .selectAll(".text")
-// //     .remove();
-// // })
-
-// .append("circle")
-//         .attr("cx",function (d) { return xscale(xValue(d)); } )
-//         .attr("cy",function (d) { return yscale(1+yValue(d)); })
-//         .attr("r",circleRadius)
-//         .style("opacity", circleOpacity)
-      //  .on("mouseover", function(d) {
-      //     select(this)
-      //       .transition()
-      //       .duration(duration)
-      //       .attr("r", circleRadiusHover);
-      //   })
-      //   .on("mouseout", function(d) {
-      //     select(this)
-      //       .transition()
-      //       .duration(duration)
-      //       .attr("r", circleRadius);
-      //   });
-// .append("circle")
-//         .attr("cx",function (d) { return xscale(xValue(d)); } )
-//         .attr("cy",function (d) { return yscale(1+yValue(d)); })
-//         .attr("r",circleRadius)
-//         .attr("fill","red")
-//         .on("mouseover", function(d) {
-//           select(this)
-//             .transition()
-//             .duration(duration)
-//             .attr("r", circleRadiusHover);
-//         })
-//         .on("mouseout", function(d) {
-//           select(this)
-//             .transition()
-//             .duration(duration)
-//             .attr("r", circleRadius);
-//         });
-//         lines
-//         .on("mouseover", function(d) {
-//           d3.select(this)
-//             .style("cursor", "pointer")
-//             .append("text")
-//             .attr("class", "text")
-//             .text(`${d.price}`)
-//             .attr("x", d => xScale(d.date) + 5)
-//             .attr("y", d => yScale(d.price) - 10);
-//         })
-//         .on("mouseout", function(d) {
-//           d3.select(this)
-//             .style("cursor", "none")
-//             .transition()
-//             .duration(duration)
-//             .selectAll(".text")
-//             .remove();
-//         })       
-
-
-      //  g.append('g') 
-      //   .append("svg:title")
-      //   .text(function(d) { return yValue(d); });
 
 
       var clip = svg.append("defs").append("svg:clipPath")
@@ -443,40 +289,7 @@ dataNest.forEach(function(d, i)  {
   .attr("stroke",d.color=()=>color(d.key))
   .attr("stroke-width",lineStroke)
   .attr("fill","none")
-  // .on("mouseover", function(d) {
-  //   selectAll(".line").style("opacity", otherLinesOpacityHover);
-   
-  //   select(this)
-  //     .style("opacity", lineOpacityHover)
-  //     .style("stroke-width", lineStrokeHover)
-  //     .style("cursor", "pointer");
-  // })
-  // .on("mouseout", function(d) {
-  //   selectAll(".line").style("opacity", lineOpacity);
  
-  //   select(this)
-  //     .style("stroke-width", lineStroke)
-  //     .style("cursor", "none");
-  // })
-
-  // .on("mouseenter",(d,i)=>
-  // {
-  //   g.selectAll(".tooltip")
-  //   .data(dataNest)
-  //   .join("text")
-  //   .attr("class","tooltip")
-  //   .text(d.value)
-  //   .attr("x",d.key)
-  //   .attr("y",d.values)
-  // })
- 
-  // g.append("text")
-  //  .html(d.key)
-  //  .attr('fill', d.color)   
-  //  .attr('alignment-baseline', 'middle')
-  //  .attr('x', w-20)
-  //  .attr('dx', '.5em')
-  //  .attr('y', yscale(d.values[d.values.length-1].totalconfirmed)); 
 metric
   .append("text")                                    // *******
       // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
@@ -648,167 +461,7 @@ focus.append('line')
     //   .style('fill', function(d) { return color(d.key); });
   }
 
-// dataNest.forEach(function(d,i)
-//   console.log(d)
-//     g.append("circle") // Uses the enter().append() method
-//         .attr("class", "dot") // Assign a class for styling
-//         .attr('fill', color.range()[i])
-//         .attr("cx", function(d, i) { return xscale(d.key) })
-//         .attr("cy", function(d) { console.log(d); return yscale(d.values) })//this is not working
-//         .attr("r", 5);
-  
-//   });
-// let mouseOver = svg
-//   .append('g')
-// 	  .attr('class', 'mouse-over-effects');
 
-// mouseOver
-//   .append('path')
-// 	  .attr('class', 'mouse-line')
-// 		.style('stroke', 'black')
-// 		.style('stroke-width', '1px')
-// 		.style('opacity', '0');
-
-
-// // console.log(yscale);
-
-
-
-
-// const lines = document.getElementsByClassName('line');
-// console.log(lines)
-
-// const mousePerLines = mouseOver
-// .selectAll('.mouse-per-line')
-//   .data(dataNest)
-//   .enter()
-//   .append('g')
-//     .attr('class', 'mouse-per-lines')
-
-//     mousePerLines.append("text")
-//     .attr('transform', 'translate(10, 13)')
-
-// const mousePerLine = mouseOver
-//   .selectAll('.mouse-per-line')
-// 	  .data(dataNest)
-// 		.enter()
-// 		.append('g')
-// 			.attr('class', 'mouse-per-line');
-
-// // mousePerLine
-
-// //   .append('circle')
-// //     .attr('r', 5)
-// //     .style('stroke', d => color(d.key))
-// //     .style('fill', d => color(d.key))
-// //     .style('stroke-width', '1px')
-// //     .style('opacity', '0');
-
-
-//     mousePerLine.append("rect")
-//     .attr("width", 50)
-//     .attr("height", 50)
-//     .style("stroke", function(d) {
-//       return color(d.key);
-//     })
-//     .style("fill", function(d) {
-//       return color(d.key);
-//     })
-//     .style("stroke-width", "1px")
-//     .style("opacity", "0")
-
-//     mousePerLine.append("text")
-//     .attr('transform', 'translate(30, 43)')
-  
- 
-  
-//     // .style('opacity', '1');
-
-
-
-
-
-//     mouseOver
-//   .append('rect')
-//     .attr('width', w)
-//     .attr('height', h)
-//     .attr('fill', 'none')
-//     .attr('pointer-events', 'all')
-//     .on('mouseout', function() {
-//       select('.mouse-line')
-//         .style('opacity', '0');
-//       selectAll('.mouse-per-line rect')
-//         .style('opacity', '0');
-//         selectAll('.mouse-per-lines text')
-//         .style('opacity', '0');
-//     })
-//     .on('mouseover', function() {
-//       select('.mouse-line')
-//         .style('opacity', '1');
-//       selectAll('.mouse-per-line rect')
-//         .style('opacity', '1');
-//       selectAll('.mouse-per-lines text')
-//         .style('opacity', '1');
-//     })
-//     .on('mousemove', function() {
-//      let moused = mouse(this);
-     
-//       select('.mouse-line')
-//         .attr('d', function() {
-//           let d = 'M' + moused[0] + ',' + h;
-//           d += ' ' + moused[0] + ',' + 0;
-//           return d;
-//         });
-     
-//       console.log(moused)
-//       selectAll('.mouse-per-line')
-      
-//       .attr('transform', (d, i) => {
-        
-        
-//         const xDate  = xscale.invert(moused[0]);
-        
-        
-//         const bisect = bisector(d => d.date).right;
-//         const idx    = bisect(d.values, xDate);
-       
-//         let start  = 0;
-//         let finish = lines[i].getTotalLength();
-//         let target = null;
-//         let position = null;
-  
-//         while (true) {
-//           target   = Math.floor((start + finish) / 2);
-         
-//          position = lines[i].getPointAtLength(target);
-//           if ((target === finish || target === start) && position.x !== moused[0]) {
-//             break;
-//           }
-//           if (position.x > moused[0]) {
-//             finish = target;
-//           } else if (position.x < moused[0]) {
-//             start = target;
-//           } else {
-//             break;
-//           }
-//         }
-  
-//         // console.log(yscale.invert(position.y).toFixed(0))
-//           select(this)
-//             .select('text')
-//             .style("display", null)
-//             // .attr("class", "text")
-//             // .style("font-size", "1.2em")
-//             // .attr("fill","black")
-//               // .attr("fill",function(d){
-//               //   return color(d.key)
-//               // })
-//               .text(yscale.invert(position.y).toFixed(0))
-  
-//         return 'translate(' + moused[0] + ',' + position.y +')';
-//   })
-  
-// });
  
 
       const zoomBehavior = zoom()
@@ -820,7 +473,7 @@ focus.append('line')
       ])
       .on("zoom", () => {
         const zoomState = zoomTransform(svgRef.current);
-        console.log(zoomState)
+       
         setCurrentZoomState(zoomState);
       });
 
