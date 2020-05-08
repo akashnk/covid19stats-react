@@ -84,7 +84,7 @@ export default function Zones() {
      
 
  const filtTest=testData.filter((v,i,a)=> a.findIndex(t=>(t.state===v.state && t.totaltested>0))===i);
-console.log(filtTest)
+
  
     // let dist = [];
     // dist=objt(districtWiseData)

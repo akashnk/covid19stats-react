@@ -246,7 +246,7 @@ var m = 0;
   // console.log(dataNest)
 var color = scaleOrdinal(schemeCategory10);
 
-console.log(yValue(allData))
+
 
 
 

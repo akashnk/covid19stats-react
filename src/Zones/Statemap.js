@@ -1,5 +1,5 @@
-import React,{useState,useEffect} from 'react';
-import { scaleLinear,scaleOrdinal } from "d3-scale";
+import React,{useState} from 'react';
+import { scaleLinear } from "d3-scale";
 import {
     ComposableMap,
     ZoomableGroup,
@@ -20,7 +20,7 @@ const Statemap = (props) => {
 
     
     const statedata=props.statedata;
-console.log(statedata)
+
     const minValue = 0 // based on the data array above
   const maxValue = 16000 // based on the data array above
   
@@ -57,7 +57,7 @@ if (props.maped !== 20) {
                     statedata[n].testspermillion = tp
     }
 }
-console.log("lol",statedata)
+
 
     return (
         <>
@@ -94,7 +94,6 @@ console.log("lol",statedata)
             <Geography
               key={geo.Rsmkey}
               geography={geo}
-              projection={projection}
               onMouseEnter={() => {
 
                 const st_nm  = geo.properties.ST_NM;
@@ -140,7 +139,7 @@ console.log("lol",statedata)
             return (<Geography
             key={geo.Rsmkey}
             geography={geo}
-            projection={projection}
+            
             onMouseEnter={() => {
 
               const st_nm  = geo.properties.ST_NM;
