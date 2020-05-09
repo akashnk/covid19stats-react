@@ -106,7 +106,7 @@ const Tables = (props) => {
 
 {
   name: "recovered",
-  title: "Recvrd",
+  title: "Recovered",
   getCellValue:  (row,rowInfo) =>  {
   return(  <div>
  <span>  {parseFloat(row.recovered)}</span>

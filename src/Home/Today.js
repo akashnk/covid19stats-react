@@ -184,7 +184,7 @@ const Today= (props) => {
       
 
     </h2></th>
-    <th className="thx" style={{color: "#A4B265"}}><h3 >Death/Recvrd</h3>
+    <th className="thx" style={{color: "#A4B265"}}><h3 >Death/Recovery</h3>
     <h2>
       {((deaths/recoveries*100).toFixed(2))} %
       
