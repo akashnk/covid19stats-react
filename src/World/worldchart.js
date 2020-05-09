@@ -728,7 +728,7 @@ focus.append('line')
   
     return (
   
-  <> <a>Select Countries from table to compare. Click on graph for numbers. </a>
+  <> <a style={{fontFamily: "verdana"}}>Select Countries from table and click on graph to compare. </a>
        <div className="svg-parent" ref={wrapperRef} >
        <svg ref={svgRef} />
        
