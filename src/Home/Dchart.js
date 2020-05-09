@@ -278,7 +278,38 @@ const xAxis = axisBottom()
  
     
 const xTicks = width/90;
+if (radiostate!=='dailytotal'){
+  svg.append('g')
+  .attr("transform", "translate(0, " + h  +")").call(xAxis
+  .tickSize(-h).tickPadding(15).ticks(xTicks).tickFormat(d=>format(d, 'dd MMM')))
+ 
+.call(g => g.select(".domain")
+  .remove())
+  .call(g => g.selectAll(".tick:not(:first-of-type) line")
+  .attr("stroke-opacity", 0.5)
+  .attr("stroke-dasharray", "2,2"))
+} else {
+  svg.append('g')
+  .attr("transform", "translate(0, " + h  +")").call(xAxis
+  .tickSize(-h).tickPadding(15).ticks(xTicks))
+ 
+.call(g => g.select(".domain")
+  .remove())
+  .call(g => g.selectAll(".tick:not(:first-of-type) line")
+  .attr("stroke-opacity", 0.5)
+  .attr("stroke-dasharray", "2,2"))
+}
 
+  svg.append('g').call(yAxis.tickSize(-w)
+  )
+  .call(g => g.select(".domain")
+      .remove())
+  .call(g => g.selectAll(".tick:not(:first-of-type) line")
+      .attr("stroke-opacity", 0.5)
+      .attr("stroke-dasharray", "2,2"))
+  .call(g => g.selectAll(".tick text")
+      .attr("x", -2)
+      .attr("dy", -4))
         
       //   svg
       //   .append("text").attr("transform", "translate(" + ((width/2) + margin.left) + " ," + (height + margin.top + margin.bottom) + ")")
@@ -310,38 +341,7 @@ const xTicks = width/90;
       .style("fill", "black")
       .text(yAxisLabel);
 
-      if (radiostate!=='dailytotal'){
-      svg.append('g')
-      .attr("transform", "translate(0, " + h  +")").call(xAxis
-      .tickSize(-h).tickPadding(15).ticks(xTicks).tickFormat(d=>format(d, 'dd MMM')))
-     
-  .call(g => g.select(".domain")
-      .remove())
-      .call(g => g.selectAll(".tick:not(:first-of-type) line")
-      .attr("stroke-opacity", 0.5)
-      .attr("stroke-dasharray", "2,2"))
-    } else {
-      svg.append('g')
-      .attr("transform", "translate(0, " + h  +")").call(xAxis
-      .tickSize(-h).tickPadding(15).ticks(xTicks))
-     
-  .call(g => g.select(".domain")
-      .remove())
-      .call(g => g.selectAll(".tick:not(:first-of-type) line")
-      .attr("stroke-opacity", 0.5)
-      .attr("stroke-dasharray", "2,2"))
-    }
 
-      svg.append('g').call(yAxis.tickSize(-w)
-      )
-      .call(g => g.select(".domain")
-          .remove())
-      .call(g => g.selectAll(".tick:not(:first-of-type) line")
-          .attr("stroke-opacity", 0.5)
-          .attr("stroke-dasharray", "2,2"))
-      .call(g => g.selectAll(".tick text")
-          .attr("x", -2)
-          .attr("dy", -4))
 
 
 
