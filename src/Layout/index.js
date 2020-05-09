@@ -108,7 +108,7 @@ function Layout(props) {
             World
           </MenuItem>
           <MenuItem onClick={handleClose} component={Link} to="/zones">
-            Zones
+            Maps
           </MenuItem>
           {/* <MenuItem onClick={handleClose} component={Link} to="/statistics">
             Statistics

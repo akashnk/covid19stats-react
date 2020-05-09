@@ -3,7 +3,7 @@ import React, {  useState, useEffect, useRef,useContext } from "react";
 
 import { select, nest,line,curveCardinal,extent,axisLeft,max,axisBottom,scaleLinear,
   scaleTime ,scaleSymlog,scaleOrdinal,schemeCategory10, selectAll, zoom,
-  zoomTransform,bisect,mouse} from 'd3';
+  zoomTransform,bisect,mouse,timeWeek} from 'd3';
 
 // import moment from 'moment';
 import {TableContext} from '../TableContext';
@@ -357,25 +357,34 @@ const xscale =  scaleTime()
   
   
   
-  const xTicks = 6;
+  const xTicks = width/90;
   const xAxis = axisBottom()
       .scale(xscale)
-      .tickPadding(15)
-      .ticks(xTicks)
-      // .tickValues((xscale.domain().filter(function(d, i) {return !(i % 2)})))
-      .tickSize(-h);
+      // .tickPadding(15)
+      // .ticks(xTicks)
+      // // .tickValues((xscale.domain().filter(function(d, i) {return !(i % 2)})))
+      // .tickSize(-h);
   // console.log((xscale.domain().filter(function(d, i) {return (i % 2)})));
   
     const yTicks = 4;
     const yAxis = axisLeft()
       .scale(yscale)
-      .ticks(yTicks,"~s")
-      .tickPadding(15)
-      .tickSize(-w);
+      // .ticks(yTicks,"~s")
+      // .tickPadding(15)
+      // .tickSize(-w);
   
-          svg.append('g')
-          .attr("transform", "translate(0, " + h  +")").call(xAxis)
-       
+        
+      
+            svg.append('g')
+            .attr("transform", "translate(0, " + h  +")").call(xAxis
+            .tickSize(-h).tickPadding(15).ticks(xTicks).tickFormat(d=>format(d, 'dd MMM')))
+           
+        .call(g => g.select(".domain")
+            .remove())
+            .call(g => g.selectAll(".tick:not(:first-of-type) line")
+            .attr("stroke-opacity", 0.5)
+            .attr("stroke-dasharray", "2,2"))
+
 
         svg
         .append("text")
@@ -385,7 +394,16 @@ const xscale =  scaleTime()
         .text(xAxisLabel);
   
   
-        svg.append('g').call(yAxis)
+        svg.append('g').call(yAxis.tickSize(-w)
+        .ticks(8,"s"))
+        .call(g => g.select(".domain")
+            .remove())
+        .call(g => g.selectAll(".tick:not(:first-of-type) line")
+            .attr("stroke-opacity", 0.5)
+            .attr("stroke-dasharray", "2,2"))
+        .call(g => g.selectAll(".tick text")
+            .attr("x", -2)
+            .attr("dy", -4))
   
         svg
         .append("text")
@@ -462,37 +480,35 @@ dataNest.forEach(function(d, i)  {
     
 });
 
-dataNest.forEach(function(d, i)  {
-  svg
-
-  .append("text")                                    // *******
-      .attr("x", (i%4)*w/3.5) // spacing // ****
-      .attr("y", Math.floor(i/4)*20-3)
-   
-      .attr("class", "legend")    // style the legend   // *******
-      .style("fill", d.color=()=>color(d.key))   
-     
-      .text(d.key)
-
-    
-
-
-    
-});
 metric
-// .style("fill", "#FFF")
-// .style("stroke", function(d) { return color(d.key); })
 .selectAll("circlesd")
-.data(function(d){ return d.values })
+.data(allData)
   .enter()
   .append("circle")
   .attr("r", 2)
-  .style("fill", "#FFF")
-  .style("fill-opacity",0.7)
-.style("stroke", function(d) { return color(d.key); })
-  .style("stroke-width", 1)
+  .style("fill", "white")
+//   .attr("id", function (d) {
+//     return 'tag'+d.key.replace(/\s+/g, '');
+// })
+  .style("fill-opacity",0.8)
+  .style("stroke", function(d) { return color(d.country); })
+
+  .style("stroke-width", 1.9)
   .attr("cx",d => xscale(d.date))
   .attr("cy",d => yscale(d[radiostate]))
+
+
+ svg
+  .selectAll("cirtext")
+  .data(dataNest)
+    .enter()
+    .append("text")
+    .attr("x", d => xscale(d.values[d.values.length-1].date)+3)
+    .attr("y", d => yscale(d.values[d.values.length-1][radiostate]))
+    .attr("class","leg")
+    .style("fill", function(d) { return color(d.key); })
+    .text(d => d.key)
+
 
 var points = svg.selectAll('.points')
   .data(dataNest)
@@ -579,10 +595,16 @@ focus.append('line')
   function mouseover() {
     focus.style("display", null);
    selectAll('.points text').style("display", null);
+   selectAll('.pointss rect').style("display", null);
+   selectAll('.pointss text').style("display", null);
+   selectAll('.pointsk text').style("display", null);
   }
   function mouseout() {
     focus.style("display", "none");
     selectAll('.points text').style("display", "none");
+    selectAll('.pointss rect').style("display", "none");
+    selectAll('.pointss text').style("display", "none");
+    selectAll('.pointsk text').style("display", "none");
   }
   function mousemove() {
     var i = bisect(timeScales, mouse(this)[0], 1);
@@ -617,8 +639,8 @@ focus.append('line')
       .attr("y", d => yscale(d.values[i-1][radiostate] )-1)
 
       selectAll('.points text')
-      .attr('x',20)
-      .attr('y',66)
+      .attr("x", d => xscale(d.values[i-1].date) -30)
+      .attr('y',-2)
       .text(`${yAxisLabel}`+' '+'on'+' '+`${format(di.date, 'dd MMMM')}`)
       .style("fill","black")
 

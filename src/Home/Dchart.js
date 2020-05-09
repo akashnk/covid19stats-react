@@ -2,7 +2,7 @@ import React, {  useState, useEffect, useRef,useContext } from "react";
 
 import { select, nest,line,curveCardinal,extent,axisLeft,max,axisBottom,scaleLinear,
   scaleTime,scaleSymlog,scaleOrdinal,schemeCategory10, selectAll, zoom,
-  zoomTransform,mouse,bisect,interpolate} from 'd3';
+  zoomTransform,mouse,bisect,timeMonth,timeWeek,timeYear} from 'd3';
 
 
 
@@ -18,7 +18,7 @@ import {format} from 'date-fns';
 const Dchart = (props) => {
  
   const [radiostate,setRadiostate] = useState([]);
-  const [mode, setMode] = useState(props.mode);
+ 
   const [logMode, setLogMode] = useState([]);
   const [chartType, setChartType] = useState(props.casetype);
   // const [moving, setMoving] = useState(false);
@@ -106,9 +106,9 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
      }, []);
 
    
-     useEffect(()=>
-   setLastDaysCount(props.timeMode)
- ,[props.timeMode])
+//      useEffect(()=>
+//    setLastDaysCount(props.timeMode)
+//  ,[props.timeMode])
 
 
     useEffect(() => {
@@ -117,10 +117,7 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
 
    
 //
-//
-  useEffect(() => {
-    setMode(props.mode);
-  }, [props.mode]);
+
 //
   useEffect(() => {
     setLogMode(props.logMode);
@@ -165,7 +162,7 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
         });
 
          // console.log(allData);
-
+        allData.sort((a, b) => (b.confirmed - a.confirmed));
 
             const xValue = (d) => {if (radiostate==='dailytotal') {
               return d.totalconfirmed
@@ -179,7 +176,7 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
                                             :radiostate==='totalactive'?'Active'
                                             :radiostate==='totalrecovered'?'Recovered'
                                             :radiostate==='totaldeceased'?'Deaths'
-                                            :radiostate==='dailytotal'?'Daily avg'
+                                            :radiostate==='dailytotal'?'Daily'
                                             :'Daily cases';
 
 
@@ -239,7 +236,7 @@ var m = 0;
           console.log(m)
         var dataNest = nest()
         .key(function(d){
-          return STATE_CODES[d.state];
+          return d.state;
         })
         .entries(allData)
 
@@ -247,29 +244,42 @@ var m = 0;
 var color = scaleOrdinal(schemeCategory10);
 
 
+function multiFormat(date) {
+  return (
+   timeMonth(date) < date ? (timeWeek(date) < date ? "%b %d" : 
+  "%b %d")
+  : timeYear(date) < date ? "%B"
+  : "%Y")(date);
+  }
 
 
-
-const xTicks = 6;
 const xAxis = axisBottom()
     .scale(xscale)
-    .tickPadding(15)
-    .ticks(xTicks)
-    // .tickValues((xscale.domain().filter(function(d, i) {return !(i % 2)})))
-    .tickSize(-h);
-// console.log((xscale.domain().filter(function(d, i) {return (i % 2)})));
 
-  const yTicks = 4;
+
+  const yTicks = 5;
   const yAxis = axisLeft()
     .scale(yscale)
-    .ticks(yTicks,"~s")
-    .tickPadding(15)
-    .tickSize(-w)
     
+    // .ticks(yTicks)
+    
+    // .ticks(yTicks," ")
+    // // .tickPadding(15)
+    // .tickSize(-w)
+    // .tickFormat(formatTick))
+    // .call(g => g.select(".domain")
+    //     .remove())
+    // .call(g => g.selectAll(".tick:not(:first-of-type) line")
+    //     .attr("stroke-opacity", 0.5)
+    //     .attr("stroke-dasharray", "2,2"))
+    // .call(g => g.selectAll(".tick text")
+    //     .attr("x", 4)
+    //     .attr("dy", -4))
+ 
+    
+const xTicks = width/90;
 
-        svg.append('g')
-        .attr("transform", "translate(0, " + h  +")").call(xAxis)
-
+        
       //   svg
       //   .append("text").attr("transform", "translate(" + ((width/2) + margin.left) + " ," + (height + margin.top + margin.bottom) + ")")
       // .style("text-anchor", "middle")
@@ -285,7 +295,10 @@ const xAxis = axisBottom()
       .text(xAxisLabel);
 
 
-      svg.append('g').call(yAxis)
+   
+
+      
+      
 
       svg
       .append("text")
@@ -297,7 +310,38 @@ const xAxis = axisBottom()
       .style("fill", "black")
       .text(yAxisLabel);
 
+      if (radiostate!=='dailytotal'){
+      svg.append('g')
+      .attr("transform", "translate(0, " + h  +")").call(xAxis
+      .tickSize(-h).tickPadding(15).ticks(xTicks).tickFormat(d=>format(d, 'dd MMM')))
+     
+  .call(g => g.select(".domain")
+      .remove())
+      .call(g => g.selectAll(".tick:not(:first-of-type) line")
+      .attr("stroke-opacity", 0.5)
+      .attr("stroke-dasharray", "2,2"))
+    } else {
+      svg.append('g')
+      .attr("transform", "translate(0, " + h  +")").call(xAxis
+      .tickSize(-h).tickPadding(15).ticks(xTicks))
+     
+  .call(g => g.select(".domain")
+      .remove())
+      .call(g => g.selectAll(".tick:not(:first-of-type) line")
+      .attr("stroke-opacity", 0.5)
+      .attr("stroke-dasharray", "2,2"))
+    }
 
+      svg.append('g').call(yAxis.tickSize(-w)
+      )
+      .call(g => g.select(".domain")
+          .remove())
+      .call(g => g.selectAll(".tick:not(:first-of-type) line")
+          .attr("stroke-opacity", 0.5)
+          .attr("stroke-dasharray", "2,2"))
+      .call(g => g.selectAll(".tick text")
+          .attr("x", -2)
+          .attr("dy", -4))
 
 
 
@@ -319,11 +363,13 @@ const xAxis = axisBottom()
 
 
 
-dataNest.forEach(function(d, i)  {
-  metric.append("path").attr('class', 'line').attr("d",myline(d.values))
-  .attr("stroke",d.color=()=>color(d.key))
-  .attr("stroke-width",lineStroke)
-  .attr("fill","none")
+// dataNest.forEach(function(d, i)  {
+//   metric.append("path").attr('class', 'line').attr("d",myline(d.values))
+//   .attr("stroke",d.color=()=>color(d.key))
+//   .attr("id", 'tag'+d.key.replace(/\s+/g, ''))
+//   .attr("stroke-width",lineStroke)
+//   .attr("fill","none")
+  
  
 
 
@@ -332,39 +378,98 @@ dataNest.forEach(function(d, i)  {
 
 
     
-});
-dataNest.forEach(function(d, i)  {
-  svg
+// });
 
-  .append("text")                                    // *******
-      .attr("x", (i%4)*w/3.5) // spacing // ****
-      .attr("y", Math.floor(i/4)*20-3)
+
+metric.selectAll("path.line")
+  .data(dataNest)
+    .enter().append('path')
+    .attr("class", "line")
+    .style("stroke", function(d) { // Add the colours dynamically
+        return color(d.key);
+    })
+    .attr("id", function(d) {
+        return 'tag'+d.key.replace(/\s+/g, ''); // assign ID
+    })
+    .attr("stroke-width", 2)
+    .attr("fill","none")
+    .attr("d", function (d) {
+        return myline(d.values);
+    })
+
+  //  svg.selectAll("legend")
+  //   .data(dataNest)
+  //   .enter().append('text')
+  //   .attr("x", (i%4)*w/3.5) // spacing // ****
+  //     .attr("y", Math.floor(i/4)*20-3)
    
-      .attr("class", "legend")    // style the legend   // *******
-      .style("fill", d.color=()=>color(d.key))   
-     
-      .text(d.key)
+  //     .attr("class", "legend")    // style the legend   // *******
+  //     .style("fill", function(d) { // Add the colours dynamically
+  //       return color(d.key);
+  //   })
 
-    
-
-
-    
-});
+  // metric.append("text")
+  // .attr("class","ser")
+  // .datum(function(d) {
+  //     return {
+  //         id: d.key,
+  //         value: d.values[d.values.length - 1]}; })
+  // .attr("transform", function(d) {
+  //         return "translate(" + (xscale(d.value.date) + 10)  
+  //         + "," + (yscale(d.value[radiostate]) + 5 ) + ")"; })
+  // .attr("x", 5)
+  // .text(function(d) { return d.id; });
 
 metric
-// .style("fill", "#FFF")
-// .style("stroke", function(d) { return color(d.key); })
 .selectAll("circlesd")
-.data(function(d){ return d.values })
+.data(allData)
   .enter()
   .append("circle")
   .attr("r", 2)
-  .style("fill", "#FFF")
-  .style("fill-opacity",0.7)
-.style("stroke", function(d) { return color(d.key); })
-  .style("stroke-width", 1)
+  .style("fill", "white")
+//   .attr("id", function (d) {
+//     return 'tag'+d.key.replace(/\s+/g, '');
+// })
+  .style("fill-opacity",0.8)
+  .style("stroke", function(d) { return color(d.state); })
+
+  .style("stroke-width", 1.9)
   .attr("cx",d => xscale(d.date))
   .attr("cy",d => yscale(d[radiostate]))
+
+
+ svg
+  .selectAll("cirtext")
+  .data(dataNest)
+    .enter()
+    .append("text")
+    .attr("x", d => xscale(d.values[d.values.length-1].date))
+    .attr("y", d => yscale(d.values[d.values.length-1][radiostate]))
+    .attr("class","leg")
+    .style("fill", function(d) { return color(d.key); })
+    .text(d => STATE_CODES[d.key])
+
+  
+
+  // dataNest.forEach(function(d, i)  {
+  //   svg
+  
+  //   .append("text")                                    // *******
+  //       .attr("x", (i%4)*w/3.5) // spacing // ****
+  //       .attr("y", Math.floor(i/4)*20-3)
+     
+  //       .attr("class", "legend")    // style the legend   // *******
+  //       .style("fill", d.color=()=>color(d.key))   
+        
+  //       .text(STATE_CODES[d.key])
+        
+  
+      
+  
+  
+      
+  // });
+  
 
 var points = svg.selectAll('.points')
   .data(dataNest)
@@ -478,15 +583,15 @@ if (radiostate!== 'dailytotal'){
       .attr("y", d => yscale(d.values[i-1][radiostate])+13)
     .text(d => d.values[i-1][radiostate] )
     .style("fill","black")
-    .attr("font-weight",function(d,i) {return i*100+100;})
+    // .attr("font-weight",function(d,i) {return i*100+100;})
 
     selectAll('.pointsk text')
         
     .attr("x", d => xscale(d.values[i-1].date)- 48)
       .attr("y", d => yscale(d.values[i-1][radiostate])+13)
-    .text(d => d.key )
+    .text(d => STATE_CODES[d.key] )
     .style("fill","black")
-    .attr("font-weight",function(d,i) {return i*100+100;})
+    // .attr("font-weight",function(d,i) {return i*100+100;})
 
     selectAll('.pointss rect')
       .attr("width", 130)
@@ -499,9 +604,10 @@ if (radiostate!== 'dailytotal'){
       .attr("y", d => yscale(d.values[i-1][radiostate] )-1)
 
       selectAll('.points text')
-      .attr('x',20)
-      .attr('y',66)
-      .text(`${yAxisLabel}`+' '+'on'+' '+`${format(di.date, 'dd MMMM')}`)
+      .attr("x", d => xscale(d.values[i-1].date) -30)
+      .attr('y',-2)
+      // .text(`${yAxisLabel}`+' '+'on'+' '+`${format(di.date, 'dd MMMM')}`)
+      .text(`${format(di.date, 'dd MMMM')}`)
       .style("fill","black")
 
       

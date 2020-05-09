@@ -376,7 +376,7 @@ text {
  }
 .tooltip {
   position: fixed;
-  opacity: 0;
+  opacity: 1;
 }
 
 .line {
@@ -394,3 +394,5 @@ text {
   stroke-width: 2px;
   stroke-dasharray: 3,3;
 }
+
+.ticks {stroke:lightgray;opacity:0} 
