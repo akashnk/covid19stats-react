@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useRef} from 'react';
 import { scaleLinear } from "d3-scale";
 import {
     ComposableMap,
@@ -8,14 +8,20 @@ import {
     Graticule,
   } from "react-simple-maps";
   import ReactTooltip from "react-tooltip";
-  import {STATES_C, pop} from "../Common/constants"
+  import {STATES_C, pop} from "../Common/constants";
+  // import {useResizeObserver} from '../Common/hooks';
 const INDIA_TOPO_JSON = require('./india_statestopo');
 const wrapperStyles = {
     width: "100%",
     maxWidth: 1080,
     margin: "0 auto",
   }
+
+
+
 const Statemap = (props) => {
+  // const wrapperRef = useRef();
+  // const dimensions = useResizeObserver(wrapperRef);
     const [content, setTooltipContent] = useState("");
 
     
@@ -41,7 +47,8 @@ const Statemap = (props) => {
       .domain([minnValue,maxnValue])
       .range([minnColor,maxnColor])
 
-
+      // const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
+      // if (!dimensions) return;
      
 if (props.maped !== 20) {
     statedata.forEach(element => {
@@ -61,7 +68,7 @@ if (props.maped !== 20) {
 
     return (
         <>
-         <div>
+         <div >
         <div style={wrapperStyles}>
           <ComposableMap
             projection="geoMercator"
@@ -71,8 +78,8 @@ if (props.maped !== 20) {
             
               scale: 1000
             }}
-            // width={980}
-            // height={651}
+            // width={1020}
+            // height={800}
             style={{
               width: "100%",
               height: "120%",
@@ -90,7 +97,7 @@ if (props.maped !== 20) {
           
           
           return (
-              
+           
             <Geography
               key={geo.Rsmkey}
               geography={geo}
@@ -103,9 +110,12 @@ if (props.maped !== 20) {
            
              
                 const conf = country ? country.confirmed : 0
-                
+                const deaths = country ? country.deaths: 0
+                const active = country ? country.active : 0
+                const recov =country ? country.recovered : 0
                 // setTooltipContent(`${district} (${st_nm}) :` <br> `${zone} ${conf} ${actv} `);
-                setTooltipContent(<span>{st_nm}<br/>Confirmed: {conf}  </span>)
+                setTooltipContent(<span style={{fontFamily:"verdana"}}>{st_nm}<br/>Confirmed: {conf} <br/> Deaths: {deaths}
+                <br/> Active: {active} <br/> Recovered: {recov} </span>)
              
               }}
               onMouseLeave={() => {
@@ -135,6 +145,7 @@ if (props.maped !== 20) {
             />
           )
           }
+          
         else{
             return (<Geography
             key={geo.Rsmkey}
@@ -145,13 +156,13 @@ if (props.maped !== 20) {
               const st_nm  = geo.properties.ST_NM;
               
               
-              
+              const tes =country ? country.totaltested : 0
          
            
               const conf = country ? country.testspermillion : 0
               
               // setTooltipContent(`${district} (${st_nm}) :` <br> `${zone} ${conf} ${actv} `);
-              setTooltipContent(<span>{st_nm}<br/>Tests per million: {conf}  </span>)
+              setTooltipContent(<span style={{fontFamily:"verdana"}}> {st_nm}<br/>Total Tests: {tes} <br/>Tests per million: {conf}  </span>)
            
             }}
             onMouseLeave={() => {
@@ -186,9 +197,10 @@ if (props.maped !== 20) {
             </ZoomableGroup>
           </ComposableMap> 
          
-        </div>
+        
         <div> <ReactTooltip multiline={true}>{content}</ReactTooltip></div>
         </div>
+        </div>   
         </>
     )
 }

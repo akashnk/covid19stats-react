@@ -25,7 +25,7 @@ const Dchart = (props) => {
   const [panMode, setpanMode] = useState([]);
  
   const [totdata,setTotdata]=useState([]);
-  const [lastDaysCount,setLastDaysCount]=useState(14);
+  // const [lastDaysCount,setLastDaysCount]=useState(14);
   const [currentZoomState, setCurrentZoomState] = useState();
 
   const [daysC,setDaysC] = useState([])
@@ -233,7 +233,6 @@ var m = 0;
           const myline = radiostate !=='dailytotal' ? line().x(function(d) {return xscale(xValue(d))}).y(d => yscale(1+yValue(d))).curve(curveCardinal) :
           line().x((d) => xscale(xValue(d))).y(d => yscale(1+yValue(d))).curve(curveCardinal)
 
-          console.log(m)
         var dataNest = nest()
         .key(function(d){
           return d.state;
