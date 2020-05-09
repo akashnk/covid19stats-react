@@ -177,7 +177,7 @@ import { STATES_C } from '../Common/constants';
                 const conf = countrycon ? countrycon.confirmed : 0
                 const actv = countrycon ? countrycon.active : 0
                 // setTooltipContent(`${district} (${st_nm}) :` <br> `${zone} ${conf} ${actv} `);
-                setTooltipContent(<span>{district} ({st_nm})<br/>Confirmed: {conf} <br/> Active: {actv} <br/> Zone: {zone} </span>)
+                setTooltipContent(<span style={{fontFamily: "verdana"}}>{district} ({st_nm})<br/>Confirmed: {conf} <br/> Active: {actv} <br/> Zone: {zone} </span>)
               }}
               onMouseLeave={() => {
                 setTooltipContent("");
