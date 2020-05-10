@@ -1,5 +1,5 @@
 import React,{useState,useRef} from 'react';
-import { scaleLinear } from "d3-scale";
+import { scaleLinear } from "d3";
 import {
     ComposableMap,
     ZoomableGroup,

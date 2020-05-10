@@ -56,7 +56,7 @@ import {
     Geography,
     Graticule,
   } from "react-simple-maps"
-  import { scaleLinear,scaleOrdinal } from "d3-scale"
+  import { scaleLinear,scaleOrdinal } from "d3"
 import { STATES_C } from '../Common/constants';
   
   const wrapperStyles = {
