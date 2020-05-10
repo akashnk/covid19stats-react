@@ -394,17 +394,29 @@ const xscale =  scaleTime()
         .text(xAxisLabel);
   
   
-        svg.append('g').call(yAxis.tickSize(-w)
-        .ticks(8,"s"))
-        .call(g => g.select(".domain")
-            .remove())
-        .call(g => g.selectAll(".tick:not(:first-of-type) line")
-            .attr("stroke-opacity", 0.5)
-            .attr("stroke-dasharray", "2,2"))
-        .call(g => g.selectAll(".tick text")
-            .attr("x", -2)
-            .attr("dy", -4))
-  
+        if (logMode !== true){
+          svg.append('g').call(yAxis.tickSize(-w).ticks(8,"s")
+          )
+          .call(g => g.select(".domain")
+              .remove())
+          .call(g => g.selectAll(".tick:not(:first-of-type) line")
+              .attr("stroke-opacity", 0.5)
+              .attr("stroke-dasharray", "2,2"))
+          .call(g => g.selectAll(".tick text")
+              .attr("x", -2)
+              .attr("dy", -4))}
+              else{
+                svg.append('g').call(yAxis.tickSize(-w).ticks(3,"s")
+                )
+                .call(g => g.select(".domain")
+                    .remove())
+                .call(g => g.selectAll(".tick:not(:first-of-type) line")
+                    .attr("stroke-opacity", 0.5)
+                    .attr("stroke-dasharray", "2,2"))
+                .call(g => g.selectAll(".tick text")
+                    .attr("x", -2)
+                    .attr("dy", -4))} 
+              
         svg
         .append("text")
         .attr("transform", "rotate(-90)")

@@ -1,15 +1,17 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,useContext} from "react";
 import axios from "axios";
+
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import Button from '@material-ui/core/Button';
 import Switch from '@material-ui/core/Switch';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Typography from '@material-ui/core/Typography';
 import { createMuiTheme, ThemeProvider, createStyles } from '@material-ui/core/styles';
+import {TableContext} from "../TableContext";
 import Worldtable from './worldtable';
 import Update from './Update';
 import Worldchart from './worldchart';
@@ -69,6 +71,7 @@ export default function World() {
     const [datap, setDatap] = useState([]);
     const [countryd,setcountry] = useState([]);
   const [fetched,setFetched] = useState(false);
+  const [activeCountryCode,setActiveCountryCode] = useState(["World"])
 
   const [value,setCase] =useState('confirmed');
   const apiURL1 = 'https://disease.sh/v2/countries';
@@ -177,7 +180,7 @@ ObjKeyRename2(o, {"United Arab Emirates":"UAE"});
 ObjKeyRename2(o, {"Korea, South":"S. Korea"});
 ObjKeyRename2(o, {"Taiwan*":"Taiwan"});
 
-
+const context = useContext(TableContext)
 // console.log(datax);
 const handleChange = e => {
     // console.log(e.target.value);
@@ -193,6 +196,20 @@ const handleChange = e => {
      setDaysC(e.target.value);
    };
 
+   const handleButton = () => {
+    // console.log(e.target.value);
+    setActiveCountryCode(['World']);
+    
+    setLogMode(false);
+    setCase('confirmed');
+  };
+
+
+
+ useEffect(()=>{
+  context.setCountrycodes(activeCountryCode);
+  setDaysC('Month');
+ },[activeCountryCode])
    const classes = useStyles();
     return (
 
@@ -229,7 +246,9 @@ totdata={o}
         <FormControlLabel value="Inf" control={<Radio />} label="Start" />
         <FormControlLabel value="Month" control={<Radio />} label="4 weeks" />
         <FormControlLabel value="Fortnight" control={<Radio />} label="2 weeks" />
-      
+        <Button variant="outlined" color="primary" onClick={handleButton}>
+  Reset all
+</Button> 
          
     </RadioGroup>
     </Paper>
