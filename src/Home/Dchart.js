@@ -325,18 +325,30 @@ if (logMode !== true){
 
 
 
-metric.selectAll("linesd")
-  .data(dataNest)
-    .enter().append('path')
-    .attr("class", "line")
-    .style("stroke", function(d) { // Add the colours dynamically
-        return color(d.key);
-    })
-    .attr("stroke-width", 2)
-    .attr("fill","none")
-    .attr("d", function (d) {
-        return myline(d.values);
-    })
+// metric.selectAll("linesd")
+//   .data(dataNest)
+//     .enter().append('path')
+//     .attr("class", "line")
+//     .style("stroke", function(d) { // Add the colours dynamically
+//         return color(d.key);
+//     })
+//     .attr("stroke-width", 2)
+//     .attr("fill","none")
+//     .attr("d", function (d) {
+//         return myline(d.values);
+//     })
+dataNest.forEach(function(d, i)  {
+  metric.append("path").attr('class', 'line').attr("d",myline(d.values))
+  .attr("stroke",d.color=()=>color(d.key))
+  .attr("stroke-width",lineStroke)
+  .attr("fill","none")
+
+
+    
+
+
+    
+});
 
 
 

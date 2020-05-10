@@ -462,7 +462,7 @@ focus.append('line')
       .attr("y", d => yscale(d.values[i-1][radiostate])+13)
     .text(d => d.values[i-1][radiostate] )
     .style("fill","black")
-    .attr("font-weight",function(d,i) {return i*100+100;})
+    
 
     selectAll('.pointsk text')
         
@@ -470,7 +470,7 @@ focus.append('line')
       .attr("y", d => yscale(d.values[i-1][radiostate])+13)
     .text(d => d.key )
     .style("fill","black")
-    .attr("font-weight",function(d,i) {return i*100+100;})
+    
 
     selectAll('.pointss rect')
       .attr("width", 137)
