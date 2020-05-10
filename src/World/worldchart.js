@@ -16,27 +16,15 @@ import {format} from 'date-fns';
 
 
 const Worldchart = (props) => {
-    // const [lastDaysCount, setLastDaysCount] = useState(
-    //   window.innerWidth > 512 ? Infinity : 30
-    // );
-    // const [activeStateCode,setActiveStateCode] = useState(props.activeStateCode);
-  //   const [timeseries, setTimeseries] = useState([]);
-  // // const [allData,setallData]=useState([]);
-  //   const [datapoint, setDatapoint] = useState({});
-  //   const [index, setIndex] = useState(0);
+ 
     const [radiostate,setRadiostate] = useState([]);
     const [mode, setMode] = useState(props.mode);
     const [logMode, setLogMode] = useState([]);
     const [chartType, setChartType] = useState(props.casetype);
-   
-    const [timeSeriesData, setTimeSeriesData] = useState([]);
+  
     const [totdata,setTotdata]=useState([]);
     const [lastDaysCount,setLastDaysCount]=useState(14);
-   
-    // const [countryd,setCountryd] = useState([]);
-    // const [worldd,setWorldd] = useState([]);
-    // const [fetched,setFetched] =useState(false);
-    // const [index, setIndex] = useState(0);
+  
     const [daysC,setDaysC] = useState([]);
 
   //  console.log(activeStateCode);
@@ -70,20 +58,7 @@ const Worldchart = (props) => {
   
     }, [props.totdata])
     
-    // const transformTimeSeries = useCallback(
-    //   (totdata) => {
-    //     if (timeseries.length > 1) {
-    //       const slicedTimeseries = sliceTimeseriesFromEnd(
-    //         timeseries,
-    //         14
-    //       );
-    //       setIndex(slicedTimeseries.length - 1);
-    //       setTimeseries(slicedTimeseries);
-    //     }
-    //   },
-    //   [14]
-    // );
-    // console.log(timeseries)
+    
   
   
   const as = context.countrycodes!==[]? context.countrycodes: ["World"];
@@ -94,111 +69,15 @@ const Worldchart = (props) => {
     setDaysC(props.daysC);
   }, [props.daysC]);
   
-//   const api1 = 'https://pomber.github.io/covid19/timeseries.json'
-//   const api2 = 'https://raw.githubusercontent.com/datasets/covid-19/master/data/worldwide-aggregated.csv'
-// //   const api2 = 'https://disease.sh/v2/historical?lastdays=15'
-//   const api3 = 'https://disease.sh/v2/historical?lastdays=60'
 
-//   const apiw1 = 'https://disease.sh/v2/historical/all?lastdays=30'
-//   const apiw2 = 'https://disease.sh/v2/historical/all?lastdays=15'
-//   const apiw3 = 'https://disease.sh/v2/historical/all?lastdays=60'
-  // const tc = (totdata,i)=> {for i in }
 
   const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infinity;
   
-//   const fetchData = async () => {
-//     try {
-//       const [
-//         countryd
-
-//      ] =
-//      await Promise.all([
-//       axios.get(api1)
-      
-//     //   axios.get(apiURL2),
-   
-//    ]);
-//       // world data
-//       setCountryd(countryd.data);
-   
-     
-       
-
-    
-       
-//        setFetched(true);
 
 
 
-//     } catch (err) {
-//        console.log(err);
-//      }
-//    };
-  
-//     useEffect(() => {
-//        if (fetched === false) {
-//          fetchData();
-         
-//        }
-//      }, [fetched]);
-
-   
 
 
-//      useEffect(()=>{
-     
-//         var countryArr = Object.keys(countryd).map(i => i);
-//         var worldChart = [];
-//         countryArr.forEach((country) => {
-//             let countryData = countryd[country];
-//             countryData.forEach((dailyData, index) => {
-//                 if (worldChart[index] === undefined) {
-//                     var worldStats = { date: dailyData.date, confirmed: dailyData.confirmed, recovered: dailyData.recovered, deaths: dailyData.deaths };
-//                     worldChart.push(worldStats);
-//                 } else {
-//                     worldChart[index].confirmed += dailyData.confirmed;
-//                     worldChart[index].recovered += dailyData.recovered;
-//                     worldChart[index].deaths += dailyData.deaths;
-//                 }
-//             });
-//           });
-        
-   
-//           countryd["World"] = worldChart;
-//     },[countryd])
-
-
-// // delete Object.assign(o, {["USA"]: o["US"]})["US"]
-
-
-// function ObjKeyRename2(src, map) {
-//     var dst = {};
-//     // src --> dst
-//     for(var key in src){
-//         if(key in map)
-//             // rename key
-//             dst[map[key]] = src[key];
-//         else
-//             // same key
-//             dst[key] = src[key];
-//     }
-//     // clear src
-//     for(var key in src){
-//         delete src[key];
-//     }
-//     // dst --> src
-//     for(var key in dst){
-//         src[key] = dst[key];
-//     }
-// }
-
-// useEffect(() => {
-//     const o = countryd
-// ObjKeyRename2(o, {"US":"USA"});
-// ObjKeyRename2(o, {"United Kingdom":"UK"});
-// ObjKeyRename2(o, {"United Arab Emirates":"UAE"});
-//     setD(o);
-// },[countryd]);
 
 
 
@@ -452,39 +331,7 @@ dataNest.forEach(function(d, i)  {
   .attr("stroke",d.color=()=>color(d.key))
   .attr("stroke-width",lineStroke)
   .attr("fill","none")
-  // .on("mouseover", function(d) {
-  //   selectAll(".line").style("opacity", otherLinesOpacityHover);
-   
-  //   select(this)
-  //     .style("opacity", lineOpacityHover)
-  //     .style("stroke-width", lineStrokeHover)
-  //     .style("cursor", "pointer");
-  // })
-  // .on("mouseout", function(d) {
-  //   selectAll(".line").style("opacity", lineOpacity);
- 
-  //   select(this)
-  //     .style("stroke-width", lineStroke)
-  //     .style("cursor", "none");
-  // })
 
-  // .on("mouseenter",(d,i)=>
-  // {
-  //   g.selectAll(".tooltip")
-  //   .data(dataNest)
-  //   .join("text")
-  //   .attr("class","tooltip")
-  //   .text(d.value)
-  //   .attr("x",d.key)
-  //   .attr("y",d.values)
-  // })
- 
-  // g.append("text")
-  //  .html(d.key)
-  //  .attr('fill', d.color)   
-  //  .attr('alignment-baseline', 'middle')
-  //  .attr('x', w-20)
-  //  .attr('dx', '.5em')
 
     
 
@@ -535,12 +382,7 @@ var points = svg.selectAll('.points')
 
   
 
-//   const rects = svg.selectAll('.rects')
-//   .data(dataNest)
-//   .enter()
-//  .append('g')
-//   .attr('class', 'rects')
-//   .append('rect');
+
 
   const pointss = svg.selectAll('.pointss')
   .data(dataNest)
@@ -563,17 +405,7 @@ var points = svg.selectAll('.points')
 
 
 
-  //     mousePerLine.append("rect")
-//     .attr("width", 50)
-//     .attr("height", 50)
-//     .style("stroke", function(d) {
-//       return color(d.key);
-//     })
-//     .style("fill", function(d) {
-//       return color(d.key);
-//     })
-//     .style("stroke-width", "1px")
-//     .style("opacity", "0")
+ 
 
 
 
@@ -659,11 +491,7 @@ focus.append('line')
       
 
      
-    // selectAll('.points text')
-    //   .attr('x', function(d) { return xscale(di.date) + 15; })
-    //   .attr('y', function(d) { return yscale(d.values[i-1].radiostate); })
-    //   .text(function(d) { return d.values[i-1].radiostate; })
-    //   .style('fill', function(d) { return color(d.key); });
+
   }
   
    
@@ -681,48 +509,7 @@ focus.append('line')
   });
 
   
-    //   lines.call(zoomBehavior);
-  
-  // const linechart = g
-  //         .append('g')
-  //         .attr('class','linechart');
-  // var legendSpace = width/dataNest.length;
-  // // console.log(dataNest)
-  // dataNest.forEach(function(d, i)  {
-  //   linechart.append("path").attr("d",myline(d.values))
-  //   .attr("stroke",d.color=()=>color(d.key))
-  //   .attr("stroke-width",2)
-  //   .attr("fill","none")
-  //   .transition()
-  //   .duration(1000)
-  
-  //   g.append("text")                                    // *******
-  //   // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
-  //   // .attr("y", (margin.top/2)- 25)         // *******
-  //   .attr("x", (i%4)*w/3.5) // spacing // ****
-  //   .attr("y", Math.floor(i/4)*20)
-  //   .attr("class", "legend")    // style the legend   // *******
-  //   .style("fill", function() { // dynamic colours    // *******
-  //       return d.color = color(d.key); })             // *******
-  //   .text(d.key)
-  
-  
-  
-  
-  
-  // });
-  
-  
-  
-  // function mouseover(){
-   
-  //   tip
-  //   .style('left', currentEvent.clientX+'px')
-  //   .style('top',currentEvent.clientY+'px')
-  // }
-  
-  // const tip = select('.tooltip');
-  // selectAll('linechart').on('mouseover',mouseover);
+
   
   
   

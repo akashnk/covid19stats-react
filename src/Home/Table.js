@@ -202,13 +202,19 @@ getCellValue: (row) => {
 
         const statec = rows.map(d => d.statecode);
         const selstate = selection.map(d=>statec[d]);
-  
+        context.setStateselect(selection);
   
     context.setStatecodes(selstate);}
     else {
       context.setStatecodes(["TT"]);
+      
     }
 },[selection,rows])
+
+useEffect(()=>
+{
+setSelection(context.stateselect)
+},[context.stateselect])
 
 
   return (

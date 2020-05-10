@@ -57,20 +57,7 @@ var lineStroke = "1.5px";
 
   }, [props.totdata])
 
-  // const transformTimeSeries = useCallback(
-  //   (totdata) => {
-  //     if (timeseries.length > 1) {
-  //       const slicedTimeseries = sliceTimeseriesFromEnd(
-  //         timeseries,
-  //         14
-  //       );
-  //       setIndex(slicedTimeseries.length - 1);
-  //       setTimeseries(slicedTimeseries);
-  //     }
-  //   },
-  //   [14]
-  // );
-  // console.log(timeseries)
+ 
 
 
 const as = context.statecodes!==[]? context.statecodes: ["TT"];
@@ -129,28 +116,9 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
   }, [props.type]);
 
 
-  // useEffect(() => {
-  //   setpanMode(props.panMode);
-  // }, [props.panMode]);
-
- 
-  
- 
-//console.log(timeseries)
   useEffect(() => {
 
-    // const movingAvg = function (data, neighbors) {
-    //   return data.map((val, idx, arr) => {
-    //     let start = Math.max(0, idx - neighbors), end = idx + neighbors
-    //     let subset = arr.slice(start, end + 1)
-    //     let sum = subset.reduce((a,b) => a + b)
-    //     return sum / subset.length
-    //   })
-    // }
-     
-// var nmk = allData['dailyconfirmed']
-// var njk = movingAvg(nmk,3)
-// console.log()
+
 
   allData.forEach((d,i)=> {
  // console.log(tv['TN'].totalconfirmed);
@@ -260,20 +228,7 @@ const xAxis = axisBottom()
   const yAxis = axisLeft()
     .scale(yscale)
     
-    // .ticks(yTicks)
-    
-    // .ticks(yTicks," ")
-    // // .tickPadding(15)
-    // .tickSize(-w)
-    // .tickFormat(formatTick))
-    // .call(g => g.select(".domain")
-    //     .remove())
-    // .call(g => g.selectAll(".tick:not(:first-of-type) line")
-    //     .attr("stroke-opacity", 0.5)
-    //     .attr("stroke-dasharray", "2,2"))
-    // .call(g => g.selectAll(".tick text")
-    //     .attr("x", 4)
-    //     .attr("dy", -4))
+
  
     
 const xTicks = width/90;
@@ -323,12 +278,7 @@ if (logMode !== true){
             .attr("dy", -4))} 
       
         
-      //   svg
-      //   .append("text").attr("transform", "translate(" + ((width/2) + margin.left) + " ," + (height + margin.top + margin.bottom) + ")")
-      // .style("text-anchor", "middle")
-      // .attr("dx", "3em")
-      // .style("fill", "red")
-      // .text(xAxisLabel);
+     
 
       svg
       .append("text")
@@ -375,24 +325,6 @@ if (logMode !== true){
 
 
 
-// dataNest.forEach(function(d, i)  {
-//   metric.append("path").attr('class', 'line').attr("d",myline(d.values))
-//   .attr("stroke",d.color=()=>color(d.key))
-//   .attr("id", 'tag'+d.key.replace(/\s+/g, ''))
-//   .attr("stroke-width",lineStroke)
-//   .attr("fill","none")
-  
- 
-
-
-
-    
-
-
-    
-// });
-
-
 metric.selectAll("path.line")
   .data(dataNest)
     .enter().append('path')
@@ -409,28 +341,7 @@ metric.selectAll("path.line")
         return myline(d.values);
     })
 
-  //  svg.selectAll("legend")
-  //   .data(dataNest)
-  //   .enter().append('text')
-  //   .attr("x", (i%4)*w/3.5) // spacing // ****
-  //     .attr("y", Math.floor(i/4)*20-3)
-   
-  //     .attr("class", "legend")    // style the legend   // *******
-  //     .style("fill", function(d) { // Add the colours dynamically
-  //       return color(d.key);
-  //   })
 
-  // metric.append("text")
-  // .attr("class","ser")
-  // .datum(function(d) {
-  //     return {
-  //         id: d.key,
-  //         value: d.values[d.values.length - 1]}; })
-  // .attr("transform", function(d) {
-  //         return "translate(" + (xscale(d.value.date) + 10)  
-  //         + "," + (yscale(d.value[radiostate]) + 5 ) + ")"; })
-  // .attr("x", 5)
-  // .text(function(d) { return d.id; });
 
 metric
 .selectAll("circlesd")
@@ -463,24 +374,7 @@ metric
 
   
 
-  // dataNest.forEach(function(d, i)  {
-  //   svg
-  
-  //   .append("text")                                    // *******
-  //       .attr("x", (i%4)*w/3.5) // spacing // ****
-  //       .attr("y", Math.floor(i/4)*20-3)
-     
-  //       .attr("class", "legend")    // style the legend   // *******
-  //       .style("fill", d.color=()=>color(d.key))   
-        
-  //       .text(STATE_CODES[d.key])
-        
-  
-      
-  
-  
-      
-  // });
+
   
 
 var points = svg.selectAll('.points')
@@ -496,12 +390,6 @@ var points = svg.selectAll('.points')
 
   
 
-//   const rects = svg.selectAll('.rects')
-//   .data(dataNest)
-//   .enter()
-//  .append('g')
-//   .attr('class', 'rects')
-//   .append('rect');
 
   const pointss = svg.selectAll('.pointss')
   .data(dataNest)
@@ -524,17 +412,7 @@ var points = svg.selectAll('.points')
 
 
 
-  //     mousePerLine.append("rect")
-//     .attr("width", 50)
-//     .attr("height", 50)
-//     .style("stroke", function(d) {
-//       return color(d.key);
-//     })
-//     .style("fill", function(d) {
-//       return color(d.key);
-//     })
-//     .style("stroke-width", "1px")
-//     .style("opacity", "0")
+
 
 
 
@@ -659,46 +537,10 @@ if (radiostate!== 'dailytotal'){
       svgk.on("wheel.zoom", null);
       svgk.on("mousewheel.zoom", null);
       svgk.on("MozMousePixelScroll.zoom", null);}
-// const linechart = g
-//         .append('g')
-//         .attr('class','linechart');
-// var legendSpace = width/dataNest.length;
-// // console.log(dataNest)
-// dataNest.forEach(function(d, i)  {
-//   linechart.append("path").attr("d",myline(d.values))
-//   .attr("stroke",d.color=()=>color(d.key))
-//   .attr("stroke-width",2)
-//   .attr("fill","none")
-//   .transition()
-//   .duration(1000)
-
-//   g.append("text")                                    // *******
-//   // .attr("x", (legendSpace/3)+i*legendSpace) // spacing // ****
-//   // .attr("y", (margin.top/2)- 25)         // *******
-//   .attr("x", (i%4)*w/3.5) // spacing // ****
-//   .attr("y", Math.floor(i/4)*20)
-//   .attr("class", "legend")    // style the legend   // *******
-//   .style("fill", function() { // dynamic colours    // *******
-//       return d.color = color(d.key); })             // *******
-//   .text(d.key)
 
 
 
 
-
-// });
-
-
-
-// function mouseover(){
- 
-//   tip
-//   .style('left', currentEvent.clientX+'px')
-//   .style('top',currentEvent.clientY+'px')
-// }
-
-// const tip = select('.tooltip');
-// selectAll('linechart').on('mouseover',mouseover);
 
 
 

@@ -9,6 +9,7 @@ const TableProvider = ({children}) => {
   // const [location, setLocation] = useState(["Mars"]);
   const [statecodes,setStatecodes] = useState(["TT"]);
   const [countrycodes, setCountrycodes] = useState(["World"]);
+  const [stateselect, setStateselect] = useState([])
 
   return (
     <TableContext.Provider
@@ -16,7 +17,9 @@ const TableProvider = ({children}) => {
       statecodes: statecodes,
       setStatecodes: setStatecodes,
       countrycodes: countrycodes,
-      setCountrycodes: setCountrycodes
+      setCountrycodes: setCountrycodes,
+      stateselect: stateselect,
+      setStateselect: setStateselect
      }}
     >
     {children}

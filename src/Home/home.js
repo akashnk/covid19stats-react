@@ -228,15 +228,16 @@ const handleChange = e => {
     setLogMode(false);
     setCase('totalconfirmed');
   };
-// console.log(JSON.stringify(timeseries["TT"])
-// console.log(districtWiseData);
-const classes = useStyles();
+
+
 
  useEffect(()=>{
   context.setStatecodes(activeStateCode);
+  context.setStateselect([]);
   setDaysC('Month');
  },[activeStateCode])
 
+ const classes = useStyles();
 // console.log(districtWiseData)
   return (
 <>
