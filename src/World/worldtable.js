@@ -182,28 +182,19 @@ useEffect(()=>{
 
         const statec = rows.map(d => d.country);
         const selstate = selection.map(d=>statec[d]);
-  
+        context.setCountryselect(selection);
   
     context.setCountrycodes(selstate);}
     else {
       context.setCountrycodes(["World"]);
     }
 },[selection,rows])
-// console.log(context.countrycodes)
-//  useEffect(()=>{
-//     if (selection.length > 0) {
-        
 
-//         const statec = rows.map(d => d.statecode);
-//         const selstate = selection.map(d=>statec[d]);
-  
-  
-//     context.setStatecodes(selstate);}
-//     else {
-//       context.setStatecodes(["TT"]);
-//     }
-// },[selection,rows])
-// console.log(rows);
+useEffect(()=>
+{
+setSelection(context.countryselect)
+},[context.countryselect])
+
   return (
     <Paper>
       <Grid

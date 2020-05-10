@@ -208,6 +208,7 @@ const handleChange = e => {
 
  useEffect(()=>{
   context.setCountrycodes(activeCountryCode);
+  context.setCountryselect([]);;
   setDaysC('Month');
  },[activeCountryCode])
    const classes = useStyles();
