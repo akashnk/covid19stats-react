@@ -1,4 +1,12 @@
-
+@keyframes FadeAnim {
+  0% {
+     opacity: 0;
+  }
+  100% {
+     opacity: 1;
+  }
+  }
+  
 h4 {
   display: block;
   font-size: 1.10em;

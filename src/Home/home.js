@@ -34,11 +34,6 @@ import { createMuiTheme, ThemeProvider, createStyles } from '@material-ui/core/s
 
 
 
-const items = [
-  { name: 'home', label: 'Home' },
-  { name: 'billing', label: 'Billing' },
-  { name: 'settings', label: 'Settings' },
-]
 
 const theme = createMuiTheme({
 
@@ -240,7 +235,7 @@ const handleChange = e => {
  const classes = useStyles();
 // console.log(districtWiseData)
   return (
-<>
+<div class="Fade">
     {/* <CssBaseline /> */}
 <ThemeProvider theme={theme}>
     
@@ -320,7 +315,7 @@ const handleChange = e => {
     </Grid> 
     </div>
     </ThemeProvider>
-    </>
+    </div>
   )
 }
 

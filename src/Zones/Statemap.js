@@ -1,4 +1,4 @@
-import React,{useState,useRef} from 'react';
+import React,{useState} from 'react';
 import { scaleLinear } from "d3";
 import {
     ComposableMap,

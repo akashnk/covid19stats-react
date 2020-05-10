@@ -51,7 +51,7 @@ for (var i = 0; i < array1.length; i++) {
     });
 }
 
-console.log(districts);
+
 
 const rows = arr.sort((a, b) => (b.Confirmed - a.Confirmed));
 

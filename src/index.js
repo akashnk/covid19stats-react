@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'pace-js'
+import 'pace-js/themes/blue/pace-theme-minimal.css'
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';

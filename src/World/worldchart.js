@@ -213,12 +213,12 @@ const xscale =  scaleTime()
   .nice();
   
   // console.log(timeseries)
-  if (currentZoomState) {
-    const newYScale = currentZoomState.rescaleY(yscale);
-    const newXScale = currentZoomState.rescaleX(xscale);
-    yscale.domain(newYScale.domain());
-    xscale.domain(newXScale.domain());
-  }
+  // if (currentZoomState) {
+  //   const newYScale = currentZoomState.rescaleY(yscale);
+  //   const newXScale = currentZoomState.rescaleX(xscale);
+  //   yscale.domain(newYScale.domain());
+  //   xscale.domain(newXScale.domain());
+  // }
   
   
             const myline = line()
@@ -495,18 +495,18 @@ focus.append('line')
   }
   
    
-  const zoomBehavior = zoom()
-  .scaleExtent([1, 5])
-  .extent([[0,0],[w,h]])
-  .translateExtent([
-    [0, 0],
-    [w, h]
-  ])
-  .on("zoom", () => {
-    const zoomState = zoomTransform(svgRef.current);
+  // const zoomBehavior = zoom()
+  // .scaleExtent([1, 5])
+  // .extent([[0,0],[w,h]])
+  // .translateExtent([
+  //   [0, 0],
+  //   [w, h]
+  // ])
+  // .on("zoom", () => {
+  //   const zoomState = zoomTransform(svgRef.current);
    
-    setCurrentZoomState(zoomState);
-  });
+  //   setCurrentZoomState(zoomState);
+  // });
 
   
 

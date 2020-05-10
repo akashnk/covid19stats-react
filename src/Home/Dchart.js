@@ -22,7 +22,7 @@ const Dchart = (props) => {
   const [logMode, setLogMode] = useState([]);
   const [chartType, setChartType] = useState(props.casetype);
   // const [moving, setMoving] = useState(false);
-  const [panMode, setpanMode] = useState([]);
+  // const [panMode, setpanMode] = useState([]);
  
   const [totdata,setTotdata]=useState([]);
   // const [lastDaysCount,setLastDaysCount]=useState(14);
@@ -189,12 +189,12 @@ var svg= svgk.append("g").attr("transform", "translate(" + margin.left + "," + m
             const xscale =  radiostate !== 'dailytotal' ? scaleTime().domain(extent(allData,xValue)).range([0,w]).nice() :
                                                       scaleLinear().domain(extent(allData,xValue)).range([0,w]).nice();
 
-              if (currentZoomState) {
-                const newYScale = currentZoomState.rescaleY(yscale);
-                const newXScale = currentZoomState.rescaleX(xscale);
-                yscale.domain(newYScale.domain());
-                xscale.domain(newXScale.domain());
-              }
+              // if (currentZoomState) {
+              //   const newYScale = currentZoomState.rescaleY(yscale);
+              //   const newXScale = currentZoomState.rescaleX(xscale);
+              //   yscale.domain(newYScale.domain());
+              //   xscale.domain(newXScale.domain());
+              // }
 // console.log(timeseries)
 
 var m = 0;
@@ -520,30 +520,30 @@ if (radiostate!== 'dailytotal'){
 
  
 
-      const zoomBehavior = zoom()
-      .scaleExtent([1, 5])
-      .extent([[0,0],[w,h]])
-      .translateExtent([
-        [0, 0],
-        [w, h]
-      ])
-      .on("zoom", () => {
-        const zoomState = zoomTransform(svgRef.current);
+    //   const zoomBehavior = zoom()
+    //   .scaleExtent([1, 5])
+    //   .extent([[0,0],[w,h]])
+    //   .translateExtent([
+    //     [0, 0],
+    //     [w, h]
+    //   ])
+    //   .on("zoom", () => {
+    //     const zoomState = zoomTransform(svgRef.current);
        
-        setCurrentZoomState(zoomState);
-      });
+    //     setCurrentZoomState(zoomState);
+    //   });
 
-      if (panMode === true){
-    svgk.call(zoomBehavior).on("wheel.zoom", null)
-    } else {
-      svgk.on('.zoomBehaviour', null);
-      svgk.on("mousedown.zoom", null);
-      svgk.on("mousemove.zoom", null);
-      svgk.on("dblclick.zoom", null);
-      svgk.on("touchstart.zoom", null);
-      svgk.on("wheel.zoom", null);
-      svgk.on("mousewheel.zoom", null);
-      svgk.on("MozMousePixelScroll.zoom", null);}
+    //   if (panMode === true){
+    // svgk.call(zoomBehavior).on("wheel.zoom", null)
+    // } else {
+    //   svgk.on('.zoomBehaviour', null);
+    //   svgk.on("mousedown.zoom", null);
+    //   svgk.on("mousemove.zoom", null);
+    //   svgk.on("dblclick.zoom", null);
+    //   svgk.on("touchstart.zoom", null);
+    //   svgk.on("wheel.zoom", null);
+    //   svgk.on("mousewheel.zoom", null);
+    //   svgk.on("MozMousePixelScroll.zoom", null);}
 
 
 

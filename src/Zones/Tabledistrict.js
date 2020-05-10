@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   SortingState,
   IntegratedSorting,
@@ -23,7 +23,7 @@ import Paper from '@material-ui/core/Paper';
 
 const Tabledistrict=(props) => {
 
-    const [districts, setDistricts] =useState([]);
+    // const [districts, setDistricts] =useState([]);
 
     const districtWiseData =props.districtWiseData;
 
@@ -40,7 +40,7 @@ function objk(hs) {
              var statel =[];
              distl = dist[x].districtData;
              statel = dist[x].statecode;
-             var ks=[]
+            //  var ks=[]
             for (var y=0; y < Object.keys(distl).length;y++){
                 var g = [];
                  g = Object.values(distl)[y];
