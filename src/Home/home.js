@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import axios from "axios";
-// import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { spacing } from '@material-ui/system';
-// import CssBaseline from '@material-ui/core/CssBaseline';
-import Tables from "./Table";
 
+import {TableContext} from "../TableContext"
 import Today from "./Today";
+import Tables from "./Table";
 import Dchart from "./Dchart";
 // import Racechart from "./Racechart";
 import "../App.css";
@@ -28,10 +26,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import { createMuiTheme, ThemeProvider, createStyles } from '@material-ui/core/styles';
+
 
 
 
@@ -108,12 +107,12 @@ function Home() {
 
   const [timeseries,setTimeseries] = useState([]);
   
-   const [timeseriesMode, setTimeseriesMode] = useState(true)
+  
    const [daysC,setDaysC] = useState('Month');
   
 
 const [logMode, setLogMode] = useState(false);
-const [panMode, setpanMode] = useState(false);
+
  const [activeStateCode, setActiveStateCode] = useState('TT');
  const [value,setCase] =useState('totalconfirmed');
   const [testData, setTestData] = useState([]);
@@ -183,20 +182,6 @@ useEffect(() => {
          fetchData();
        }
      }, [fetched]);
-   // function getMapKeyValueByIndex(testData, idx) {
-   //    var key = Object.keys(obj)[idx];
-   //    return { key: , value: obj[key] };
-   // }
-
-// const testkData = testData.reverse();
-// const totalTest = data.tested[data.tested.length - 1];
-// var arrayv=[];
-//  for (var i=0;i < STATES.length; i++)
-//  {
-//    var st = [];
-//    var j = [];
-// st = Object.values(STATES)[i];
-// j = testData.find(d => d.state === st);
 
 
 const fdata = data.filter(d => d.confirmed > 0);
@@ -216,7 +201,7 @@ let merged = [];
    ...(filtTest.find((itmInner) => itmInner.state === gdata[i].state))}
   );
 };
-
+const context = useContext(TableContext);
 
 const handleChange = e => {
    // console.log(e.target.value);
@@ -226,21 +211,32 @@ const handleChange = e => {
     // console.log(e.target.value);
     setLogMode(e.target.checked);
   };
-  const handleChangepan = e => {
-    // console.log(e.target.value);
-    setpanMode(e.target.checked);
-  };
+  // const handleChangepan = e => {
+  //   // console.log(e.target.value);
+  //   setpanMode(e.target.checked);
+  // };
 
   const handleTime = e => {
     // console.log(e.target.value);
     setDaysC(e.target.value);
   };
   
+  const handleButton = () => {
+    // console.log(e.target.value);
+    setActiveStateCode(['TT']);
+    
+    setLogMode(false);
+    setCase('totalconfirmed');
+  };
 // console.log(JSON.stringify(timeseries["TT"])
 // console.log(districtWiseData);
 const classes = useStyles();
 
- 
+ useEffect(()=>{
+  context.setStatecodes(activeStateCode);
+  setDaysC('Month');
+ },[activeStateCode])
+
 // console.log(districtWiseData)
   return (
 <>
@@ -287,23 +283,26 @@ const classes = useStyles();
 </RadioGroup>
 
 
-        {fetched && <Dchart timeseries={timeseries[activeStateCode]}
+        {fetched && <Dchart 
                 totdata={timeseries}
                 casetype={value}
 
                daysC ={daysC}
-                mode={timeseriesMode}
-                logMode={logMode}  panMode={panMode}/>
+                
+                logMode={logMode}  />
                 }
 
-                          <RadioGroup row aria-label="daysC" name="daysC"  value={daysC} onClick={handleTime}>
+                          <RadioGroup row aria-label="daysC" name="daysC"  value={daysC} onChange={handleTime}>
         
         <FormControlLabel value="Inf" control={<Radio />} label="Start" />
         <FormControlLabel value="Month" control={<Radio />} label="4 weeks" />
         <FormControlLabel value="Fortnight" control={<Radio />} label="2 weeks" />
       
-         
+    <Button variant="outlined" color="primary" onClick={handleButton}>
+  Reset all
+</Button> 
     </RadioGroup>
+ 
                 </Paper>
 
                 </Grid>

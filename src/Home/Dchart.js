@@ -129,9 +129,9 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
   }, [props.type]);
 
 
-  useEffect(() => {
-    setpanMode(props.panMode);
-  }, [props.panMode]);
+  // useEffect(() => {
+  //   setpanMode(props.panMode);
+  // }, [props.panMode]);
 
  
   

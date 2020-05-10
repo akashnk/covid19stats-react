@@ -121,7 +121,7 @@ const Today= (props) => {
 
       <table className="tablex">
   <tr>
-    <th  className="thx" style={{color: "#FF5F31"}}><h5>Total Cases</h5>
+    <th  className="thx" style={{color: "#FF5F31"}}><h5>India Cases</h5>
     
     <h4 >{confirmed}</h4>
       {deltas
@@ -159,7 +159,7 @@ const Today= (props) => {
       {deltas
         ? deltas.deaths > 0
           ? <h6> New+ {deltas.deaths}</h6>
-          : '+0'
+          : <h6>+0</h6>
         : ''}
     
 
