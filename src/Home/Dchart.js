@@ -325,15 +325,12 @@ if (logMode !== true){
 
 
 
-metric.selectAll("path.line")
+metric.selectAll("linesd")
   .data(dataNest)
     .enter().append('path')
     .attr("class", "line")
     .style("stroke", function(d) { // Add the colours dynamically
         return color(d.key);
-    })
-    .attr("id", function(d) {
-        return 'tag'+d.key.replace(/\s+/g, ''); // assign ID
     })
     .attr("stroke-width", 2)
     .attr("fill","none")
@@ -350,9 +347,7 @@ metric
   .append("circle")
   .attr("r", 2)
   .style("fill", "white")
-//   .attr("id", function (d) {
-//     return 'tag'+d.key.replace(/\s+/g, '');
-// })
+
   .style("fill-opacity",0.8)
   .style("stroke", function(d) { return color(d.state); })
 
