@@ -7,7 +7,8 @@ import { SearchState,
   IntegratedSorting,
   RowDetailState, 
   PagingState,
-  IntegratedPaging,} from '@devexpress/dx-react-grid';
+  IntegratedPaging,
+DataTypeProvider} from '@devexpress/dx-react-grid';
 import Paper from '@material-ui/core/Paper';
 import {
   Grid,
@@ -16,7 +17,6 @@ import {
   Toolbar,
   SearchPanel,
   TableHeaderRow,
-  TableColumnResizing,
   TableSelection,
   TableRowDetail,
   TableFixedColumns,
@@ -50,14 +50,44 @@ const Tables = (props) => {
      
       });
 
-      const comparedeath = (a, b) => {
-        const priorityA = a.deaths;
-        const priorityB = b.deaths;
-        if (priorityA === priorityB) {
-          return 0;
-        }
-        return (priorityA < priorityB) ? -1 : 1;
-      };
+      const CurrencyFormatter = ({ value,row }) => (
+        row.deltaconfirmed > 0 ? (<div>{value} <br/><span style={{ color: 'red' }}>
+             [+ {row.deltaconfirmed}]</span> </div>
+         ) : <div>{value}</div>
+      );
+      
+      const CurrencyTypeProvider = props => (
+        <DataTypeProvider
+          formatterComponent={CurrencyFormatter}
+          {...props}
+        />
+      );
+      
+      const CurrencyFormatterx = ({ value,row }) => (
+        row.deltarecovered > 0 ? (<div>{value} <br/><span style={{ color: 'green' }}>
+             [+ {row.deltarecovered}]
+        </span></div>) : (<div>{value}</div>)
+      );
+      
+      const CurrencyTypeProviderx = props => (
+        <DataTypeProvider
+          formatterComponent={CurrencyFormatterx}
+          {...props}
+        />
+      );
+      
+      const CurrencyFormatterxx = ({ value,row }) => (
+        row.deltadeaths > 0 ? (<div>{value} <br/><span style={{ color: 'red' }}>
+             [+ {row.deltadeaths}]
+        </span></div>) : (<div>{value}</div>)
+      );
+      
+      const CurrencyTypeProviderxx = props => (
+        <DataTypeProvider
+          formatterComponent={CurrencyFormatterxx}
+          {...props}
+        />
+      );
       // const [integratedSortingColumnExtensions] = useState([
       //   { columnName: 'deaths', compare: comparedeath  },
       // ]);
@@ -75,12 +105,12 @@ const Tables = (props) => {
       {
         name: "confirmed",
         title: "Total cases",
-        getCellValue: (row,rowInfo) =>  {
-        return(  <div>
-       <span>  {row.confirmed}</span>
-       <br/>
-       <span style={{color: row.deltaconfirmed > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltaconfirmed}]</span>
-        </div>)}
+      //   getCellValue: (row,rowInfo) =>  {
+      //   return(  <div>
+      //  <span>  {row.confirmed}</span>
+      //  <br/>
+      //  <span style={{color: row.deltaconfirmed > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltaconfirmed}]</span>
+      //   </div>)}
   
       },
 
@@ -88,12 +118,12 @@ const Tables = (props) => {
                 { 
                   name: "deaths",
                   title: "Deaths",
-                  getCellValue: (row,rowInfo) =>  {
-                  return(  <div>
-                 <span>  {parseFloat(row.deaths)}</span>
-                 <br/>
-                 <span style={{color: row.deltadeaths > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltadeaths}]</span>
-                  </div>)}
+                //   getCellValue: (row,rowInfo) =>  {
+                //   return(  <div>
+                //  <span>  {parseFloat(row.deaths)}</span>
+                //  <br/>
+                //  <span style={{color: row.deltadeaths > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.deltadeaths}]</span>
+                //   </div>)}
 
                 },
 
@@ -107,12 +137,12 @@ const Tables = (props) => {
 {
   name: "recovered",
   title: "Recovered",
-  getCellValue:  (row,rowInfo) =>  {
-  return(  <div>
- <span>  {parseFloat(row.recovered)}</span>
- <br/>
- <span style={{color: row.deltarecovered > 0 ? "green": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {(row.deltarecovered).toString()}]</span>
-  </div>)}
+//   getCellValue:  (row,rowInfo) =>  {
+//   return(  <div>
+//  <span>  {parseFloat(row.recovered)}</span>
+//  <br/>
+//  <span style={{color: row.deltarecovered > 0 ? "green": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {(row.deltarecovered).toString()}]</span>
+//   </div>)}
 },
 
 {
@@ -157,30 +187,30 @@ getCellValue: (row) => {
 
    const [tableColumnExtensions] = useState([
      { columnName: TableSelection.COLUMN_TYPE, wordWrapEnabled: true },
-      {columnName: 'state', wordWrapEnabled: true},
-     { columnName: 'confirmed', wordWrapEnabled: true },
-    { columnName: 'deaths'},
-    { columnName: 'active'},
-    { columnName: 'recovered', wordWrapEnabled: true },
-    { columnName: 'totaltested',wordWrapEnabled: true },
-    { columnName: 'positive',wordWrapEnabled: true},
-    { columnName: 'tests',wordWrapEnabled: true},
+      {columnName: 'state', width: 90, wordWrapEnabled: true},
+     { columnName: 'confirmed', width: 80, wordWrapEnabled: true },
+    { columnName: 'deaths', width: 84},
+    { columnName: 'active', width: 100 },
+    { columnName: 'recovered', width: 100 , wordWrapEnabled: true },
+    { columnName: 'totaltested', width: 100 ,wordWrapEnabled: true },
+    { columnName: 'positive', width: 100 ,wordWrapEnabled: true},
+    { columnName: 'tests', width: 100 ,wordWrapEnabled: true},
 
    ]);
 
-   const [columnWidths, setColumnWidths] = useState([
-     { columnName: TableRowDetail.COLUMN_TYPE,width:20},
-    { columnName: TableSelection.COLUMN_TYPE, width:20},
-    {columnName: 'state', width: 90},
-    { columnName: 'confirmed', width: 80 },
-   { columnName: 'deaths', width: 84},
-   { columnName: 'active', width: 100 },
-   { columnName: 'recovered', width: 100 },
-   { columnName: 'totaltested',width: 100 },
-   { columnName: 'positive',width: 100 },
-   { columnName: 'tests',width: 100 },
+  //  const [columnWidths, setColumnWidths] = useState([
+  //    { columnName: TableRowDetail.COLUMN_TYPE,width:20},
+  //   { columnName: TableSelection.COLUMN_TYPE, width:20},
+  //   {columnName: 'state', width: 90},
+  //   { columnName: 'confirmed', width: 80 },
+  //  { columnName: 'deaths', width: 84},
+  //  { columnName: 'active', width: 100 },
+  //  { columnName: 'recovered', width: 100 },
+  //  { columnName: 'totaltested',width: 100 },
+  //  { columnName: 'positive',width: 100 },
+  //  { columnName: 'tests',width: 100 },
 
-  ]);
+  // ]);
   const [leftColumns] = useState([TableSelection.COLUMN_TYPE,TableRowDetail.COLUMN_TYPE,'state']);
   const RowDetail = ({ row }) => (
     <div>
@@ -195,7 +225,9 @@ getCellValue: (row) => {
   //   { columnName: 'totaltested', sortingEnabled: true },
   // ]);
  
-
+  const [currencyColumns] = useState(['confirmed']);
+  const [currencyColumnsx] = useState(['recovered']);
+  const [currencyColumnsxx] = useState(['deaths']);
  useEffect(()=>{
     if (selection.length > 0) {
         
@@ -223,6 +255,16 @@ setSelection(context.stateselect)
         rows={rows}
         columns={columns}
       >
+            <CurrencyTypeProvider
+          for={currencyColumns}
+        />
+         >
+         <CurrencyTypeProviderx
+          for={currencyColumnsx}
+        />
+          <CurrencyTypeProviderxx
+          for={currencyColumnsxx}
+        />
        <SearchState value={searchValue}
           onValueChange={setSearchState} />
           <IntegratedFiltering/>
@@ -254,11 +296,11 @@ setSelection(context.stateselect)
            <IntegratedPaging />
 
         <Table  columnExtensions={tableColumnExtensions}/>
-       
+{/*        
         <TableColumnResizing
           columnWidths={columnWidths}
           onColumnWidthsChange={setColumnWidths}
-        />
+        /> */}
         <TableHeaderRow showSortingControls />
       
       
