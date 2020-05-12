@@ -127,7 +127,7 @@ const Today= (props) => {
       {deltas
         ? deltas.confirmed > 0
           ? <h6> New+ {deltas.confirmed.toLocaleString()}</h6>
-          : <h6>+0</h6>
+          : <h6 >+0</h6>
         : ''}
       
   
