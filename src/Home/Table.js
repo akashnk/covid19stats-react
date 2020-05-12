@@ -215,10 +215,10 @@ getCellValue: (row) => {
      { columnName: 'confirmed', width: 80, wordWrapEnabled: true },
     { columnName: 'deaths', width: 80},
     { columnName: 'active', width: 80 },
-    { columnName: 'recovered', width: 98 , wordWrapEnabled: true },
+    { columnName: 'recovered', width: 100 , wordWrapEnabled: true },
     { columnName: 'deathrate', width: 80 , wordWrapEnabled: true },
     { columnName: 'totaltested', width: 85 ,wordWrapEnabled: true },
-    { columnName: 'positive', width: 83 ,wordWrapEnabled: true},
+    { columnName: 'positive', width: 86 ,wordWrapEnabled: true},
     { columnName: 'tests', width: 80 ,wordWrapEnabled: true},
 
    ]);
@@ -285,7 +285,7 @@ setSelection(context.stateselect)
             <TypeProvider
           for={Columns}
         />
-         >
+         
          <TypeProviderx
           for={Columnsx}
         />

@@ -181,7 +181,7 @@ title: "Active",
          <CurrencyTypeProvider
           for={currencyColumns}
         />
-         >
+         
          <CurrencyTypeProviderx
           for={currencyColumnsx}
         />
