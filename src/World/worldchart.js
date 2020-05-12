@@ -3,7 +3,7 @@ import React, {  useState, useEffect, useRef,useContext } from "react";
 
 import { select, nest,line,curveCardinal,extent,axisLeft,max,axisBottom,scaleLinear,
   scaleTime ,scaleSymlog,scaleOrdinal,schemeCategory10, selectAll, zoom,
-  zoomTransform,bisect,mouse,timeWeek} from 'd3';
+  zoomTransform,bisect,mouse,min,timeWeek, curveMonotoneY} from 'd3';
 
 // import moment from 'moment';
 import {TableContext} from '../TableContext';
@@ -102,8 +102,8 @@ const Worldchart = (props) => {
    const allData = Object.keys(gh).reduce(function (r, k) {
            return r.concat( gh[k]);
        }, []);
-       
-       const [currentZoomState, setCurrentZoomState] = useState();
+     
+      //  const [currentZoomState, setCurrentZoomState] = useState();
   
        useEffect(()=>
      setLastDaysCount(props.timeMode)
@@ -201,7 +201,7 @@ var svg= svgk.append("g").attr("transform", "translate(" + margin.left + "," + m
               
   
 const yscale = logMode === true ?
-scaleSymlog().domain([1,max(allData,yValue)]).range([h,1]).nice() :
+scaleSymlog().domain([1,max(allData,yValue)]).range([h,10]).nice() :
 scaleLinear().domain(extent(allData,yValue)).range([h,0]).nice();
 
 
@@ -223,7 +223,7 @@ const xscale =  scaleTime()
   
             const myline = line()
               .x(d => xscale(xValue(d)))
-              .y(d => yscale(1+yValue(d))).curve(curveCardinal)
+              .y(d => yscale(1+yValue(d))).curve(curveCardinal.tension(0))
   
           var dataNest = nest()
           .key(function(d){
@@ -332,7 +332,22 @@ dataNest.forEach(function(d, i)  {
   .attr("stroke-width",lineStroke)
   .attr("fill","none")
 
+//   metric
+//   .selectAll("circlesd")
+//   .data(dataNest)
+//     .enter()
+//   .append("circle")
+//   .attr("r", 2)
+//   .style("fill", "white")
+// //   .attr("id", function (d) {
+// //     return 'tag'+d.key.replace(/\s+/g, '');
+// // })
+//   .style("fill-opacity",0.8)
+//   .style("stroke", function(d) { return color(d.key); })
 
+//   .style("stroke-width", 1.9)
+//   .attr("cx",d => xscale(d.values.date))
+//   .attr("cy",d => yscale(d.values[radiostate]))
     
 
 
@@ -458,28 +473,28 @@ focus.append('line')
 
     selectAll('.pointss text')
         
-    .attr("x", d => xscale(d.values[i-1].date) + 28)
+    .attr("x", d => xscale(d.values[i-1].date) + 16)
       .attr("y", d => yscale(d.values[i-1][radiostate])+13)
-    .text(d => d.values[i-1][radiostate] )
+    .text(d => d.values[i-1][radiostate].toLocaleString() )
     .style("fill","black")
     
 
     selectAll('.pointsk text')
         
-    .attr("x", d => xscale(d.values[i-1].date)- 48)
+    .attr("x", d => xscale(d.values[i-1].date)- 60)
       .attr("y", d => yscale(d.values[i-1][radiostate])+13)
     .text(d => d.key )
     .style("fill","black")
     
 
     selectAll('.pointss rect')
-      .attr("width", 137)
+      .attr("width", 138)
           .attr("height", 20)
           .style("fill","white")
           .style("stroke-width", "1px")
           .style("stroke", d => color(d.key))
            .style("opacity", "0.89")
-          .attr("x", d => xscale(d.values[i-1].date) -48)
+          .attr("x", d => xscale(d.values[i-1].date) -60)
       .attr("y", d => yscale(d.values[i-1][radiostate] )-1)
 
       selectAll('.points text')

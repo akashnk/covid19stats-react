@@ -231,11 +231,11 @@ const xAxis = axisBottom()
 
  
     
-const xTicks = width/90;
+const xTicks = (width/80);
 if (radiostate!=='dailytotal'){
   svg.append('g')
   .attr("transform", "translate(0, " + h  +")").call(xAxis
-  .tickSize(-h).tickPadding(15).ticks(xTicks).tickFormat(d=>format(d, 'dd MMM')))
+  .tickSize(-h).tickPadding(5).ticks(xTicks).tickFormat(d=>format(d, 'dd MMM')))
  
 .call(g => g.select(".domain")
   .remove())
@@ -373,7 +373,7 @@ metric
   .data(dataNest)
     .enter()
     .append("text")
-    .attr("x", d => xscale(d.values[d.values.length-1].date))
+    .attr("x", d => xscale(d.values[d.values.length-1].date)+3)
     .attr("y", d => yscale(d.values[d.values.length-1][radiostate]))
     .attr("class","leg")
     .style("fill", function(d) { return color(d.key); })
@@ -476,15 +476,15 @@ if (radiostate!== 'dailytotal'){
 
     selectAll('.pointss text')
         
-    .attr("x", d => xscale(d.values[i-1].date) + 33)
+    .attr("x", d => xscale(d.values[i-1].date) + 20)
       .attr("y", d => yscale(d.values[i-1][radiostate])+13)
-    .text(d => d.values[i-1][radiostate] )
+    .text(d => (d.values[i-1][radiostate]).toLocaleString() )
     .style("fill","black")
     // .attr("font-weight",function(d,i) {return i*100+100;})
 
     selectAll('.pointsk text')
         
-    .attr("x", d => xscale(d.values[i-1].date)- 48)
+    .attr("x", d => xscale(d.values[i-1].date)- 64)
       .attr("y", d => yscale(d.values[i-1][radiostate])+13)
     .text(d => STATE_CODES[d.key] )
     .style("fill","black")
@@ -497,11 +497,11 @@ if (radiostate!== 'dailytotal'){
           .style("stroke-width", "1px")
           .style("stroke", d => color(d.key))
            .style("opacity", "0.89")
-          .attr("x", d => xscale(d.values[i-1].date) -50)
+          .attr("x", d => xscale(d.values[i-1].date) -66)
       .attr("y", d => yscale(d.values[i-1][radiostate] )-1)
 
       selectAll('.points text')
-      .attr("x", d => xscale(d.values[i-1].date) -30)
+      .attr("x", d => xscale(d.values[i-1].date) -32)
       .attr('y',-2)
       // .text(`${yAxisLabel}`+' '+'on'+' '+`${format(di.date, 'dd MMMM')}`)
       .text(`${format(di.date, 'dd MMMM')}`)

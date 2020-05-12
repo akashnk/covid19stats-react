@@ -6,7 +6,8 @@ import { SearchState,
   IntegratedFiltering,
   IntegratedSorting,
   PagingState,
-  IntegratedPaging, } from '@devexpress/dx-react-grid';
+  IntegratedPaging,
+DataTypeProvider } from '@devexpress/dx-react-grid';
 import Paper from '@material-ui/core/Paper';
 import {
   Grid,
@@ -57,6 +58,42 @@ const Worldtable = (props) => {
     //   const [integratedSortingColumnExtensions] = useState([
     //     { columnName: 'deaths', compare: comparedeath  },
     //   ]);
+    const Formatter = ({ value,row }) => (
+      row.todayCases > 0 ? (<div>{value.toLocaleString()} <br/><span style={{ color: 'red' }}>
+           [+ {row.todayCases.toLocaleString()}]</span> </div>
+       ) : <div>{value.toLocaleString()}</div>
+    );
+    
+    const TypeProvider = props => (
+      <DataTypeProvider
+        formatterComponent={Formatter}
+        {...props}
+      />
+    );
+
+    const Formatterxxx = ({ value,row }) => (
+      row.todayDeaths > 0 ? (<div>{value.toLocaleString()} <br/><span style={{ color: 'red' }}>
+           [+ {row.todayDeaths.toLocaleString()}]
+      </span></div>) : (<div>{value.toLocaleString()}</div>)
+    );
+    
+    const TypeProviderxxx = props => (
+      <DataTypeProvider
+        formatterComponent={Formatterxxx}
+        {...props}
+      />
+    );
+
+    const Formatterxx = ({ value }) => (
+      value.toLocaleString()
+    );
+    
+    const TypeProviderxx = props => (
+      <DataTypeProvider
+        formatterComponent={Formatterxx}
+        {...props}
+      />
+    );
 
   const [columns] = useState([
     
@@ -69,12 +106,12 @@ const Worldtable = (props) => {
       {
         name: "cases",
         title: "Total cases",
-        getCellValue: (row,rowInfo) =>  {
-        return(  <div>
-       <span>  {row.cases}</span>
-       <br/>
-       <span style={{color: row.todayCases > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.todayCases}]</span>
-        </div>)}
+      //   getCellValue: (row,rowInfo) =>  {
+      //   return(  <div>
+      //  <span>  {row.cases}</span>
+      //  <br/>
+      //  <span style={{color: row.todayCases > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.todayCases}]</span>
+      //   </div>)}
   
       },
 
@@ -82,12 +119,12 @@ const Worldtable = (props) => {
                 { 
                   name: "deaths",
                   title: "Deaths",
-                  getCellValue: (row,rowInfo) =>  {
-                  return(  <div>
-                 <span>  {row.deaths}</span>
-                 <br/>
-                 <span style={{color: row.todayDeaths > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.todayDeaths}]</span>
-                  </div>)}
+                //   getCellValue: (row,rowInfo) =>  {
+                //   return(  <div>
+                //  <span>  {row.deaths}</span>
+                //  <br/>
+                //  <span style={{color: row.todayDeaths > 0 ? "red": rowInfo.index%2!==0 ? "white":"#F2F2F2" }}> [+ {row.todayDeaths}]</span>
+                //   </div>)}
 
                 },
 
@@ -100,7 +137,7 @@ const Worldtable = (props) => {
 
 {
   name: "recovered",
-  title: "Recvrd"
+  title: "Recoverd"
 },
 
 {
@@ -119,7 +156,7 @@ title: "Total Tested"
 // },
 {
 name: "testsPerOneMillion",
-title: "Tests/ million"
+title: "Tests/million"
 // width: 80
 }
 
@@ -169,8 +206,10 @@ title: "Tests/ million"
 //     <div>
 // <Tablecollapsed districts={districts[row.state].districtData}/>
 //     </div>
-//   );
- 
+//   ); const [Columns] = useState(['confirmed']);
+  const [Columns] = useState(['cases']);
+  const [Columnsxxx] = useState(['deaths']);
+  const [Columnsxx] = useState(['active','recovered','tests','testsPerOneMillion']);
   const [sorting, setSorting] = useState([{ columnName: 'cases', direction: 'desc' }]);
 //   const [sortingStateColumnExtensions] = useState([
 //     { columnName: 'recovered', sortingEnabled: true },
@@ -201,6 +240,16 @@ setSelection(context.countryselect)
         rows={gdata}
         columns={columns}
       >
+             <TypeProvider
+          for={Columns}
+        />
+         
+          <TypeProviderxxx
+          for={Columnsxxx}
+        />
+              <TypeProviderxx
+          for={Columnsxx}
+        />
        <SearchState value={searchValue}
           onValueChange={setSearchState} />
           <IntegratedFiltering/>

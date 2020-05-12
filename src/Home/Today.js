@@ -123,10 +123,10 @@ const Today= (props) => {
   <tr>
     <th  className="thx" style={{color: "#FF5F31"}}><h5>India Cases</h5>
     
-    <h4 >{confirmed}</h4>
+    <h4 >{confirmed.toLocaleString()}</h4>
       {deltas
         ? deltas.confirmed > 0
-          ? <h6> New+ {deltas.confirmed}</h6>
+          ? <h6> New+ {deltas.confirmed.toLocaleString()}</h6>
           : <h6>+0</h6>
         : ''}
       
@@ -134,27 +134,27 @@ const Today= (props) => {
 </th>
     <th className="thx" style={{color: "#5CB8E7"}}><h5 >Active</h5>
     
-    <h4 >{active}</h4> 
+    <h4 >{active.toLocaleString()}</h4> 
       {deltas
         ? deltas.active > 0
-          ? <h6> New+ {deltas.active}</h6>
+          ? <h6> New+ {deltas.active.toLocaleString()}</h6>
          : <h6>+0</h6>
         : ''}
       
     </th>
     <th className="thx" style={{color: "#78CC5A"}}><h5 >Recovered</h5>
     <h4 >
-     {recoveries} </h4>
+     {recoveries.toLocaleString()} </h4>
       {deltas
         ? deltas.recovered > 0
-          ?<h6> New+ {deltas.recovered}</h6>
+          ?<h6> New+ {deltas.recovered.toLocaleString()}</h6>
           : <h6>+0</h6>
         : ''}
       
    </th>
     <th className="thx" style={{color: "#A4B265"}}><h5 >Deaths</h5>
     <h4>
-      {deaths}</h4> 
+      {deaths.toLocaleString()}</h4> 
 
       {deltas
         ? deltas.deaths > 0

@@ -124,14 +124,15 @@ export default function World() {
      }, [fetched]);
 
 
+    
 
      useEffect(()=>{
-      setcountry(datap)
-    },[datap])
-      var countryArr = Object.keys(countryd).map(i => i);
-      var worldChart = [];
+      
+      var countryArr = Object.keys(datap)
+     var worldChart = [];
       countryArr.forEach((country) => {
-          let countryData = countryd[country];
+         let countryData = datap[country];
+          
           countryData.forEach((dailyData, index) => {
               if (worldChart[index] === undefined) {
                   var worldStats = { date: dailyData.date, confirmed: dailyData.confirmed, recovered: dailyData.recovered, deaths: dailyData.deaths };
@@ -140,16 +141,16 @@ export default function World() {
                   worldChart[index].confirmed += dailyData.confirmed;
                   worldChart[index].recovered += dailyData.recovered;
                   worldChart[index].deaths += dailyData.deaths;
+                  
               }
           });
         });
-      
+        datap["World"] = worldChart;
+        setcountry(datap)
+
+      },[datap])
  
-        countryd["World"] = worldChart;
-        
-
-
-
+ 
 
   function ObjKeyRename2(src, map) {
     var dst = {};

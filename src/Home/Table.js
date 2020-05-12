@@ -50,41 +50,52 @@ const Tables = (props) => {
      
       });
 
-      const CurrencyFormatter = ({ value,row }) => (
-        row.deltaconfirmed > 0 ? (<div>{value} <br/><span style={{ color: 'red' }}>
-             [+ {row.deltaconfirmed}]</span> </div>
-         ) : <div>{value}</div>
+      const Formatter = ({ value,row }) => (
+        row.deltaconfirmed > 0 ? (<div>{value.toLocaleString()} <br/><span style={{ color: 'red' }}>
+             [+ {row.deltaconfirmed.toLocaleString()}]</span> </div>
+         ) : <div>{value.toLocaleString()}</div>
       );
       
-      const CurrencyTypeProvider = props => (
+      const TypeProvider = props => (
         <DataTypeProvider
-          formatterComponent={CurrencyFormatter}
+          formatterComponent={Formatter}
           {...props}
         />
       );
       
-      const CurrencyFormatterx = ({ value,row }) => (
-        row.deltarecovered > 0 ? (<div>{value} <br/><span style={{ color: 'green' }}>
-             [+ {row.deltarecovered}]
-        </span></div>) : (<div>{value}</div>)
+      const Formatterx = ({ value,row }) => (
+        row.deltarecovered > 0 ? (<div>{value.toLocaleString()} <br/><span style={{ color: 'green' }}>
+             [+ {row.deltarecovered.toLocaleString()}]
+        </span></div>) : (<div>{value.toLocaleString()}</div>)
       );
       
-      const CurrencyTypeProviderx = props => (
+      const TypeProviderx = props => (
         <DataTypeProvider
-          formatterComponent={CurrencyFormatterx}
+          formatterComponent={Formatterx}
           {...props}
         />
       );
       
-      const CurrencyFormatterxx = ({ value,row }) => (
+      const Formatterxx = ({ value,row }) => (
         row.deltadeaths > 0 ? (<div>{value} <br/><span style={{ color: 'red' }}>
              [+ {row.deltadeaths}]
         </span></div>) : (<div>{value}</div>)
       );
       
-      const CurrencyTypeProviderxx = props => (
+      const TypeProviderxx = props => (
         <DataTypeProvider
-          formatterComponent={CurrencyFormatterxx}
+          formatterComponent={Formatterxx}
+          {...props}
+        />
+      );
+
+      const Formatterxxx = ({ value }) => (
+        value.toLocaleString()
+      );
+      
+      const TypeProviderxxx = props => (
+        <DataTypeProvider
+          formatterComponent={Formatterxxx}
           {...props}
         />
       );
@@ -131,6 +142,7 @@ const Tables = (props) => {
   {
     name: "active",
     title: "Active"
+
     // width: 80
   },
 
@@ -149,7 +161,7 @@ const Tables = (props) => {
 name: "totaltested",
 title: "Total Tested"
 ,
-getCellValue: (row) => { return +row.totaltested || 0
+getCellValue: (row) => { return (+(row.totaltested)) || 0
 // width: 80
 },
 },
@@ -157,7 +169,7 @@ getCellValue: (row) => { return +row.totaltested || 0
 name: "positive",
 title: "Positive rate",
 getCellValue: (row) => {
-  return(parseFloat( ((row.positive/row.totaltested)*100).toFixed(2)))
+  return(parseFloat( ((row.positive/row.totaltested)*100).toFixed(2)) || 0)
 }
 // width: 80
 },
@@ -165,7 +177,7 @@ getCellValue: (row) => {
 name: "tests",
 title: "Tests/ million",
 getCellValue: (row) => {
-  return(parseFloat((row.totaltested/pop[row.statecode]*1000000).toFixed(0)))
+  return(parseFloat((row.totaltested/pop[row.statecode]*1000000).toFixed(0)) || 0)
 }
 // width: 80
 }
@@ -225,9 +237,11 @@ getCellValue: (row) => {
   //   { columnName: 'totaltested', sortingEnabled: true },
   // ]);
  
-  const [currencyColumns] = useState(['confirmed']);
-  const [currencyColumnsx] = useState(['recovered']);
-  const [currencyColumnsxx] = useState(['deaths']);
+  const [Columns] = useState(['confirmed']);
+  const [Columnsx] = useState(['recovered']);
+  const [Columnsxx] = useState(['deaths']);
+  const [Columnsxxx] = useState(['active']);
+  const [Columnsxxxx] = useState(['totaltested']);
  useEffect(()=>{
     if (selection.length > 0) {
         
@@ -255,15 +269,21 @@ setSelection(context.stateselect)
         rows={rows}
         columns={columns}
       >
-            <CurrencyTypeProvider
-          for={currencyColumns}
+            <TypeProvider
+          for={Columns}
         />
          >
-         <CurrencyTypeProviderx
-          for={currencyColumnsx}
+         <TypeProviderx
+          for={Columnsx}
         />
-          <CurrencyTypeProviderxx
-          for={currencyColumnsxx}
+          <TypeProviderxx
+          for={Columnsxx}
+        />
+          <TypeProviderxxx
+          for={Columnsxxx}
+        />
+          <TypeProviderxxx
+          for={Columnsxxxx}
         />
        <SearchState value={searchValue}
           onValueChange={setSearchState} />

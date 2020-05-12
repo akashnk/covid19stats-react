@@ -50,10 +50,10 @@ const Update= (props) => {
   <tr>
     <th className="thx" style={{backgroundColor: "#FF5F31"}}><h5>World Cases</h5>
     <h4>
-    {dataw.cases} [
+    {dataw.cases.toLocaleString()} [
       {dataw
         ? dataw.todayCases > 0
-          ? '+' + dataw.todayCases
+          ? '+' + dataw.todayCases.toLocaleString()
           : '+0'
         : ''}
       ]
@@ -61,19 +61,19 @@ const Update= (props) => {
 </th>
     <th className="thx" style={{backgroundColor: "#5CB8E7"}}><h5 >Active</h5>
     <h4>
-     {dataw.active} 
+     {dataw.active.toLocaleString()} 
     </h4></th>
     <th className="thx" style={{backgroundColor: "#78CC5A"}}><h5 >Recovered</h5>
     <h4>
-     {dataw.recovered}
+     {dataw.recovered.toLocaleString()}
     </h4></th>
     <th className="thx" style={{backgroundColor: "#A4B265"}}><h5 >Deaths</h5>
     <h4>
-      {dataw.deaths} [
+      {dataw.deaths.toLocaleString()} [
 
       {dataw
         ? dataw.todayDeaths > 0
-          ? '+' + dataw.todayDeaths
+          ? '+' + dataw.todayDeaths.toLocaleString()
           : '+0'
         : ''}
       ]
