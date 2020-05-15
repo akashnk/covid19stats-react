@@ -133,7 +133,7 @@ const vgfh = Object.keys(ned).reduce(function (r, k) {
   return r.concat( ned[k]);
 }, []);
 
-const rows = vgfh.sort((a, b) => (b.confirmed - a.confirmed));
+const rows = vgfh.filter(d => d.confirmed > 0).sort((a, b) => (b.confirmed - a.confirmed));
 
   const [columns] = useState([
    

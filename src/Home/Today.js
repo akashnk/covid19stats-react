@@ -3,14 +3,14 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme, ThemeProvider, createStyles } from '@material-ui/core/styles';
-
-import Box from '@material-ui/core/Box';
+// import { Container } from '@material-ui/core';
+// import Box from '@material-ui/core/Box';
 
 
 const theme = createMuiTheme({
 
   typography: {
-    "fontSize": 12,
+    "fontSize": 11.8,
     fontFamily: [
       '-apple-system',
       'BlinkMacSystemFont',
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1
   },
   paper: {
-    padding: theme.spacing(0.9),
+    padding: theme.spacing.unit*2,
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
   thx: {
     marginLeft: theme.spacing(1),
-    padding: "0.1px",
+    padding: theme.spacing(1),
     marginRight: theme.spacing(1),
     border: '1px solid red',
   },
@@ -138,7 +138,7 @@ const Today= (props) => {
       {deltas
         ? deltas.active > 0
           ? <h6> New+ {deltas.active.toLocaleString()}</h6>
-         : <h6>+0</h6>
+         : <h6 style={{color: "white"}}>+0</h6>
         : ''}
       
     </th>

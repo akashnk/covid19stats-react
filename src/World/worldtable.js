@@ -211,6 +211,9 @@ title: "Tests/million"
   const [Columnsxxx] = useState(['deaths']);
   const [Columnsxx] = useState(['active','recovered','tests','testsPerOneMillion']);
   const [sorting, setSorting] = useState([{ columnName: 'cases', direction: 'desc' }]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(9);
+  const [pageSizes] = useState([9, 18, 27]);
 //   const [sortingStateColumnExtensions] = useState([
 //     { columnName: 'recovered', sortingEnabled: true },
 //   ]);
@@ -265,8 +268,10 @@ setSelection(context.countryselect)
         />
         <IntegratedSorting />
         <PagingState
-          defaultCurrentPage={0}
-          pageSize={10}
+          currentPage={currentPage}
+          onCurrentPageChange={setCurrentPage}
+          pageSize={pageSize}
+          onPageSizeChange={setPageSize}
         />
         <IntegratedPaging />
           <Toolbar />
@@ -279,7 +284,9 @@ setSelection(context.countryselect)
           onColumnWidthsChange={setColumnWidths}
         /> */}
         <TableHeaderRow showSortingControls />
-        <PagingPanel />
+        <PagingPanel
+          pageSizes={pageSizes}
+        />
         
         <TableSelection />
  

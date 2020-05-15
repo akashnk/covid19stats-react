@@ -224,7 +224,7 @@ const handleChange = e => {
     setCase('totalconfirmed');
   };
 
-
+  
 
  useEffect(()=>{
   context.setStatecodes(activeStateCode);
@@ -282,6 +282,7 @@ const handleChange = e => {
         {fetched && <Dchart 
                 totdata={timeseries}
                 casetype={value}
+                testdata={testData}
 
                daysC ={daysC}
                 

@@ -1,8 +1,7 @@
 import React, {  useState, useEffect, useRef,useContext } from "react";
 
 import { select, nest,line,curveCardinal,extent,axisLeft,max,axisBottom,scaleLinear,
-  scaleTime,scaleSymlog,scaleOrdinal,schemeCategory10, selectAll, zoom,
-  zoomTransform,mouse,bisect,timeMonth,timeWeek,timeYear} from 'd3';
+  scaleTime,scaleSymlog,scaleOrdinal,schemeCategory10, selectAll, mouse,bisect,timeMonth,timeWeek,timeYear} from 'd3';
 
 
 
@@ -25,6 +24,7 @@ const Dchart = (props) => {
   // const [panMode, setpanMode] = useState([]);
  
   const [totdata,setTotdata]=useState([]);
+  const [testdata,setTestdata] = useState([]);
   // const [lastDaysCount,setLastDaysCount]=useState(14);
   const [currentZoomState, setCurrentZoomState] = useState();
 
@@ -57,7 +57,9 @@ var lineStroke = "1.5px";
 
   }, [props.totdata])
 
- 
+  useEffect(() => {
+    setTestdata(props.testdata);
+  }, [props.testdata]);
 
 
 const as = context.statecodes!==[]? context.statecodes: ["TT"];
@@ -92,7 +94,12 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
          return r.concat( gh[k]);
      }, []);
 
-   
+     var res = testdata.filter((item)=>{
+      return Object.keys(item).some((key)=>item[key].includes('West Bengal'));
+    });
+   var testgh = res.reverse().slice(-daysCount) 
+   console.log(allData)
+ 
 //      useEffect(()=>
 //    setLastDaysCount(props.timeMode)
 //  ,[props.timeMode])

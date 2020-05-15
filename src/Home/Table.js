@@ -39,6 +39,9 @@ const Tables = (props) => {
     const [searchValue, setSearchState] = useState([]);
     const [expandedRowIds, setExpandedRowIds] = useState([]);
 
+    const [currentPage, setCurrentPage] = useState(0);
+    const [pageSize, setPageSize] = useState(9);
+    const [pageSizes] = useState([9, 18, 27]);
 
     rows.forEach((d,i)=> {
       d.confirmed= +d.confirmed
@@ -210,7 +213,7 @@ getCellValue: (row) => {
   // ]);
 
    const [tableColumnExtensions] = useState([
-     { columnName: TableSelection.COLUMN_TYPE, wordWrapEnabled: true },
+     { columnName: TableSelection.COLUMN_TYPE, width:20, wordWrapEnabled: true },
       {columnName: 'state', width: 85, wordWrapEnabled: true},
      { columnName: 'confirmed', width: 80, wordWrapEnabled: true },
     { columnName: 'deaths', width: 80},
@@ -323,8 +326,10 @@ setSelection(context.stateselect)
         <IntegratedSorting />
         {/* <IntegratedSorting columnExtensions={integratedSortingColumnExtensions}/> */}
         <PagingState
-          defaultCurrentPage={0}
-          pageSize={9}
+          currentPage={currentPage}
+          onCurrentPageChange={setCurrentPage}
+          pageSize={pageSize}
+          onPageSizeChange={setPageSize}
         />
            <IntegratedPaging />
 
@@ -344,7 +349,9 @@ setSelection(context.stateselect)
         /> 
                <TableFixedColumns
           leftColumns={leftColumns}/>
-            <PagingPanel />
+             <PagingPanel
+          pageSizes={pageSizes}
+        />
       </Grid>
     </Paper>
   );

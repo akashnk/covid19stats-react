@@ -218,7 +218,7 @@ const handleChange = e => {
         <>
         <ThemeProvider theme={theme}>
         <div className={classes.root}>
-    <Grid container spacing={1}>
+    <Grid container spacing={1.5}>
     <Grid item xs={12} >
 <Paper className={classes.paper}>
         {fetched &&  <Update dataw={dataw} />}
