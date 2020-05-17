@@ -50,9 +50,10 @@ const Tables = (props) => {
       d.deaths=+d.deaths
       d.totaltested= +d.totaltested
       d.deltadeaths=+d.deltadeaths
+      d.populationncp2019projection=+d.populationncp2019projection
      
       });
-
+console.log(rows)
       const Formatter = ({ value,row }) => (
         row.deltaconfirmed > 0 ? (<div>{value.toLocaleString()} <br/><span style={{ color: 'red' }}>
              [+ {row.deltaconfirmed.toLocaleString()}]</span> </div>
@@ -193,12 +194,13 @@ name: "tests",
 title: "Tests/ million",
 getCellValue: (row) => {
   return(parseFloat((row.totaltested/pop[row.statecode]*1000000).toFixed(0)) || 0)
+  
 }
 // width: 80
 }
 
   ]);
-
+  
  
   // const [tableColumnExtensions] = useState([
   //   { columnName: 'state', width: 180 },

@@ -267,6 +267,7 @@ const handleChange = e => {
     <FormControlLabel value="totalrecovered" control={<Radio />} label="Recovered" />
     <FormControlLabel value="dailyconfirmed" control={<Radio />} label="Daily" />
     <FormControlLabel value="dailytotal" control={<Radio />} label="Daily/Total" />
+    {/* <FormControlLabel value="testing" control={<Radio />} label="Testing" /> */}
     <FormControlLabel
         control={<Switch checked={logMode} onChange={handleChangelog} />}
         label={<Typography styles={styles.formControlLabel}>Logarithmic</Typography>}

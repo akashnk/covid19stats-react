@@ -1,6 +1,6 @@
 import React, {  useState, useEffect, useRef,useContext } from "react";
 
-import { select, nest,line,curveCardinal,extent,axisLeft,max,axisBottom,scaleLinear,
+import { select, nest,line,curveCardinal,extent,axisLeft,max,min,axisBottom,scaleLinear,
   scaleTime,scaleSymlog,scaleOrdinal,schemeCategory10, selectAll, mouse,bisect,timeMonth,timeWeek,timeYear} from 'd3';
 
 
@@ -11,6 +11,7 @@ import {useResizeObserver} from '../Common/hooks';
 import {STATE_CODES} from '../Common/constants'
 
 import {format} from 'date-fns';
+import moment from 'moment';
 
 
 
@@ -72,6 +73,10 @@ useEffect(() => {
 
 
 const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infinity;
+
+
+
+
 // const tc = (totdata,i)=> {for i in }
   for (var i = 0; i < as.length; i++)
 {
@@ -94,11 +99,21 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
          return r.concat( gh[k]);
      }, []);
 
-     var res = testdata.filter((item)=>{
-      return Object.keys(item).some((key)=>item[key].includes('West Bengal'));
+   var hy =[]
+     for (var i = 0; i < as.length; i++)
+     {
+      var res = testdata.filter((item)=>{
+      return Object.keys(item).some((key)=>item[key].includes(STATE_CODES[as[i]]));
+      
     });
-   var testgh = res.reverse().slice(-daysCount) 
-   console.log(allData)
+    hy[i] = res.reverse().slice(-daysCount) 
+     }
+     const resTest = Object.keys(hy).reduce(function (r, k) {
+      return r.concat( hy[k]);
+  }, []);
+   
+  // console.log(resTest)
+  // const allData = radiostate !== 'testing' ? resData : resTest;
  
 //      useEffect(()=>
 //    setLastDaysCount(props.timeMode)
@@ -125,7 +140,7 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
 
   useEffect(() => {
 
-
+    if (radiostate!=='testing'){
 
   allData.forEach((d,i)=> {
  // console.log(tv['TN'].totalconfirmed);
@@ -141,7 +156,7 @@ const daysCount = (daysC==="Fortnight") ? 14 : (daysC === "Month") ? 28 : Infini
 
             const xValue = (d) => {if (radiostate==='dailytotal') {
               return d.totalconfirmed
-            } else{ return (d.date)}};
+            } else { return (d.date)}};
             const xAxisLabel = radiostate !=='dailytotal' ?'Time':'Total cases';
 
             const yValue = (d) => {if (radiostate==='dailytotal') {
@@ -187,7 +202,7 @@ var svg= svgk.append("g").attr("transform", "translate(" + margin.left + "," + m
             
 
             const yscale = logMode === true ?
-            scaleSymlog().domain([1,max(allData,yValue)]).range([h,1]).nice() :
+            scaleSymlog().domain([min(allData,yValue),max(allData,yValue)]).range([h,0]).nice() :
             scaleLinear().domain(extent(allData,yValue)).range([h,0]).nice();
 
          
@@ -564,10 +579,27 @@ if (radiostate!== 'dailytotal'){
 
 
   window.addEventListener('resize', drawChart );
- 
+}
+else{
+  resTest.forEach((d,i)=> {
+    // console.log(tv['TN'].totalconfirmed);
+   
+          d.totaltested=+d.totaltested;
+          d.updatedon = moment(d.updatedon, 'DD/MM/YYYY').format('MM-DD-YYYY');
+          // d.updatedon =+d.updatedon
+           d.updatedon= new Date(d.updatedon);
+          
+           });
+           allData.sort((a, b) => (b.totalsorted - a.totalsorted));
+           console.log(resTest)
+
+
+   
+}
 
 
 },[allData,dimensions,radiostate,logMode])
+
 
 
   return (

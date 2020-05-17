@@ -123,7 +123,7 @@ export default function World() {
        }
      }, [fetched]);
 
-
+     const gdata = datax.sort((a, b) => (b.cases - a.cases));
     
 
      useEffect(()=>{
@@ -257,7 +257,7 @@ totdata={o}
     </Grid>
     <Grid item xs={12} sm={12} md={6}>
     <Paper className={classes.paper}>
-       {fetched &&  <Worldtable rows={datax}/>}
+       {fetched &&  <Worldtable rows={gdata}/>}
        </Paper>
 </Grid>
 </Grid>

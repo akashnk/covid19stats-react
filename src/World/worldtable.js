@@ -29,13 +29,16 @@ import {TableContext} from "../TableContext";
 
 const Worldtable = (props) => {
 
-    const [rows,setrows] =useState(props.rows);
+    const [rows,setrows] =useState([]);
     const [selection, setSelection] = useState([]);
     const context = useContext(TableContext);
  
     const [searchValue, setSearchState] = useState([]);
   
 
+useEffect(()=>{
+  setrows(props.rows)
+},[props.rows]);
 
     // rows.forEach((d,i)=> {
     //   d.confirmed= +d.confirmed
@@ -58,10 +61,11 @@ const Worldtable = (props) => {
     //   const [integratedSortingColumnExtensions] = useState([
     //     { columnName: 'deaths', compare: comparedeath  },
     //   ]);
+
     const Formatter = ({ value,row }) => (
       row.todayCases > 0 ? (<div>{value.toLocaleString()} <br/><span style={{ color: 'red' }}>
            [+ {row.todayCases.toLocaleString()}]</span> </div>
-       ) : <div>{value.toLocaleString()}</div>
+       ) : <div>{value}</div>
     );
     
     const TypeProvider = props => (
@@ -70,11 +74,11 @@ const Worldtable = (props) => {
         {...props}
       />
     );
-
+    
     const Formatterxxx = ({ value,row }) => (
       row.todayDeaths > 0 ? (<div>{value.toLocaleString()} <br/><span style={{ color: 'red' }}>
            [+ {row.todayDeaths.toLocaleString()}]
-      </span></div>) : (<div>{value.toLocaleString()}</div>)
+      </span></div>) : <div>{value}</div>
     );
     
     const TypeProviderxxx = props => (
@@ -83,9 +87,9 @@ const Worldtable = (props) => {
         {...props}
       />
     );
-
-    const Formatterxx = ({ value }) => (
-      value.toLocaleString()
+    
+    const Formatterxx = ({row, value }) => (
+      <div>{value.toLocaleString()}</div>
     );
     
     const TypeProviderxx = props => (
@@ -94,7 +98,8 @@ const Worldtable = (props) => {
         {...props}
       />
     );
-
+    
+console.log(rows)
   const [columns] = useState([
     
     {
@@ -161,7 +166,7 @@ title: "Tests/million"
 }
 
   ]);
-  const gdata = rows.sort((a, b) => (b.cases - a.cases));
+  
  
   // const [tableColumnExtensions] = useState([
   //   { columnName: 'state', width: 180 },
@@ -207,9 +212,7 @@ title: "Tests/million"
 // <Tablecollapsed districts={districts[row.state].districtData}/>
 //     </div>
 //   ); const [Columns] = useState(['confirmed']);
-  const [Columns] = useState(['cases']);
-  const [Columnsxxx] = useState(['deaths']);
-  const [Columnsxx] = useState(['active','recovered','tests','testsPerOneMillion']);
+  
   const [sorting, setSorting] = useState([{ columnName: 'cases', direction: 'desc' }]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(9);
@@ -217,6 +220,8 @@ title: "Tests/million"
 //   const [sortingStateColumnExtensions] = useState([
 //     { columnName: 'recovered', sortingEnabled: true },
 //   ]);
+
+
  
 useEffect(()=>{
     if (selection.length > 0) {
@@ -237,10 +242,15 @@ useEffect(()=>
 setSelection(context.countryselect)
 },[context.countryselect])
 
+
+const [Columns] = useState(['cases']);
+  const [Columnsxxx] = useState(['deaths']);
+  const [Columnsxx] = useState(['active']);
+
   return (
     <Paper>
       <Grid
-        rows={gdata}
+        rows={rows}
         columns={columns}
       >
              <TypeProvider
@@ -261,6 +271,8 @@ setSelection(context.countryselect)
           selection={selection}
           onSelectionChange={setSelection}
         />
+          <Toolbar />
+        <SearchPanel />
          <SortingState
            sorting={sorting}
            onSortingChange={setSorting}
@@ -274,8 +286,7 @@ setSelection(context.countryselect)
           onPageSizeChange={setPageSize}
         />
         <IntegratedPaging />
-          <Toolbar />
-        <SearchPanel />
+        
         
         <Table  />
        
@@ -284,9 +295,9 @@ setSelection(context.countryselect)
           onColumnWidthsChange={setColumnWidths}
         /> */}
         <TableHeaderRow showSortingControls />
-        <PagingPanel
+        {/* <PagingPanel
           pageSizes={pageSizes}
-        />
+        /> */}
         
         <TableSelection />
  

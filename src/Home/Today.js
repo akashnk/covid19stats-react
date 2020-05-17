@@ -192,7 +192,7 @@ const Today= (props) => {
     </h2></th>
     <th className="thx" style={{color: "#5CB8E7"}}><h3 >Test/million</h3>
     <h2>
-      {((props.tested/1210000000*1000000).toFixed(0))} 
+      {((props.tested/1371360350*1000000).toFixed(0))} 
       
 
     </h2></th>
