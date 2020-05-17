@@ -295,9 +295,9 @@ const [Columns] = useState(['cases']);
           onColumnWidthsChange={setColumnWidths}
         /> */}
         <TableHeaderRow showSortingControls />
-        {/* <PagingPanel
+        <PagingPanel
           pageSizes={pageSizes}
-        /> */}
+        />
         
         <TableSelection />
  
