@@ -53,7 +53,7 @@ const Tables = (props) => {
       d.populationncp2019projection=+d.populationncp2019projection
      
       });
-console.log(rows)
+
       const Formatter = ({ value,row }) => (
         row.deltaconfirmed > 0 ? (<div>{value.toLocaleString()} <br/><span style={{ color: 'red' }}>
              [+ {row.deltaconfirmed.toLocaleString()}]</span> </div>

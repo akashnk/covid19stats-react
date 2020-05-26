@@ -22,7 +22,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -264,7 +265,8 @@ const handleChange = e => {
          <RadioGroup row aria-label="case" name="case" value={value} onChange={handleChange}>
          <FormControlLabel value="totalconfirmed" control={<Radio />} label="Cases" />
     <FormControlLabel value="totaldeceased" control={<Radio />} label="Deaths" />
-    <FormControlLabel value="totalrecovered" control={<Radio />} label="Recovered" />
+    <FormControlLabel value="totalactive" control={<Radio />} label="Active" />
+
     <FormControlLabel value="dailyconfirmed" control={<Radio />} label="Daily" />
     <FormControlLabel value="dailytotal" control={<Radio />} label="Daily/Total" />
     {/* <FormControlLabel value="testing" control={<Radio />} label="Testing" /> */}

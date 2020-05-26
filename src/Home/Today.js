@@ -172,25 +172,29 @@ const Today= (props) => {
     <Paper className="classes.paper">
     <table className="tablex">
       <tr>
-    <th className="thx" style={{color: "#FF5F31"}}><h3 >Fatality rate</h3>
+    <th className="thx" style={{color: "#FF5F31"}}><h3 >Death rate</h3>
     <h2>
       {((deaths/confirmed*100).toFixed(2))} %
       
 
     </h2></th>
+   
+    <th className="thx" style={{color: "#A4B265"}}><h5 >Death rate</h5>
+    <h5 >(resolved)</h5>
+    <h4>
+      {((deaths/(recoveries+deaths)*100).toFixed(2))} %
+      
+
+    </h4></th>
+
     <th className="thx" style={{color: "#78CC5A"}}><h3 >Recovery rate</h3>
     <h2>
       {((recoveries/confirmed*100).toFixed(2))} % 
       
 
     </h2></th>
-    <th className="thx" style={{color: "#A4B265"}}><h3 >Death/Recovery</h3>
-    <h2>
-      {((deaths/recoveries*100).toFixed(2))} %
-      
 
-    </h2></th>
-    <th className="thx" style={{color: "#5CB8E7"}}><h3 >Test/million</h3>
+    <th className="thx" style={{color: "#5CB8E7"}}><h3 >Tests/million</h3>
     <h2>
       {((props.tested/1371360350*1000000).toFixed(0))} 
       

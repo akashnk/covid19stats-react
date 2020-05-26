@@ -62,11 +62,11 @@ useEffect(()=>{
     //     { columnName: 'deaths', compare: comparedeath  },
     //   ]);
 
-    const Formatter = ({ value,row }) => (
+    const Formatter = ({ value,row }) => 
       row.todayCases > 0 ? (<div>{value.toLocaleString()} <br/><span style={{ color: 'red' }}>
            [+ {row.todayCases.toLocaleString()}]</span> </div>
-       ) : <div>{value}</div>
-    );
+       ) : (<div>{value.toLocaleString()}</div>)
+    ;
     
     const TypeProvider = props => (
       <DataTypeProvider
@@ -75,11 +75,11 @@ useEffect(()=>{
       />
     );
     
-    const Formatterxxx = ({ value,row }) => (
+    const Formatterxxx = ({ value,row }) => 
       row.todayDeaths > 0 ? (<div>{value.toLocaleString()} <br/><span style={{ color: 'red' }}>
            [+ {row.todayDeaths.toLocaleString()}]
-      </span></div>) : <div>{value}</div>
-    );
+      </span></div>) : (<div>{value.toLocaleString()}</div>)
+    ;
     
     const TypeProviderxxx = props => (
       <DataTypeProvider
@@ -88,9 +88,9 @@ useEffect(()=>{
       />
     );
     
-    const Formatterxx = ({row, value }) => (
-      <div>{value.toLocaleString()}</div>
-    );
+    const Formatterxx = ({ value }) => 
+      (<div>{value.toLocaleString()}</div>)
+    ;
     
     const TypeProviderxx = props => (
       <DataTypeProvider
@@ -246,7 +246,10 @@ setSelection(context.countryselect)
 const [Columns] = useState(['cases']);
   const [Columnsxxx] = useState(['deaths']);
   const [Columnsxx] = useState(['active']);
-
+  const [Columnsxxz] = useState(['active']);
+  const [Columnsxxy] = useState(['recovered']);
+  const [Columnsxxw] = useState(['tests']);
+  const [Columnsxxv] = useState(['testsPerOneMillion']);
   return (
     <Paper>
       <Grid
@@ -262,6 +265,18 @@ const [Columns] = useState(['cases']);
         />
               <TypeProviderxx
           for={Columnsxx}
+        />
+                <TypeProviderxx
+          for={Columnsxxz}
+        />
+                <TypeProviderxx
+          for={Columnsxxy}
+        />
+                <TypeProviderxx
+          for={Columnsxxw}
+        />
+                 <TypeProviderxx
+          for={Columnsxxv}
         />
        <SearchState value={searchValue}
           onValueChange={setSearchState} />

@@ -379,13 +379,13 @@ metric
 .data(allData)
   .enter()
   .append("circle")
-  .attr("r", 2)
+  .attr("r", 1.8)
   .style("fill", "white")
 
   .style("fill-opacity",0.8)
   .style("stroke", function(d) { return color(d.state); })
 
-  .style("stroke-width", 1.9)
+  .style("stroke-width", 1.6)
   .attr("cx",d => xscale(d.date))
   .attr("cy",d => yscale(d[radiostate]))
 
@@ -513,7 +513,7 @@ if (radiostate!== 'dailytotal'){
     // .attr("font-weight",function(d,i) {return i*100+100;})
 
     selectAll('.pointss rect')
-      .attr("width", 130)
+      .attr("width", 140)
           .attr("height", 20)
           .style("fill","white")
           .style("stroke-width", "1px")

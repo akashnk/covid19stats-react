@@ -10,8 +10,8 @@
 h4 {
   display: block;
   font-size: 1.10em;
-  margin-top: 0.63em;
-  margin-bottom: 0.03em;
+  margin-top: 0.13em;
+  margin-bottom: 0.01em;
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
@@ -20,7 +20,7 @@ h4 {
 h5 {
   display: block;
   font-size: 0.85em;
-  margin-top: 0.93em;
+  margin-top: 0.23em;
   margin-bottom: 0.13em;
   margin-left: 0;
   margin-right: 0;
@@ -29,8 +29,8 @@ h5 {
 h6 {
   display: block;
   font-size: 0.75em;
-  margin-top: 0.63em;
-  margin-bottom: 0.33em;
+  margin-top: 0.83em;
+  margin-bottom: 0.43em;
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
@@ -39,8 +39,8 @@ h6 {
 h2 {
   display: block;
   font-size: 1.10em;
-  margin-top: 1.23em;
-  margin-bottom: 0.63em;
+  margin-top: 0.95em;
+  margin-bottom: 0.33em;
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
@@ -48,8 +48,8 @@ h2 {
 h3 {
   display: block;
   font-size: 0.85em;
-  margin-top: 1.23em;
-  margin-bottom: 0.33em;
+  margin-top: 1.03em;
+  margin-bottom: 0.03em;
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
